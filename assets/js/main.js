@@ -4,6 +4,8 @@
 
   document.documentElement.classList.add("js");
   const DATA = window.MEDERINAV || {};
+  const I18N = window.MederinavI18n; // assets/js/i18n.js
+  const { t, loc } = I18N;
 
   /* ---------- Icon sprite (Lucide-style, 24px, stroke 2) ---------- */
   const ICONS = {
@@ -46,8 +48,7 @@
   const icon = (name, cls = "icon") => `<svg class="${cls}" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 
   /* ---------- Helpers shared with booking.js ---------- */
-  const fmtNumber = new Intl.NumberFormat("sv-SE");
-  const kr = (n) => `${fmtNumber.format(n)} kr`;
+  const kr = (n) => `${new Intl.NumberFormat(I18N.locale).format(n)} kr`;
   const isCampaignActive = () => {
     const c = DATA.campaign;
     if (!c || !c.endDate) return false;
@@ -55,7 +56,7 @@
   };
   const allTreatments = () =>
     (DATA.categories || []).flatMap((cat) => cat.items.map((item) => ({ ...item, category: cat })));
-  const teamName = (id) => ((DATA.team || []).find((t) => t.id === id) || {}).name || id;
+  const teamName = (id) => ((DATA.team || []).find((p) => p.id === id) || {}).name || id;
   const effectivePrice = (item) => (isCampaignActive() && item.campaignPrice ? item.campaignPrice : item.price);
   const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -72,102 +73,114 @@
   const toggle = document.querySelector(".nav-toggle");
   const nav = document.getElementById("site-nav");
   if (toggle && nav) {
+    const isOpen = () => toggle.getAttribute("aria-expanded") === "true";
     const setOpen = (open) => {
       toggle.setAttribute("aria-expanded", String(open));
-      toggle.setAttribute("aria-label", open ? "Stäng meny" : "Öppna meny");
+      toggle.setAttribute("aria-label", t(open ? "menu.close" : "menu.open"));
       nav.classList.toggle("is-open", open);
     };
-    toggle.addEventListener("click", () => setOpen(toggle.getAttribute("aria-expanded") !== "true"));
+    setOpen(false);
+    I18N.onChange(() => setOpen(isOpen()));
+    toggle.addEventListener("click", () => setOpen(!isOpen()));
     nav.addEventListener("click", (e) => { if (e.target.closest("a")) setOpen(false); });
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+      if (e.key === "Escape" && isOpen()) {
         setOpen(false);
         toggle.focus();
       }
     });
-    window.matchMedia("(min-width: 901px)").addEventListener("change", (e) => { if (e.matches) setOpen(false); });
+    window.matchMedia("(min-width: 1101px)").addEventListener("change", (e) => { if (e.matches) setOpen(false); });
   }
 
   /* ---------- Footer year ---------- */
   document.querySelectorAll("[data-year]").forEach((el) => { el.textContent = new Date().getFullYear(); });
 
   /* ---------- Opening hours table ---------- */
-  const DAY_NAMES = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
-  document.querySelectorAll("[data-hours]").forEach((table) => {
-    const today = new Date().getDay();
-    const order = [1, 2, 3, 4, 5, 6, 0];
-    table.innerHTML =
-      `<caption class="visually-hidden">Öppettider</caption><tbody>` +
-      order
-        .map((d) => {
-          const h = DATA.hours ? DATA.hours[d] : null;
-          return `<tr class="${d === today ? "is-today" : ""}"><th scope="row">${DAY_NAMES[d]}${d === today ? ' <span class="visually-hidden">(idag)</span>' : ""}</th><td>${h ? `${h[0]}–${h[1]}` : "Stängt"}</td></tr>`;
-        })
-        .join("") +
-      `</tbody>`;
-  });
+  function renderHours() {
+    document.querySelectorAll("[data-hours]").forEach((table) => {
+      const today = new Date().getDay();
+      const order = [1, 2, 3, 4, 5, 6, 0];
+      const days = t("days");
+      table.innerHTML =
+        `<caption class="visually-hidden">${t("hours.caption")}</caption><tbody>` +
+        order
+          .map((d) => {
+            const h = DATA.hours ? DATA.hours[d] : null;
+            return `<tr class="${d === today ? "is-today" : ""}"><th scope="row">${days[d]}${d === today ? ` <span class="visually-hidden">${t("hours.today")}</span>` : ""}</th><td>${h ? `${h[0]}–${h[1]}` : t("hours.closed")}</td></tr>`;
+          })
+          .join("") +
+        `</tbody>`;
+    });
+  }
 
   /* ---------- "Från"-prices on category cards ---------- */
-  document.querySelectorAll("[data-from]").forEach((el) => {
-    const cat = (DATA.categories || []).find((c) => c.id === el.dataset.from);
-    if (!cat) return;
-    const min = Math.min(...cat.items.map(effectivePrice));
-    el.textContent = `Från ${kr(min)}`;
-  });
+  function renderFromPrices() {
+    document.querySelectorAll("[data-from]").forEach((el) => {
+      const cat = (DATA.categories || []).find((c) => c.id === el.dataset.from);
+      if (!cat) return;
+      const min = Math.min(...cat.items.map(effectivePrice));
+      el.textContent = t("price.from", { price: kr(min) });
+    });
+  }
 
   /* ---------- Campaign countdown ---------- */
-  document.querySelectorAll("[data-campaign]").forEach((box) => {
-    const out = box.querySelector(".campaign-countdown");
-    const endLabel = box.querySelector("[data-campaign-end]");
-    const end = new Date(`${DATA.campaign.endDate}T23:59:59`);
-    if (endLabel) {
-      endLabel.textContent = end.toLocaleDateString("sv-SE", { day: "numeric", month: "long" });
-    }
-    if (!out) return;
-    const days = Math.ceil((end - new Date()) / 86400000);
-    if (days < 0) {
-      box.classList.add("is-ended");
-      out.textContent = "Kampanjen har avslutats";
-    } else if (days === 0) {
-      out.textContent = "Sista dagen idag!";
-    } else {
-      out.textContent = `${days} ${days === 1 ? "dag" : "dagar"} kvar`;
-    }
-  });
+  function renderCampaign() {
+    document.querySelectorAll("[data-campaign]").forEach((box) => {
+      const out = box.querySelector(".campaign-countdown");
+      const endLabel = box.querySelector("[data-campaign-end]");
+      const end = new Date(`${DATA.campaign.endDate}T23:59:59`);
+      if (endLabel) {
+        endLabel.textContent = end.toLocaleDateString(I18N.locale, { day: "numeric", month: "long" });
+      }
+      if (!out) return;
+      const days = Math.ceil((end - new Date()) / 86400000);
+      if (days < 0) {
+        box.classList.add("is-ended");
+        out.textContent = t("campaign.ended");
+      } else if (days === 0) {
+        out.textContent = t("campaign.lastDay");
+      } else {
+        out.textContent = t("campaign.daysLeft", { n: days });
+      }
+    });
+  }
 
   /* ---------- Campaign offers (items with campaignPrice in data.js) ---------- */
-  const offerList = document.querySelector("[data-render='campaign-offers']");
-  if (offerList) {
-    const offers = allTreatments().filter((t) => t.campaignPrice);
+  function renderOffers() {
+    const offerList = document.querySelector("[data-render='campaign-offers']");
+    if (!offerList) return;
+    const offers = allTreatments().filter((it) => it.campaignPrice);
     offerList.innerHTML = offers
-      .map((t) => `
+      .map((it) => `
         <li class="offer">
-          <span class="offer-name">${escapeHtml(t.name)}</span>
-          <span class="offer-desc">${escapeHtml(t.category.name)} · ${t.duration} min</span>
-          <span class="offer-price"><del><span class="visually-hidden">Ordinarie pris </span>${kr(t.price)}</del><strong><span class="visually-hidden">Kampanjpris </span>${kr(t.campaignPrice)}</strong></span>
+          <span class="offer-name">${escapeHtml(loc(it, "name"))}</span>
+          <span class="offer-desc">${escapeHtml(loc(it.category, "name"))} · ${it.duration} min</span>
+          <span class="offer-price"><del><span class="visually-hidden">${t("price.regular")}</span>${kr(it.price)}</del><strong><span class="visually-hidden">${t("price.campaign")}</span>${kr(it.campaignPrice)}</strong></span>
         </li>`)
       .join("");
-    const maxPct = Math.max(0, ...offers.map((t) => Math.round((1 - t.campaignPrice / t.price) * 100)));
+    const maxPct = Math.max(0, ...offers.map((it) => Math.round((1 - it.campaignPrice / it.price) * 100)));
     document.querySelectorAll("[data-campaign-max]").forEach((el) => { el.textContent = `−${maxPct}%`; });
   }
 
   /* ---------- Before / after comparison ---------- */
+  const baUpdaters = [];
   document.querySelectorAll(".ba-frame").forEach((frame) => {
     const range = frame.querySelector(".ba-range");
     if (!range) return;
     const update = () => {
       const v = Number(range.value);
       frame.style.setProperty("--pos", `${v}%`);
-      range.setAttribute("aria-valuetext", `${100 - v} procent efter-bild synlig`);
+      range.setAttribute("aria-valuetext", t("gallery.valueText", { n: 100 - v }));
     };
     range.addEventListener("input", update);
     update();
+    baUpdaters.push(update);
   });
 
   const filterBar = document.querySelector("[data-gallery-filter]");
+  const galleryStatus = document.getElementById("gallery-status");
   if (filterBar) {
     const items = document.querySelectorAll(".ba[data-category]");
-    const status = document.getElementById("gallery-status");
     filterBar.addEventListener("click", (e) => {
       const btn = e.target.closest("button[data-filter]");
       if (!btn) return;
@@ -179,14 +192,16 @@
         it.hidden = !match;
         if (match) shown++;
       });
-      if (status) status.textContent = `Visar ${shown} ${shown === 1 ? "resultat" : "resultat"}`;
+      if (galleryStatus) galleryStatus.textContent = t("gallery.showing", { n: shown });
     });
   }
 
   /* ---------- Treatments page (accordion) ---------- */
   const tRoot = document.querySelector("[data-render='treatments']");
-  if (tRoot && DATA.categories) {
+  function renderTreatments() {
+    if (!tRoot || !DATA.categories) return;
     const campaign = isCampaignActive();
+    const openIds = [...tRoot.querySelectorAll("details[open]")].map((d) => d.id);
     tRoot.innerHTML = DATA.categories
       .map(
         (cat) => `
@@ -194,31 +209,32 @@
         <div class="t-group-head">
           <img src="assets/images/treatment-${cat.id}.svg" alt="" width="64" height="64" loading="lazy">
           <div>
-            <h2 id="h-${cat.id}">${escapeHtml(cat.name)}</h2>
-            <p>${escapeHtml(cat.intro)}</p>
+            <h2 id="h-${cat.id}">${escapeHtml(loc(cat, "name"))}</h2>
+            <p>${escapeHtml(loc(cat, "intro"))}</p>
           </div>
         </div>
         <div class="t-list">
           ${cat.items
-            .map((t) => {
-              const onSale = campaign && t.campaignPrice;
+            .map((it) => {
+              const onSale = campaign && it.campaignPrice;
+              const name = loc(it, "name");
               return `
-            <details class="t-item" id="${t.id}">
+            <details class="t-item" id="${it.id}"${openIds.includes(it.id) ? " open" : ""}>
               <summary>
-                <span class="t-name">${escapeHtml(t.name)}</span>
-                ${onSale ? `<span class="badge">${escapeHtml(DATA.campaign.name)}</span>` : ""}
-                <span class="t-from">${kr(effectivePrice(t))}</span>
+                <span class="t-name">${escapeHtml(name)}</span>
+                ${onSale ? `<span class="badge">${escapeHtml(loc(DATA.campaign, "name"))}</span>` : ""}
+                <span class="t-from">${kr(effectivePrice(it))}</span>
                 <span class="t-plus" aria-hidden="true"></span>
               </summary>
               <div class="t-body">
-                <p>${escapeHtml(t.description)}</p>
-                <p><strong>Passar dig som:</strong> ${escapeHtml(t.suitable)}</p>
+                <p>${escapeHtml(loc(it, "description"))}</p>
+                <p><strong>${t("treat.suitable")}</strong> ${escapeHtml(loc(it, "suitable"))}</p>
                 <ul class="t-facts">
-                  <li>${icon("clock")} ${t.duration} min</li>
-                  <li>${icon("user")} ${t.practitioners.map(teamName).map(escapeHtml).join(", ")}</li>
-                  <li>${icon("tag")} ${onSale ? `<del>${kr(t.price)}</del>&nbsp;${kr(t.campaignPrice)}` : kr(t.price)}</li>
+                  <li>${icon("clock")} ${it.duration} min</li>
+                  <li>${icon("user")} ${it.practitioners.map(teamName).map(escapeHtml).join(", ")}</li>
+                  <li>${icon("tag")} ${onSale ? `<del>${kr(it.price)}</del>&nbsp;${kr(it.campaignPrice)}` : kr(it.price)}</li>
                 </ul>
-                <a class="btn btn--primary" href="boka.html?behandling=${encodeURIComponent(t.id)}">${icon("calendar")} Boka ${escapeHtml(t.name.toLowerCase())}</a>
+                <a class="btn btn--primary" href="boka.html?behandling=${encodeURIComponent(it.id)}">${icon("calendar")} ${escapeHtml(t("treat.book", { name }))}</a>
               </div>
             </details>`;
             })
@@ -227,35 +243,39 @@
       </section>`
       )
       .join("");
-
+  }
+  if (tRoot) {
     const openFromHash = () => {
       const id = decodeURIComponent(location.hash.slice(1));
       const el = id && document.getElementById(id);
       if (el && el.tagName === "DETAILS") el.open = true;
     };
+    renderTreatments();
     openFromHash();
     window.addEventListener("hashchange", openFromHash);
   }
 
   /* ---------- Price list page ---------- */
   const pRoot = document.querySelector("[data-render='prices']");
-  if (pRoot && DATA.categories) {
+  function renderPrices() {
+    if (!pRoot || !DATA.categories) return;
     const campaign = isCampaignActive();
     pRoot.innerHTML = DATA.categories
       .map(
         (cat) => `
       <section class="price-group" id="${cat.id}" aria-labelledby="p-${cat.id}">
-        <h2 id="p-${cat.id}">${escapeHtml(cat.name)}</h2>
+        <h2 id="p-${cat.id}">${escapeHtml(loc(cat, "name"))}</h2>
         <table class="price-table">
-          <caption class="visually-hidden">Priser för ${escapeHtml(cat.name)}</caption>
+          <caption class="visually-hidden">${escapeHtml(t("prices.caption", { cat: loc(cat, "name") }))}</caption>
           <tbody>
             ${cat.items
-              .map((t) => {
-                const onSale = campaign && t.campaignPrice;
+              .map((it) => {
+                const onSale = campaign && it.campaignPrice;
+                const name = loc(it, "name");
                 return `<tr>
-                  <th scope="row">${escapeHtml(t.name)} ${onSale ? `<span class="badge">${escapeHtml(DATA.campaign.name)}</span>` : ""}<small>${t.duration} min</small></th>
-                  <td>${onSale ? `<del><span class="visually-hidden">Ordinarie pris </span>${kr(t.price)}</del><strong><span class="visually-hidden">Kampanjpris </span>${kr(t.campaignPrice)}</strong>` : `<strong>${kr(t.price)}</strong>`}</td>
-                  <td class="t-book"><a href="boka.html?behandling=${encodeURIComponent(t.id)}" aria-label="Boka ${escapeHtml(t.name)}">Boka</a></td>
+                  <th scope="row">${escapeHtml(name)} ${onSale ? `<span class="badge">${escapeHtml(loc(DATA.campaign, "name"))}</span>` : ""}<small>${it.duration} min</small></th>
+                  <td>${onSale ? `<del><span class="visually-hidden">${t("price.regular")}</span>${kr(it.price)}</del><strong><span class="visually-hidden">${t("price.campaign")}</span>${kr(it.campaignPrice)}</strong>` : `<strong>${kr(it.price)}</strong>`}</td>
+                  <td class="t-book"><a href="boka.html?behandling=${encodeURIComponent(it.id)}" aria-label="${escapeHtml(t("prices.bookLabel", { name }))}">${t("prices.book")}</a></td>
                 </tr>`;
               })
               .join("")}
@@ -265,6 +285,23 @@
       )
       .join("");
   }
+
+  /* ---------- Everything above that depends on the language ---------- */
+  renderHours();
+  renderFromPrices();
+  renderCampaign();
+  renderOffers();
+  renderPrices();
+  I18N.onChange(() => {
+    renderHours();
+    renderFromPrices();
+    renderCampaign();
+    renderOffers();
+    renderTreatments();
+    renderPrices();
+    baUpdaters.forEach((update) => update());
+    if (galleryStatus) galleryStatus.textContent = "";
+  });
 
   /* ---------- Reveal on scroll ---------- */
   const reveals = document.querySelectorAll(".reveal");

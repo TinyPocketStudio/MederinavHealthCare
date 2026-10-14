@@ -3,36 +3,44 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Om oss – Mederinav Health Care</title>
-  <meta name="description" content="Möt teamet bakom Mederinav Health Care – läkare Christian Navarro och fotterapeut Lorena Munoz.">
+  <title data-i18n="meta.about.title">Om oss – Mederinav Health Care</title>
+  <meta name="description" content="Möt teamet bakom Mederinav Health Care – läkare Christian Navarro och fotterapeut Lorena Munoz." data-i18n-attr="content:meta.about.desc">
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- Language: set early so Swedish text doesn't flash for Spanish visitors (see assets/js/i18n.js) -->
+  <script>(function(){var d=document.documentElement,l=new URLSearchParams(location.search).get("lang");d.classList.add("js");try{l=l||localStorage.getItem("mederinav-lang")}catch(e){}l=l||(/^es\b/i.test(navigator.language)?"es":"sv");if(l==="es"){d.lang="es";d.classList.add("i18n-pending")}})();</script>
+  <script src="assets/js/translations.js" defer></script>
+  <script src="assets/js/i18n.js" defer></script>
   <script src="assets/js/data.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Hoppa till innehållet</a>
+  <a class="skip-link" href="#main" data-i18n="skip">Hoppa till innehållet</a>
 
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html">
-        <img src="assets/logo/logo.svg" alt="Mederinav Health Care – startsida" width="201" height="46">
+        <img src="assets/logo/logo.svg" alt="Mederinav Health Care – startsida" data-i18n-attr="alt:brand.homeAlt" width="201" height="46">
       </a>
-      <nav id="site-nav" class="site-nav" aria-label="Huvudmeny">
+      <nav id="site-nav" class="site-nav" aria-label="Huvudmeny" data-i18n-attr="aria-label:nav.label">
         <ul class="nav-list">
-          <li><a href="behandlingar.html">Behandlingar</a></li>
-          <li><a href="priser.html">Priser</a></li>
-          <li><a href="index.html#galleri">Före &amp; efter</a></li>
-          <li><a href="index.html#kampanj">Kampanj</a></li>
-          <li><a href="om-oss.html" aria-current="page">Om oss</a></li>
+          <li><a href="behandlingar.html" data-i18n="nav.treatments">Behandlingar</a></li>
+          <li><a href="priser.html" data-i18n="nav.prices">Priser</a></li>
+          <li><a href="index.html#galleri" data-i18n="nav.gallery">Före &amp; efter</a></li>
+          <li><a href="index.html#kampanj" data-i18n="nav.campaign">Kampanj</a></li>
+          <li><a href="om-oss.html" aria-current="page" data-i18n="nav.about">Om oss</a></li>
         </ul>
-        <a class="btn btn--primary btn--block nav-mobile-cta" href="boka.html">Boka tid</a>
+        <a class="btn btn--primary btn--block nav-mobile-cta" href="boka.html" data-i18n="cta.book">Boka tid</a>
       </nav>
       <div class="header-actions">
-        <a class="btn btn--primary header-cta" href="boka.html">Boka tid</a>
+        <div class="lang-switch" role="group" aria-label="Språk" data-i18n-attr="aria-label:lang.label">
+          <button type="button" data-set-lang="sv" lang="sv" aria-label="Svenska" aria-pressed="true">SV</button>
+          <button type="button" data-set-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+        </div>
+        <a class="btn btn--primary header-cta" href="boka.html" data-i18n="cta.book">Boka tid</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Öppna meny">
           <svg class="icon icon-open" aria-hidden="true"><use href="#i-menu"/></svg>
           <svg class="icon icon-close" aria-hidden="true"><use href="#i-x"/></svg>
@@ -44,9 +52,9 @@
   <main id="main">
     <section class="page-hero">
       <div class="container">
-        <span class="eyebrow">Om oss</span>
-        <h1>En klinik byggd på <span class="serif">förtroende</span></h1>
-        <p class="lead">Mederinav Health Care grundades med en tydlig idé: att erbjuda medicinsk estetik och fotvård med samma noggrannhet som i sjukvården – i en lugn och personlig miljö.</p>
+        <span class="eyebrow" data-i18n="nav.about">Om oss</span>
+        <h1 data-i18n="about.title">En klinik byggd på <span class="serif">förtroende</span></h1>
+        <p class="lead" data-i18n="about.lead">Mederinav Health Care grundades med en tydlig idé: att erbjuda medicinsk estetik och fotvård med samma noggrannhet som i sjukvården – i en lugn och personlig miljö.</p>
       </div>
     </section>
 
@@ -54,23 +62,23 @@
       <div class="container">
         <div class="about-grid">
           <div class="about-media reveal">
-            <img src="assets/images/about-clinic.jpg" alt="Klinikens väntrum och reception" width="1200" height="800" loading="lazy">
+            <img src="assets/images/about-clinic.jpg" alt="Klinikens väntrum och reception" data-i18n-attr="alt:about.imgAlt" width="1200" height="800" loading="lazy">
           </div>
           <div class="reveal">
-            <h2 id="om-kliniken">Kliniken</h2>
-            <p class="lead" style="margin-top: var(--s-4);">Hos oss träffar du alltid legitimerad personal. Vi lägger tid på konsultationen, förklarar för- och nackdelar och avråder hellre än att behandla i onödan.</p>
+            <h2 id="om-kliniken" data-i18n="about.clinic">Kliniken</h2>
+            <p class="lead" style="margin-top: var(--s-4);" data-i18n="about.clinicLead">Hos oss träffar du alltid legitimerad personal. Vi lägger tid på konsultationen, förklarar för- och nackdelar och avråder hellre än att behandla i onödan.</p>
             <ul class="values">
               <li>
                 <span class="value-icon"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg></span>
-                <div><strong>Medicinsk trygghet</strong><p>Läkarledd verksamhet med rutiner från sjukvården.</p></div>
+                <div data-i18n="about.value1"><strong>Medicinsk trygghet</strong><p>Läkarledd verksamhet med rutiner från sjukvården.</p></div>
               </li>
               <li>
                 <span class="value-icon"><svg class="icon" aria-hidden="true"><use href="#i-sparkles"/></svg></span>
-                <div><strong>Naturliga resultat</strong><p>Vi förstärker – vi förändrar inte vem du är.</p></div>
+                <div data-i18n="about.value2"><strong>Naturliga resultat</strong><p>Vi förstärker – vi förändrar inte vem du är.</p></div>
               </li>
               <li>
                 <span class="value-icon"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg></span>
-                <div><strong>Tid för dig</strong><p>Ingen stress, alltid utrymme för dina frågor.</p></div>
+                <div data-i18n="about.value3"><strong>Tid för dig</strong><p>Ingen stress, alltid utrymme för dina frågor.</p></div>
               </li>
             </ul>
           </div>
@@ -81,118 +89,118 @@
     <section class="section section--mint" aria-labelledby="behandlare-title">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">Teamet</span>
-          <h2 id="behandlare-title">Våra behandlare</h2>
+          <span class="eyebrow" data-i18n="about.teamEyebrow">Teamet</span>
+          <h2 id="behandlare-title" data-i18n="home.team.eyebrow">Våra behandlare</h2>
         </div>
 
         <!-- ===== Christian Navarro (PLATSHÅLLARTEXT – uppdatera med verklig utbildning och erfarenhet) ===== -->
         <article class="profile" id="christian" aria-labelledby="christian-name">
           <div class="profile-media">
-            <div class="arch"><img src="assets/images/team-christian-navarro.svg" alt="Porträtt av Christian Navarro" width="600" height="750" loading="lazy"></div>
+            <div class="arch"><img src="assets/images/team-christian-navarro.svg" alt="Porträtt av Christian Navarro" data-i18n-attr="alt:team.christian.alt" width="600" height="750" loading="lazy"></div>
           </div>
           <div>
             <h2 id="christian-name">Christian Navarro</h2>
-            <p class="role">Läkare · Specialist i allmänmedicin och allmän kirurgi</p>
-            <p class="bio">Christian har arbetat som läkare i över femton år, bland annat inom akutkirurgi och primärvård. Den kirurgiska bakgrunden ger en djup förståelse för ansiktets anatomi, och erfarenheten från allmänmedicinen gör att han alltid ser till helheten – inte bara till det estetiska.</p>
-            <p class="bio">Som grundare av Mederinav Health Care ansvarar han för klinikens medicinska kvalitet och utför alla läkarbehandlingar och injektioner själv.</p>
+            <p class="role" data-i18n="team.christian.role">Läkare · Specialist i allmänmedicin och allmän kirurgi</p>
+            <p class="bio" data-i18n="about.christian.bio1">Christian har arbetat som läkare i över femton år, bland annat inom akutkirurgi och primärvård. Den kirurgiska bakgrunden ger en djup förståelse för ansiktets anatomi, och erfarenheten från allmänmedicinen gör att han alltid ser till helheten – inte bara till det estetiska.</p>
+            <p class="bio" data-i18n="about.christian.bio2">Som grundare av Mederinav Health Care ansvarar han för klinikens medicinska kvalitet och utför alla läkarbehandlingar och injektioner själv.</p>
 
             <ul class="stat-row">
-              <li><strong>15+</strong><span>år som läkare</span></li>
-              <li><strong>2</strong><span>specialist&shy;kompetenser</span></li>
-              <li><strong>3&nbsp;000+</strong><span>utförda behandlingar</span></li>
+              <li><strong>15+</strong><span data-i18n="team.stat.years">år som läkare</span></li>
+              <li><strong>2</strong><span data-i18n="team.stat.specialties">specialist&shy;kompetenser</span></li>
+              <li><strong>3&nbsp;000+</strong><span data-i18n="team.stat.treatments">utförda behandlingar</span></li>
             </ul>
 
             <div class="cred-grid">
               <div>
-                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-cap"/></svg> Utbildning</h3>
+                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-cap"/></svg> <span data-i18n="team.education">Utbildning</span></h3>
                 <ul class="timeline">
-                  <li><span class="when">2008–2013</span><span class="what">Läkarexamen</span><span class="where">Läkarprogrammet, universitet</span></li>
-                  <li><span class="when">2014</span><span class="what">Läkarlegitimation</span><span class="where">Socialstyrelsen</span></li>
-                  <li><span class="when">2019</span><span class="what">Specialist i allmän kirurgi</span><span class="where">Socialstyrelsen</span></li>
-                  <li><span class="when">2021</span><span class="what">Specialist i allmänmedicin</span><span class="where">Socialstyrelsen</span></li>
-                  <li><span class="when">2022</span><span class="what">Fortbildning i estetisk injektionsbehandling</span><span class="where">Fillers &amp; botulinumtoxin, avancerad nivå</span></li>
+                  <li><span class="when">2008–2013</span><span class="what" data-i18n="cv.degree">Läkarexamen</span><span class="where" data-i18n="cv.degreeWhere">Läkarprogrammet, universitet</span></li>
+                  <li><span class="when">2014</span><span class="what" data-i18n="cv.license">Läkarlegitimation</span><span class="where">Socialstyrelsen</span></li>
+                  <li><span class="when">2019</span><span class="what" data-i18n="cv.surgery">Specialist i allmän kirurgi</span><span class="where">Socialstyrelsen</span></li>
+                  <li><span class="when">2021</span><span class="what" data-i18n="cv.gp">Specialist i allmänmedicin</span><span class="where">Socialstyrelsen</span></li>
+                  <li><span class="when">2022</span><span class="what" data-i18n="cv.aesthetic">Fortbildning i estetisk injektionsbehandling</span><span class="where" data-i18n="cv.aestheticWhere">Fillers &amp; botulinumtoxin, avancerad nivå</span></li>
                 </ul>
               </div>
               <div>
-                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-briefcase"/></svg> Erfarenhet</h3>
+                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-briefcase"/></svg> <span data-i18n="team.experience">Erfarenhet</span></h3>
                 <ul class="timeline">
-                  <li><span class="when">2023–idag</span><span class="what">Grundare &amp; medicinskt ansvarig</span><span class="where">Mederinav Health Care, Huddinge</span></li>
-                  <li><span class="when">2021–2023</span><span class="what">Specialistläkare, allmänmedicin</span><span class="where">Vårdcentral, Stockholm</span></li>
-                  <li><span class="when">2019–2021</span><span class="what">Specialistläkare, kirurgi</span><span class="where">Akutsjukhus i Stockholm</span></li>
-                  <li><span class="when">2014–2019</span><span class="what">AT- &amp; ST-läkare</span><span class="where">Region Stockholm</span></li>
+                  <li><span class="when" data-i18n="cv.2023now">2023–idag</span><span class="what" data-i18n="cv.founder">Grundare &amp; medicinskt ansvarig</span><span class="where">Mederinav Health Care, Huddinge</span></li>
+                  <li><span class="when">2021–2023</span><span class="what" data-i18n="cv.gpDoctor">Specialistläkare, allmänmedicin</span><span class="where" data-i18n="cv.healthCentre">Vårdcentral, Stockholm</span></li>
+                  <li><span class="when">2019–2021</span><span class="what" data-i18n="cv.surgeon">Specialistläkare, kirurgi</span><span class="where" data-i18n="cv.hospital">Akutsjukhus i Stockholm</span></li>
+                  <li><span class="when">2014–2019</span><span class="what" data-i18n="cv.atst">AT- &amp; ST-läkare</span><span class="where">Region Stockholm</span></li>
                 </ul>
               </div>
             </div>
 
             <div class="cred-grid">
               <div>
-                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-award"/></svg> Specialområden</h3>
-                <ul class="tag-list">
+                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-award"/></svg> <span data-i18n="team.specialties">Specialområden</span></h3>
+                <ul class="tag-list" data-i18n="about.christian.tags">
                   <li>Fillers</li><li>Botox</li><li>Hudförändringar</li><li>Hyperhidros</li><li>Födelsemärken</li>
                 </ul>
               </div>
               <div>
-                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-chat"/></svg> Språk</h3>
-                <ul class="tag-list"><li>Svenska</li><li>Engelska</li><li>Spanska</li></ul>
+                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-chat"/></svg> <span data-i18n="team.languages">Språk</span></h3>
+                <ul class="tag-list" data-i18n="about.christian.langs"><li>Svenska</li><li>Engelska</li><li>Spanska</li></ul>
               </div>
             </div>
 
             <blockquote class="profile-quote">
-              ”Det bästa resultatet är när ingen kan se att du har gjort något – bara att du ser utvilad ut.”
+              <span data-i18n="about.christian.quote">”Det bästa resultatet är när ingen kan se att du har gjort något – bara att du ser utvilad ut.”</span>
               <footer>— Christian Navarro</footer>
             </blockquote>
 
-            <p style="margin-top: var(--s-5);"><a class="btn btn--primary" href="boka.html?behandlare=christian"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> Boka tid hos Christian</a></p>
+            <p style="margin-top: var(--s-5);"><a class="btn btn--primary" href="boka.html?behandlare=christian"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> <span data-i18n="about.christian.book">Boka tid hos Christian</span></a></p>
           </div>
         </article>
 
         <!-- ===== Lorena Munoz (PLATSHÅLLARTEXT) ===== -->
         <article class="profile" id="lorena" aria-labelledby="lorena-name">
           <div class="profile-media">
-            <div class="arch"><img src="assets/images/team-lorena-munoz.svg" alt="Porträtt av Lorena Munoz" width="600" height="750" loading="lazy"></div>
+            <div class="arch"><img src="assets/images/team-lorena-munoz.svg" alt="Porträtt av Lorena Munoz" data-i18n-attr="alt:team.lorena.alt" width="600" height="750" loading="lazy"></div>
           </div>
           <div>
             <h2 id="lorena-name">Lorena Munoz</h2>
-            <p class="role">Medicinsk fotterapeut · Hudterapeut</p>
-            <p class="bio">Lorena är utbildad medicinsk fotterapeut och hudterapeut och har lång erfarenhet av att behandla både vardagliga och mer komplicerade fotbesvär. Hon arbetar särskilt med patienter med diabetes och nedsatt cirkulation.</p>
+            <p class="role" data-i18n="about.lorena.role">Medicinsk fotterapeut · Hudterapeut</p>
+            <p class="bio" data-i18n="about.lorena.bio">Lorena är utbildad medicinsk fotterapeut och hudterapeut och har lång erfarenhet av att behandla både vardagliga och mer komplicerade fotbesvär. Hon arbetar särskilt med patienter med diabetes och nedsatt cirkulation.</p>
 
             <div class="cred-grid">
               <div>
-                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-cap"/></svg> Utbildning</h3>
+                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-cap"/></svg> <span data-i18n="team.education">Utbildning</span></h3>
                 <ul class="timeline">
-                  <li><span class="when">2012–2014</span><span class="what">Medicinsk fotterapeut</span><span class="where">Yrkeshögskoleutbildning</span></li>
-                  <li><span class="when">2016</span><span class="what">Hudterapeut</span><span class="where">Yrkeshögskoleutbildning</span></li>
+                  <li><span class="when">2012–2014</span><span class="what" data-i18n="cv.footTherapist">Medicinsk fotterapeut</span><span class="where" data-i18n="cv.vocational">Yrkeshögskoleutbildning</span></li>
+                  <li><span class="when">2016</span><span class="what" data-i18n="cv.skinTherapist">Hudterapeut</span><span class="where" data-i18n="cv.vocational">Yrkeshögskoleutbildning</span></li>
                 </ul>
               </div>
               <div>
-                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-briefcase"/></svg> Erfarenhet</h3>
+                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-briefcase"/></svg> <span data-i18n="team.experience">Erfarenhet</span></h3>
                 <ul class="timeline">
-                  <li><span class="when">2023–idag</span><span class="what">Fotterapeut &amp; hudterapeut</span><span class="where">Mederinav Health Care</span></li>
-                  <li><span class="when">2014–2023</span><span class="what">Medicinsk fotterapeut</span><span class="where">Fotvårdsklinik, Stockholm</span></li>
+                  <li><span class="when" data-i18n="cv.2023now">2023–idag</span><span class="what" data-i18n="cv.footSkin">Fotterapeut &amp; hudterapeut</span><span class="where">Mederinav Health Care</span></li>
+                  <li><span class="when">2014–2023</span><span class="what" data-i18n="cv.footTherapist">Medicinsk fotterapeut</span><span class="where" data-i18n="cv.footClinic">Fotvårdsklinik, Stockholm</span></li>
                 </ul>
               </div>
             </div>
 
             <div class="cred-grid">
               <div>
-                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-award"/></svg> Specialområden</h3>
-                <ul class="tag-list"><li>Diabetesfot</li><li>Nageltrång</li><li>Liktornar</li><li>Hudvård</li></ul>
+                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-award"/></svg> <span data-i18n="team.specialties">Specialområden</span></h3>
+                <ul class="tag-list" data-i18n="about.lorena.tags"><li>Diabetesfot</li><li>Nageltrång</li><li>Liktornar</li><li>Hudvård</li></ul>
               </div>
               <div>
-                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-chat"/></svg> Språk</h3>
-                <ul class="tag-list"><li>Svenska</li><li>Spanska</li><li>Engelska</li></ul>
+                <h3 class="cred-title"><svg class="icon icon--sm" aria-hidden="true"><use href="#i-chat"/></svg> <span data-i18n="team.languages">Språk</span></h3>
+                <ul class="tag-list" data-i18n="about.lorena.langs"><li>Svenska</li><li>Spanska</li><li>Engelska</li></ul>
               </div>
             </div>
 
-            <p style="margin-top: var(--s-6);"><a class="btn btn--primary" href="boka.html?behandlare=lorena"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> Boka tid hos Lorena</a></p>
+            <p style="margin-top: var(--s-6);"><a class="btn btn--primary" href="boka.html?behandlare=lorena"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> <span data-i18n="about.lorena.book">Boka tid hos Lorena</span></a></p>
           </div>
         </article>
       </div>
     </section>
 
     <div class="container page-cta">
-      <p>Har du frågor? Ring oss på <a href="tel:+46737515457">073-751 54 57</a>.</p>
-      <a class="btn btn--primary" href="boka.html">Boka tid</a>
+      <p data-i18n="about.questions">Har du frågor? Ring oss på <a href="tel:+46737515457">073-751 54 57</a>.</p>
+      <a class="btn btn--primary" href="boka.html" data-i18n="cta.book">Boka tid</a>
     </div>
 </main>
 
@@ -201,17 +209,17 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <img src="assets/logo/logo.svg" alt="Mederinav Health Care" width="201" height="46" loading="lazy">
-          <p>Läkarledd klinik för medicinska behandlingar, estetik och fotvård i Huddinge.</p>
+          <p data-i18n="footer.about">Läkarledd klinik för medicinska behandlingar, estetik och fotvård i Huddinge.</p>
         </div>
         <div>
-          <h2>Följ oss</h2>
+          <h2 data-i18n="footer.follow">Följ oss</h2>
           <ul class="footer-links">
             <li><a href="https://www.instagram.com/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg> Instagram</a></li>
             <li><a href="https://www.facebook.com/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-facebook"/></svg> Facebook</a></li>
           </ul>
         </div>
         <div>
-          <h2>Kontakta oss</h2>
+          <h2 data-i18n="footer.contact">Kontakta oss</h2>
           <ul class="footer-links">
             <li><a href="mailto:mederinav@gmail.com"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> mederinav@gmail.com</a></li>
             <li><a href="tel:+46737515457"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> 073-751 54 57</a></li>

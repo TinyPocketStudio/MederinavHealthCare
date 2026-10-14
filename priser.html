@@ -3,36 +3,44 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Priser – Mederinav Health Care</title>
-  <meta name="description" content="Prislista för medicinska behandlingar, fillers, botox och fotvård hos Mederinav Health Care i Huddinge.">
+  <title data-i18n="meta.prices.title">Priser – Mederinav Health Care</title>
+  <meta name="description" content="Prislista för medicinska behandlingar, fillers, botox och fotvård hos Mederinav Health Care i Huddinge." data-i18n-attr="content:meta.prices.desc">
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- Language: set early so Swedish text doesn't flash for Spanish visitors (see assets/js/i18n.js) -->
+  <script>(function(){var d=document.documentElement,l=new URLSearchParams(location.search).get("lang");d.classList.add("js");try{l=l||localStorage.getItem("mederinav-lang")}catch(e){}l=l||(/^es\b/i.test(navigator.language)?"es":"sv");if(l==="es"){d.lang="es";d.classList.add("i18n-pending")}})();</script>
+  <script src="assets/js/translations.js" defer></script>
+  <script src="assets/js/i18n.js" defer></script>
   <script src="assets/js/data.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Hoppa till innehållet</a>
+  <a class="skip-link" href="#main" data-i18n="skip">Hoppa till innehållet</a>
 
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html">
-        <img src="assets/logo/logo.svg" alt="Mederinav Health Care – startsida" width="201" height="46">
+        <img src="assets/logo/logo.svg" alt="Mederinav Health Care – startsida" data-i18n-attr="alt:brand.homeAlt" width="201" height="46">
       </a>
-      <nav id="site-nav" class="site-nav" aria-label="Huvudmeny">
+      <nav id="site-nav" class="site-nav" aria-label="Huvudmeny" data-i18n-attr="aria-label:nav.label">
         <ul class="nav-list">
-          <li><a href="behandlingar.html">Behandlingar</a></li>
-          <li><a href="priser.html" aria-current="page">Priser</a></li>
-          <li><a href="index.html#galleri">Före &amp; efter</a></li>
-          <li><a href="index.html#kampanj">Kampanj</a></li>
-          <li><a href="om-oss.html">Om oss</a></li>
+          <li><a href="behandlingar.html" data-i18n="nav.treatments">Behandlingar</a></li>
+          <li><a href="priser.html" aria-current="page" data-i18n="nav.prices">Priser</a></li>
+          <li><a href="index.html#galleri" data-i18n="nav.gallery">Före &amp; efter</a></li>
+          <li><a href="index.html#kampanj" data-i18n="nav.campaign">Kampanj</a></li>
+          <li><a href="om-oss.html" data-i18n="nav.about">Om oss</a></li>
         </ul>
-        <a class="btn btn--primary btn--block nav-mobile-cta" href="boka.html">Boka tid</a>
+        <a class="btn btn--primary btn--block nav-mobile-cta" href="boka.html" data-i18n="cta.book">Boka tid</a>
       </nav>
       <div class="header-actions">
-        <a class="btn btn--primary header-cta" href="boka.html">Boka tid</a>
+        <div class="lang-switch" role="group" aria-label="Språk" data-i18n-attr="aria-label:lang.label">
+          <button type="button" data-set-lang="sv" lang="sv" aria-label="Svenska" aria-pressed="true">SV</button>
+          <button type="button" data-set-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+        </div>
+        <a class="btn btn--primary header-cta" href="boka.html" data-i18n="cta.book">Boka tid</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Öppna meny">
           <svg class="icon icon-open" aria-hidden="true"><use href="#i-menu"/></svg>
           <svg class="icon icon-close" aria-hidden="true"><use href="#i-x"/></svg>
@@ -44,9 +52,9 @@
   <main id="main">
     <section class="page-hero">
       <div class="container">
-        <span class="eyebrow">Priser</span>
-        <h1>Prislista</h1>
-        <p class="lead">Tydliga priser utan dolda avgifter. Konsultationen ingår alltid vid estetiska behandlingar.</p>
+        <span class="eyebrow" data-i18n="nav.prices">Priser</span>
+        <h1 data-i18n="prices.title">Prislista</h1>
+        <p class="lead" data-i18n="prices.lead">Tydliga priser utan dolda avgifter. Konsultationen ingår alltid vid estetiska behandlingar.</p>
       </div>
     </section>
 
@@ -56,18 +64,18 @@
         <noscript><p>Aktivera JavaScript för att se prislistan, eller ring oss på 073-751 54 57.</p></noscript>
       </div>
 
-      <aside class="price-notes" aria-label="Bra att veta">
-        <strong>Bra att veta</strong>
+      <aside class="price-notes" aria-label="Bra att veta" data-i18n-attr="aria-label:prices.notesTitle">
+        <strong data-i18n="prices.notesTitle">Bra att veta</strong>
         <ul>
-          <li>Alla priser är i svenska kronor inklusive moms där moms tillkommer.</li>
-          <li>Avbokning senast 24 timmar innan, annars debiteras 50 % av behandlingspriset.</li>
-          <li>Kampanjpriser gäller under kampanjperioden och kan inte kombineras med andra erbjudanden.</li>
+          <li data-i18n="prices.note1">Alla priser är i svenska kronor inklusive moms där moms tillkommer.</li>
+          <li data-i18n="prices.note2">Avbokning senast 24 timmar innan, annars debiteras 50 % av behandlingspriset.</li>
+          <li data-i18n="prices.note3">Kampanjpriser gäller under kampanjperioden och kan inte kombineras med andra erbjudanden.</li>
         </ul>
       </aside>
 
       <div class="page-cta">
-        <p>Hittat rätt behandling?</p>
-        <a class="btn btn--primary" href="boka.html"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> Boka tid</a>
+        <p data-i18n="prices.cta">Hittat rätt behandling?</p>
+        <a class="btn btn--primary" href="boka.html"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> <span data-i18n="cta.book">Boka tid</span></a>
       </div>
     </div>
   </main>
@@ -77,17 +85,17 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <img src="assets/logo/logo.svg" alt="Mederinav Health Care" width="201" height="46" loading="lazy">
-          <p>Läkarledd klinik för medicinska behandlingar, estetik och fotvård i Huddinge.</p>
+          <p data-i18n="footer.about">Läkarledd klinik för medicinska behandlingar, estetik och fotvård i Huddinge.</p>
         </div>
         <div>
-          <h2>Följ oss</h2>
+          <h2 data-i18n="footer.follow">Följ oss</h2>
           <ul class="footer-links">
             <li><a href="https://www.instagram.com/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg> Instagram</a></li>
             <li><a href="https://www.facebook.com/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-facebook"/></svg> Facebook</a></li>
           </ul>
         </div>
         <div>
-          <h2>Kontakta oss</h2>
+          <h2 data-i18n="footer.contact">Kontakta oss</h2>
           <ul class="footer-links">
             <li><a href="mailto:mederinav@gmail.com"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> mederinav@gmail.com</a></li>
             <li><a href="tel:+46737515457"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> 073-751 54 57</a></li>

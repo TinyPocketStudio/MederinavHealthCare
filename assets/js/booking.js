@@ -11,14 +11,13 @@
 
   const D = window.MEDERINAV;
   const UI = window.MederinavUI;
-  if (!D || !UI || !document.getElementById("week-grid")) return;
+  const I18N = window.MederinavI18n;
+  if (!D || !UI || !I18N || !document.getElementById("week-grid")) return;
 
   const $ = (id) => document.getElementById(id);
   const STORAGE_KEY = "mederinav-bookings";
-  const DOW_SHORT = ["Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"];
-  const DOW_LONG = ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"];
-  const MONTHS = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
-  const MONTHS_SHORT = ["jan", "feb", "mar", "apr", "maj", "jun", "jul", "aug", "sep", "okt", "nov", "dec"];
+  const tr = I18N.t; // `t` is used below for the current treatment
+  const loc = I18N.loc;
 
   /* ---------- Date helpers ---------- */
   const pad = (n) => String(n).padStart(2, "0");
@@ -35,7 +34,7 @@
     const y0 = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
     return Math.ceil(((t - y0) / 86400000 + 1) / 7);
   };
-  const longDate = (d) => `${DOW_LONG[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`;
+  const longDate = (d) => tr("date.long", { dow: tr("daysLower")[d.getDay()], day: d.getDate(), month: tr("months")[d.getMonth()] });
   const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
   /* ---------- Availability (DEMO) ---------- */
@@ -106,15 +105,16 @@
 
   /* ---------- Selects ---------- */
   function fillTreatmentSelect() {
-    const opts = ['<option value="">Välj behandling…</option>'];
+    const opts = [`<option value="">${tr("book.chooseTreatment")}</option>`];
     D.categories.forEach((cat) => {
-      opts.push(`<optgroup label="${UI.escapeHtml(cat.name)}">`);
+      opts.push(`<optgroup label="${UI.escapeHtml(loc(cat, "name"))}">`);
       cat.items.forEach((t) => {
-        opts.push(`<option value="${t.id}">${UI.escapeHtml(t.name)} · ${t.duration} min · ${UI.kr(UI.effectivePrice(t))}</option>`);
+        opts.push(`<option value="${t.id}">${UI.escapeHtml(loc(t, "name"))} · ${t.duration} min · ${UI.kr(UI.effectivePrice(t))}</option>`);
       });
       opts.push("</optgroup>");
     });
     els.treatment.innerHTML = opts.join("");
+    els.treatment.value = state.treatment || "";
   }
 
   function fillPractitionerSelect() {
@@ -122,8 +122,8 @@
     const eligible = D.team.filter((p) => !t || t.practitioners.includes(p.id));
     if (state.practitioner !== "any" && !eligible.some((p) => p.id === state.practitioner)) state.practitioner = "any";
     els.practitioner.innerHTML =
-      '<option value="any">Första lediga</option>' +
-      eligible.map((p) => `<option value="${p.id}">${UI.escapeHtml(p.name)} – ${UI.escapeHtml(p.role)}</option>`).join("");
+      `<option value="any">${tr("book.firstAvailable")}</option>` +
+      eligible.map((p) => `<option value="${p.id}">${UI.escapeHtml(p.name)} – ${UI.escapeHtml(loc(p, "role"))}</option>`).join("");
     els.practitioner.value = state.practitioner;
   }
 
@@ -161,10 +161,10 @@
   function renderWeek() {
     const ws = state.weekStart;
     const we = addDays(ws, 6);
-    const range = ws.getMonth() === we.getMonth()
-      ? `${ws.getDate()}–${we.getDate()} ${MONTHS[we.getMonth()]} ${we.getFullYear()}`
-      : `${ws.getDate()} ${MONTHS_SHORT[ws.getMonth()]} – ${we.getDate()} ${MONTHS_SHORT[we.getMonth()]} ${we.getFullYear()}`;
-    els.weekLabel.innerHTML = `Vecka ${isoWeek(ws)}<small>${range}</small>`;
+    const sameMonth = ws.getMonth() === we.getMonth();
+    const months = tr(sameMonth ? "months" : "monthsShort");
+    const range = tr("date.range", { d1: ws.getDate(), d2: we.getDate(), m1: months[ws.getMonth()], m2: months[we.getMonth()], year: we.getFullYear() });
+    els.weekLabel.innerHTML = `${tr("book.week", { n: isoWeek(ws) })}<small>${range}</small>`;
     els.prev.disabled = ws <= firstWeek;
     els.next.disabled = ws >= lastWeek;
     els.todayBtn.disabled = ws.getTime() === firstWeek.getTime();
@@ -172,7 +172,7 @@
     if (!currentTreatment()) {
       els.tabs.innerHTML = "";
       els.grid.innerHTML = `<div class="empty-week" style="grid-column: 1 / -1;">
-        <p><strong>Välj en behandling</strong> ovan för att se lediga tider den här veckan.</p></div>`;
+        <p>${tr("book.emptyPick")}</p></div>`;
       return;
     }
 
@@ -188,35 +188,35 @@
     }
 
     // Mobile day tabs
+    const dowShort = tr("daysShort");
     els.tabs.innerHTML = days.map((d) => {
       const n = d.slots.length;
-      const label = `${cap(longDate(d.date))}, ${n ? `${n} lediga tider` : "inga lediga tider"}`;
+      const label = tr("book.dayLabel", { date: cap(longDate(d.date)), n });
       return `<button type="button" class="day-tab${n ? "" : " is-none"}" data-day="${d.key}" aria-pressed="${d.key === state.activeDay}" aria-label="${label}">
-        <span class="dow">${DOW_SHORT[d.date.getDay()]}</span>
+        <span class="dow">${dowShort[d.date.getDay()]}</span>
         <span class="dnum">${d.date.getDate()}</span>
-        <span class="dfree">${n ? `${n} lediga` : "–"}</span>
+        <span class="dfree">${n ? tr("book.dayFree", { n }) : "–"}</span>
       </button>`;
     }).join("");
 
     if (!totalFree) {
       const canNext = ws < lastWeek;
       els.grid.innerHTML = `<div class="empty-week" style="grid-column: 1 / -1;">
-        <p><strong>Inga lediga tider vecka ${isoWeek(ws)}.</strong> Prova nästa vecka eller välj ”Första lediga” behandlare.</p>
-        ${canNext ? '<button type="button" class="btn btn--primary" data-action="next-week">Visa nästa vecka</button>' : ""}</div>`;
+        <p>${tr("book.noTimes", { week: isoWeek(ws) })}</p>
+        ${canNext ? `<button type="button" class="btn btn--primary" data-action="next-week">${tr("book.showNextWeek")}</button>` : ""}</div>`;
       return;
     }
 
     const todayKey = ymd(today);
-    const msg = { closed: "Stängt", past: "Passerat", unstaffed: "Ingen behandlare", full: "Fullbokat" };
     els.grid.innerHTML = days.map((d) => {
       const cls = ["day-col", d.key === todayKey ? "is-today" : "", d.key === state.activeDay ? "is-active" : ""].join(" ");
-      const head = `<div class="day-head"><span class="dow">${DOW_SHORT[d.date.getDay()]}</span><span class="dnum">${d.date.getDate()}</span></div>`;
+      const head = `<div class="day-head"><span class="dow">${dowShort[d.date.getDay()]}</span><span class="dnum">${d.date.getDate()}</span></div>`;
       const body = d.slots.length
-        ? `<ul class="slot-list" aria-label="Lediga tider ${longDate(d.date)}">${d.slots.map((s) => {
+        ? `<ul class="slot-list" aria-label="${tr("book.slotsLabel", { date: longDate(d.date) })}">${d.slots.map((s) => {
             const sel = state.slot && state.slot.date === d.key && state.slot.time === s.time;
-            return `<li><button type="button" class="slot" data-date="${d.key}" data-time="${s.time}" data-pid="${s.practitioner}" aria-pressed="${!!sel}" aria-label="${cap(longDate(d.date))} klockan ${s.time}">${s.time}</button></li>`;
+            return `<li><button type="button" class="slot" data-date="${d.key}" data-time="${s.time}" data-pid="${s.practitioner}" aria-pressed="${!!sel}" aria-label="${tr("book.slotLabel", { date: cap(longDate(d.date)), time: s.time })}">${s.time}</button></li>`;
           }).join("")}</ul>`
-        : `<p class="day-empty">${msg[d.status]}</p>`;
+        : `<p class="day-empty">${tr(`book.status.${d.status}`)}</p>`;
       return `<div class="${cls}" data-day="${d.key}">${head}${body}</div>`;
     }).join("");
   }
@@ -232,20 +232,20 @@
 
   function setSummary(id, value) {
     const el = $(id);
-    el.textContent = value || (id === "sum-price" ? "–" : "Ej vald");
+    el.textContent = value || (id === "sum-price" ? "–" : tr("book.notChosen"));
     el.classList.toggle("is-empty", !value);
   }
 
   function renderSummary() {
     const t = currentTreatment();
-    setSummary("sum-treatment", t ? `${t.name} (${t.duration} min)` : "");
+    setSummary("sum-treatment", t ? `${loc(t, "name")} (${t.duration} min)` : "");
     let who = "";
     if (state.slot) who = UI.teamName(state.slot.practitioner);
-    else if (t) who = state.practitioner === "any" ? "Första lediga" : UI.teamName(state.practitioner);
+    else if (t) who = state.practitioner === "any" ? tr("book.firstAvailable") : UI.teamName(state.practitioner);
     setSummary("sum-practitioner", who);
     if (state.slot) {
       const d = parseYmd(state.slot.date);
-      setSummary("sum-date", `${cap(longDate(d))} (v. ${isoWeek(d)})`);
+      setSummary("sum-date", `${cap(longDate(d))} (${tr("book.weekShort", { n: isoWeek(d) })})`);
       setSummary("sum-time", `${state.slot.time}–${fromMin(toMin(state.slot.time) + t.duration)}`);
     } else {
       setSummary("sum-date", "");
@@ -302,12 +302,45 @@
 
   /* ---------- Form validation ---------- */
   const fields = {
-    name: { el: $("f-name"), check: (v) => (v.trim().split(/\s+/).length >= 2 ? "" : v.trim() ? "Fyll i både för- och efternamn." : "Fyll i ditt namn.") },
-    phone: { el: $("f-phone"), check: (v) => ((v.match(/\d/g) || []).length >= 8 ? "" : v.trim() ? "Telefonnumret verkar för kort – ange minst 8 siffror." : "Fyll i ditt telefonnummer.") },
-    email: { el: $("f-email"), check: (v) => (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? "" : v.trim() ? "Ange e-post i formatet namn@exempel.se." : "Fyll i din e-postadress.") },
-    consent: { el: $("f-consent"), check: (_, el) => (el.checked ? "" : "Du behöver godkänna att vi sparar dina uppgifter för att kunna boka.") },
+    name: { el: $("f-name"), check: (v) => (v.trim().split(/\s+/).length >= 2 ? "" : tr(v.trim() ? "book.err.nameBoth" : "book.err.name")) },
+    phone: { el: $("f-phone"), check: (v) => ((v.match(/\d/g) || []).length >= 8 ? "" : tr(v.trim() ? "book.err.phoneShort" : "book.err.phone")) },
+    email: { el: $("f-email"), check: (v) => (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? "" : tr(v.trim() ? "book.err.emailFormat" : "book.err.email")) },
+    consent: { el: $("f-consent"), check: (_, el) => (el.checked ? "" : tr("book.err.consent")) },
   };
-  const LABELS = { name: "Namn", phone: "Telefon", email: "E-post", consent: "Samtycke" };
+
+  // What the error summary currently shows, so it can be redrawn in another language.
+  let summaryState = null; // { errors: [keys] } | { failed: true } | null
+  let lastConfirmation = null;
+
+  function renderErrorSummary() {
+    if (!summaryState) { els.errorSummary.hidden = true; return; }
+    if (summaryState.failed) {
+      els.errorSummary.innerHTML = `<h3>${tr("book.failTitle")}</h3><p>${tr("book.failText", { phone: D.clinic.phoneDisplay })}</p>`;
+    } else {
+      const errors = summaryState.errors
+        .map((k) => [k, fields[k].check(fields[k].el.value, fields[k].el)])
+        .filter(([, msg]) => msg);
+      if (!errors.length) { summaryState = null; els.errorSummary.hidden = true; return; }
+      els.errorSummary.innerHTML = `<h3>${tr("book.err.summary", { n: errors.length })}</h3>
+        <ul>${errors.map(([k, msg]) => `<li><a href="#${fields[k].el.id}">${tr(`book.label.${k}`)}: ${msg}</a></li>`).join("")}</ul>`;
+    }
+    els.errorSummary.hidden = false;
+  }
+
+  function renderConfirmation() {
+    const c = lastConfirmation;
+    if (!c) return;
+    const t = treatments.find((x) => x.id === c.treatment);
+    $("confirm-title").textContent = tr("book.thanksName", { name: c.first });
+    $("confirm-text").textContent = tr("book.confirmText", {
+      treatment: loc(t, "name"),
+      who: UI.teamName(c.practitioner),
+      date: longDate(parseYmd(c.date)),
+      time: c.time,
+      email: c.email,
+    });
+    $("confirm-ref").textContent = tr("book.ref", { ref: c.reference });
+  }
 
   function validateField(key) {
     const f = fields[key];
@@ -332,20 +365,20 @@
 
   els.form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const errors = Object.keys(fields).map((k) => [k, validateField(k)]).filter(([, m]) => m);
+    const errors = Object.keys(fields).filter((k) => validateField(k));
     if (errors.length) {
-      els.errorSummary.innerHTML = `<h3>Kontrollera ${errors.length === 1 ? "följande uppgift" : `följande ${errors.length} uppgifter`}:</h3>
-        <ul>${errors.map(([k, m]) => `<li><a href="#${fields[k].el.id}">${LABELS[k]}: ${m}</a></li>`).join("")}</ul>`;
-      els.errorSummary.hidden = false;
+      summaryState = { errors };
+      renderErrorSummary();
       els.errorSummary.focus();
       return;
     }
-    els.errorSummary.hidden = true;
+    summaryState = null;
+    renderErrorSummary();
     if (!state.slot) return;
 
     const t = currentTreatment();
     els.submit.disabled = true;
-    els.submit.innerHTML = '<span class="spinner" aria-hidden="true"></span> Skickar bokning…';
+    els.submit.innerHTML = `<span class="spinner" aria-hidden="true"></span> ${tr("book.sending")}`;
     try {
       const res = await submitBooking({
         treatment: t.id,
@@ -358,24 +391,27 @@
         email: fields.email.el.value.trim(),
         message: $("f-message").value.trim(),
       });
-      const d = parseYmd(state.slot.date);
-      const first = fields.name.el.value.trim().split(/\s+/)[0];
-      $("confirm-title").textContent = `Tack, ${first}!`;
-      $("confirm-text").textContent =
-        `${t.name} hos ${UI.teamName(state.slot.practitioner)}, ${longDate(d)} kl. ${state.slot.time}. ` +
-        `En bekräftelse skickas till ${fields.email.el.value.trim()}.`;
-      $("confirm-ref").textContent = `Bokningsnummer: ${res.reference}`;
+      lastConfirmation = {
+        treatment: t.id,
+        practitioner: state.slot.practitioner,
+        date: state.slot.date,
+        time: state.slot.time,
+        first: fields.name.el.value.trim().split(/\s+/)[0],
+        email: fields.email.el.value.trim(),
+        reference: res.reference,
+      };
+      renderConfirmation();
       els.details.hidden = true;
       els.confirm.hidden = false;
       setStep(3, true);
       $("confirm-title").focus();
     } catch (err) {
-      els.errorSummary.innerHTML = `<h3>Bokningen kunde inte skickas</h3><p>Försök igen om en stund eller ring oss på ${D.clinic.phoneDisplay}.</p>`;
-      els.errorSummary.hidden = false;
+      summaryState = { failed: true };
+      renderErrorSummary();
       els.errorSummary.focus();
     } finally {
       els.submit.disabled = false;
-      els.submit.textContent = "Bekräfta bokning";
+      els.submit.textContent = tr("book.submit");
     }
   });
 
@@ -391,23 +427,37 @@
     els.form.reset();
     Object.keys(fields).forEach((k) => { delete fields[k].el.dataset.touched; });
     state.slot = null;
+    lastConfirmation = null;
     els.confirm.hidden = true;
     refresh();
     els.treatment.focus();
+  });
+
+  /* ---------- Language switch: redraw without losing the visitor's choices ---------- */
+  I18N.onChange(() => {
+    fillTreatmentSelect();
+    fillPractitionerSelect();
+    renderWeek();
+    renderSummary();
+    if (!els.confirm.hidden) { setStep(3, true); renderConfirmation(); }
+    Object.keys(fields).forEach((k) => { if (fields[k].el.getAttribute("aria-invalid") === "true") validateField(k); });
+    if (!els.errorSummary.hidden) renderErrorSummary();
+    if (!els.submit.disabled) els.submit.textContent = tr("book.submit");
   });
 
   /* ---------- Init (supports ?behandling=… and ?behandlare=…) ---------- */
   const params = new URLSearchParams(location.search);
   const wantT = params.get("behandling");
   const wantP = params.get("behandlare");
-  fillTreatmentSelect();
   if (wantT && treatments.some((t) => t.id === wantT)) state.treatment = wantT;
   else if (wantP) {
     const firstForP = treatments.find((t) => t.practitioners.includes(wantP));
     if (firstForP) state.treatment = firstForP.id;
   }
   if (wantP && D.team.some((p) => p.id === wantP)) state.practitioner = wantP;
-  els.treatment.value = state.treatment || "";
+  fillTreatmentSelect();
   fillPractitionerSelect();
+  els.submit.textContent = tr("book.submit");
+  $("confirm-title").textContent = tr("book.thanks");
   refresh();
 })();

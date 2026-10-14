@@ -3,37 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mederinav Health Care – Medicinsk estetik & fotvård i Huddinge</title>
-  <meta name="description" content="Läkarledd klinik i Huddinge för medicinska behandlingar, fillers, botox och medicinsk fotvård. Boka tid online.">
+  <title data-i18n="meta.home.title">Mederinav Health Care – Medicinsk estetik & fotvård i Huddinge</title>
+  <meta name="description" content="Läkarledd klinik i Huddinge för medicinska behandlingar, fillers, botox och medicinsk fotvård. Boka tid online." data-i18n-attr="content:meta.home.desc">
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- Language: set early so Swedish text doesn't flash for Spanish visitors (see assets/js/i18n.js) -->
+  <script>(function(){var d=document.documentElement,l=new URLSearchParams(location.search).get("lang");d.classList.add("js");try{l=l||localStorage.getItem("mederinav-lang")}catch(e){}l=l||(/^es\b/i.test(navigator.language)?"es":"sv");if(l==="es"){d.lang="es";d.classList.add("i18n-pending")}})();</script>
+  <script src="assets/js/translations.js" defer></script>
+  <script src="assets/js/i18n.js" defer></script>
   <script src="assets/js/data.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Hoppa till innehållet</a>
+  <a class="skip-link" href="#main" data-i18n="skip">Hoppa till innehållet</a>
 
   <!-- ===== Header ===== -->
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html">
-        <img src="assets/logo/logo.svg" alt="Mederinav Health Care – startsida" width="201" height="46">
+        <img src="assets/logo/logo.svg" alt="Mederinav Health Care – startsida" data-i18n-attr="alt:brand.homeAlt" width="201" height="46">
       </a>
-      <nav id="site-nav" class="site-nav" aria-label="Huvudmeny">
+      <nav id="site-nav" class="site-nav" aria-label="Huvudmeny" data-i18n-attr="aria-label:nav.label">
         <ul class="nav-list">
-          <li><a href="behandlingar.html">Behandlingar</a></li>
-          <li><a href="priser.html">Priser</a></li>
-          <li><a href="#galleri">Före &amp; efter</a></li>
-          <li><a href="#kampanj">Kampanj</a></li>
-          <li><a href="om-oss.html">Om oss</a></li>
+          <li><a href="behandlingar.html" data-i18n="nav.treatments">Behandlingar</a></li>
+          <li><a href="priser.html" data-i18n="nav.prices">Priser</a></li>
+          <li><a href="#galleri" data-i18n="nav.gallery">Före &amp; efter</a></li>
+          <li><a href="#kampanj" data-i18n="nav.campaign">Kampanj</a></li>
+          <li><a href="om-oss.html" data-i18n="nav.about">Om oss</a></li>
         </ul>
-        <a class="btn btn--primary btn--block nav-mobile-cta" href="boka.html">Boka tid</a>
+        <a class="btn btn--primary btn--block nav-mobile-cta" href="boka.html" data-i18n="cta.book">Boka tid</a>
       </nav>
       <div class="header-actions">
-        <a class="btn btn--primary header-cta" href="boka.html">Boka tid</a>
+        <div class="lang-switch" role="group" aria-label="Språk" data-i18n-attr="aria-label:lang.label">
+          <button type="button" data-set-lang="sv" lang="sv" aria-label="Svenska" aria-pressed="true">SV</button>
+          <button type="button" data-set-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+        </div>
+        <a class="btn btn--primary header-cta" href="boka.html" data-i18n="cta.book">Boka tid</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Öppna meny">
           <svg class="icon icon-open" aria-hidden="true"><use href="#i-menu"/></svg>
           <svg class="icon icon-close" aria-hidden="true"><use href="#i-x"/></svg>
@@ -47,26 +55,26 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div>
-          <span class="eyebrow">Medicinsk estetik · Huddinge</span>
-          <h1 id="hero-title">Naturliga resultat, <span class="serif">i trygga händer.</span></h1>
-          <p class="lead">Mederinav Health Care är en läkarledd klinik för medicinska behandlingar, estetiska injektioner och fotvård. Vi tar oss tid att lyssna – och behandlar bara när det är rätt för dig.</p>
+          <span class="eyebrow" data-i18n="home.hero.eyebrow">Medicinsk estetik · Huddinge</span>
+          <h1 id="hero-title" data-i18n="home.hero.title">Naturliga resultat, <span class="serif">i trygga händer.</span></h1>
+          <p class="lead" data-i18n="home.hero.lead">Mederinav Health Care är en läkarledd klinik för medicinska behandlingar, estetiska injektioner och fotvård. Vi tar oss tid att lyssna – och behandlar bara när det är rätt för dig.</p>
           <div class="hero-actions">
-            <a class="btn btn--primary" href="boka.html"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> Boka tid</a>
-            <a class="btn btn--ghost" href="behandlingar.html">Se behandlingar</a>
+            <a class="btn btn--primary" href="boka.html"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> <span data-i18n="cta.book">Boka tid</span></a>
+            <a class="btn btn--ghost" href="behandlingar.html" data-i18n="home.hero.seeTreatments">Se behandlingar</a>
           </div>
           <ul class="trust-list">
-            <li><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg> Legitimerad läkare</li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg> Personlig konsultation</li>
-            <li><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg> Centralt i Huddinge</li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg> <span data-i18n="home.trust.doctor">Legitimerad läkare</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg> <span data-i18n="home.trust.consult">Personlig konsultation</span></li>
+            <li><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg> <span data-i18n="home.trust.central">Centralt i Huddinge</span></li>
           </ul>
         </div>
         <div class="hero-media">
           <div class="arch">
-            <img src="assets/images/hero-clinic.jpg" alt="Ljust behandlingsrum på kliniken" width="800" height="1000" fetchpriority="high">
+            <img src="assets/images/hero-clinic.jpg" alt="Ljust behandlingsrum på kliniken" data-i18n-attr="alt:home.hero.imgAlt" width="800" height="1000" fetchpriority="high">
           </div>
           <div class="hero-badge">
             <span class="badge-icon"><svg class="icon" aria-hidden="true"><use href="#i-sparkles"/></svg></span>
-            <div><strong>15+ år</strong><span>klinisk erfarenhet inom medicin &amp; kirurgi</span></div>
+            <div data-i18n="home.hero.badge"><strong>15+ år</strong><span>klinisk erfarenhet inom medicin &amp; kirurgi</span></div>
           </div>
         </div>
       </div>
@@ -76,38 +84,38 @@
     <section class="section section--mint" id="behandlingar" aria-labelledby="beh-title">
       <div class="container">
         <div class="section-head reveal">
-          <span class="eyebrow">Behandlingar</span>
-          <h2 id="beh-title">Våra behandlingar</h2>
-          <p>Från läkarbesök till estetiska injektioner och medicinsk fotvård – alltid med en konsultation först.</p>
+          <span class="eyebrow" data-i18n="nav.treatments">Behandlingar</span>
+          <h2 id="beh-title" data-i18n="home.treat.title">Våra behandlingar</h2>
+          <p data-i18n="home.treat.lead">Från läkarbesök till estetiska injektioner och medicinsk fotvård – alltid med en konsultation först.</p>
         </div>
         <div class="cat-grid">
           <article class="cat-card reveal">
             <div class="circle"><img src="assets/images/treatment-medicinskt.svg" alt="" width="600" height="600" loading="lazy"></div>
-            <h3>Medicinska behandlingar</h3>
-            <p>Läkarkonsultation, födelsemärkeskontroll och borttagning av hudförändringar.</p>
+            <h3 data-i18n="cat.medicinskt">Medicinska behandlingar</h3>
+            <p data-i18n="home.cat.medicinskt">Läkarkonsultation, födelsemärkeskontroll och borttagning av hudförändringar.</p>
             <span class="from" data-from="medicinskt"></span>
-            <a class="link-arrow" href="behandlingar.html#medicinskt">Läs mer <span class="visually-hidden">om medicinska behandlingar</span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="behandlingar.html#medicinskt"><span data-i18n="home.cat.more.medicinskt">Läs mer <span class="visually-hidden">om medicinska behandlingar</span></span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </article>
           <article class="cat-card reveal">
             <div class="circle"><img src="assets/images/treatment-fillers.svg" alt="" width="600" height="600" loading="lazy"></div>
-            <h3>Fillers</h3>
-            <p>Hyaluronsyra för läppar, kindben och käklinje – subtilt och naturligt.</p>
+            <h3 data-i18n="cat.fillers">Fillers</h3>
+            <p data-i18n="home.cat.fillers">Hyaluronsyra för läppar, kindben och käklinje – subtilt och naturligt.</p>
             <span class="from" data-from="fillers"></span>
-            <a class="link-arrow" href="behandlingar.html#fillers">Läs mer <span class="visually-hidden">om fillers</span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="behandlingar.html#fillers"><span data-i18n="home.cat.more.fillers">Läs mer <span class="visually-hidden">om fillers</span></span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </article>
           <article class="cat-card reveal">
             <div class="circle"><img src="assets/images/treatment-botox.svg" alt="" width="600" height="600" loading="lazy"></div>
-            <h3>Botox</h3>
-            <p>Mjukar upp mimikrynkor i panna och kring ögon, samt behandlar svettningar.</p>
+            <h3 data-i18n="cat.botox">Botox</h3>
+            <p data-i18n="home.cat.botox">Mjukar upp mimikrynkor i panna och kring ögon, samt behandlar svettningar.</p>
             <span class="from" data-from="botox"></span>
-            <a class="link-arrow" href="behandlingar.html#botox">Läs mer <span class="visually-hidden">om botox</span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="behandlingar.html#botox"><span data-i18n="home.cat.more.botox">Läs mer <span class="visually-hidden">om botox</span></span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </article>
           <article class="cat-card reveal">
             <div class="circle"><img src="assets/images/treatment-fotvard.svg" alt="" width="600" height="600" loading="lazy"></div>
-            <h3>Fotvård</h3>
-            <p>Medicinsk fotvård, nageltrång, liktornar och anpassad vård vid diabetes.</p>
+            <h3 data-i18n="cat.fotvard">Fotvård</h3>
+            <p data-i18n="home.cat.fotvard">Medicinsk fotvård, nageltrång, liktornar och anpassad vård vid diabetes.</p>
             <span class="from" data-from="fotvard"></span>
-            <a class="link-arrow" href="behandlingar.html#fotvard">Läs mer <span class="visually-hidden">om fotvård</span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="behandlingar.html#fotvard"><span data-i18n="home.cat.more.fotvard">Läs mer <span class="visually-hidden">om fotvård</span></span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </article>
         </div>
       </div>
@@ -119,24 +127,24 @@
       <div class="container">
         <div class="campaign reveal" data-campaign>
           <div class="campaign-body">
-            <span class="eyebrow">Säsongskampanj</span>
-            <h2 id="kampanj-title">Höstkampanj – <span class="serif">ge huden en nystart</span></h2>
+            <span class="eyebrow" data-i18n="home.campaign.eyebrow">Säsongskampanj</span>
+            <h2 id="kampanj-title" data-i18n="home.campaign.title">Höstkampanj – <span class="serif">ge huden en nystart</span></h2>
             <p class="campaign-meta">
               <svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>
-              Gäller t.o.m. <span data-campaign-end>30 november</span> ·
+              <span data-i18n="home.campaign.validUntil">Gäller t.o.m.</span> <span data-campaign-end>30 november</span> ·
               <span class="campaign-countdown" aria-live="polite"></span>
             </p>
             <ul class="offer-list" data-render="campaign-offers">
               <!-- Fylls automatiskt med behandlingar som har campaignPrice i data.js -->
             </ul>
             <div class="campaign-actions">
-              <a class="btn btn--primary" href="boka.html">Boka kampanjpris</a>
-              <span class="campaign-note">Kampanjpriset gäller vid bokning under kampanjperioden.</span>
+              <a class="btn btn--primary" href="boka.html" data-i18n="home.campaign.cta">Boka kampanjpris</a>
+              <span class="campaign-note" data-i18n="home.campaign.note">Kampanjpriset gäller vid bokning under kampanjperioden.</span>
             </div>
           </div>
           <div class="campaign-media">
             <img src="assets/images/campaign-season.svg" alt="" width="900" height="700" loading="lazy">
-            <div class="campaign-stamp" aria-hidden="true"><div><span>Upp till</span><strong data-campaign-max>−20%</strong></div></div>
+            <div class="campaign-stamp" aria-hidden="true"><div><span data-i18n="home.campaign.upTo">Upp till</span><strong data-campaign-max>−20%</strong></div></div>
           </div>
         </div>
       </div>
@@ -146,70 +154,70 @@
     <section class="section section--tight-top" id="galleri" aria-labelledby="galleri-title">
       <div class="container">
         <div class="section-head reveal">
-          <span class="eyebrow">Galleri</span>
-          <h2 id="galleri-title">Före &amp; efter</h2>
-          <p>Dra i reglaget för att jämföra. Alla bilder publiceras med patientens samtycke.</p>
+          <span class="eyebrow" data-i18n="home.gallery.eyebrow">Galleri</span>
+          <h2 id="galleri-title" data-i18n="nav.gallery">Före &amp; efter</h2>
+          <p data-i18n="home.gallery.lead">Dra i reglaget för att jämföra. Alla bilder publiceras med patientens samtycke.</p>
         </div>
 
-        <div class="filter-bar" data-gallery-filter role="group" aria-label="Filtrera galleri">
-          <button class="chip" type="button" data-filter="alla" aria-pressed="true">Alla</button>
-          <button class="chip" type="button" data-filter="fillers" aria-pressed="false">Fillers</button>
-          <button class="chip" type="button" data-filter="botox" aria-pressed="false">Botox</button>
-          <button class="chip" type="button" data-filter="medicinskt" aria-pressed="false">Hud</button>
-          <button class="chip" type="button" data-filter="fotvard" aria-pressed="false">Fotvård</button>
+        <div class="filter-bar" data-gallery-filter role="group" aria-label="Filtrera galleri" data-i18n-attr="aria-label:home.gallery.filterLabel">
+          <button class="chip" type="button" data-filter="alla" aria-pressed="true" data-i18n="home.gallery.all">Alla</button>
+          <button class="chip" type="button" data-filter="fillers" aria-pressed="false" data-i18n="cat.fillers">Fillers</button>
+          <button class="chip" type="button" data-filter="botox" aria-pressed="false" data-i18n="cat.botox">Botox</button>
+          <button class="chip" type="button" data-filter="medicinskt" aria-pressed="false" data-i18n="home.gallery.skin">Hud</button>
+          <button class="chip" type="button" data-filter="fotvard" aria-pressed="false" data-i18n="cat.fotvard">Fotvård</button>
         </div>
         <p id="gallery-status" class="visually-hidden" aria-live="polite"></p>
 
         <div class="ba-grid">
           <figure class="ba reveal" data-category="fillers">
             <div class="ba-frame">
-              <img class="ba-before" src="assets/images/gallery-01-before.svg" alt="Före: läppar innan behandling" width="800" height="600" loading="lazy">
-              <img class="ba-after" src="assets/images/gallery-01-after.svg" alt="Efter: läppar efter läppförstoring" width="800" height="600" loading="lazy">
-              <span class="ba-tag ba-tag--before" aria-hidden="true">Före</span>
-              <span class="ba-tag ba-tag--after" aria-hidden="true">Efter</span>
+              <img class="ba-before" src="assets/images/gallery-01-before.svg" alt="Före: läppar innan behandling" data-i18n-attr="alt:home.ba1.before" width="800" height="600" loading="lazy">
+              <img class="ba-after" src="assets/images/gallery-01-after.svg" alt="Efter: läppar efter läppförstoring" data-i18n-attr="alt:home.ba1.after" width="800" height="600" loading="lazy">
+              <span class="ba-tag ba-tag--before" aria-hidden="true" data-i18n="home.gallery.before">Före</span>
+              <span class="ba-tag ba-tag--after" aria-hidden="true" data-i18n="home.gallery.after">Efter</span>
               <span class="ba-divider"><span class="ba-knob"><svg class="icon" aria-hidden="true"><use href="#i-chevrons-lr"/></svg></span></span>
-              <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Jämför före och efter – läppförstoring">
+              <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Jämför före och efter – läppförstoring" data-i18n-attr="aria-label:home.ba1.range">
             </div>
-            <figcaption><strong>Läppförstoring, 1 ml</strong><span>Fillers · Resultat 2 veckor efter behandling</span></figcaption>
+            <figcaption data-i18n="home.ba1.caption"><strong>Läppförstoring, 1 ml</strong><span>Fillers · Resultat 2 veckor efter behandling</span></figcaption>
           </figure>
 
           <figure class="ba reveal" data-category="botox">
             <div class="ba-frame">
-              <img class="ba-before" src="assets/images/gallery-02-before.svg" alt="Före: panna och argrynka innan behandling" width="800" height="600" loading="lazy">
-              <img class="ba-after" src="assets/images/gallery-02-after.svg" alt="Efter: slätare panna efter botox" width="800" height="600" loading="lazy">
-              <span class="ba-tag ba-tag--before" aria-hidden="true">Före</span>
-              <span class="ba-tag ba-tag--after" aria-hidden="true">Efter</span>
+              <img class="ba-before" src="assets/images/gallery-02-before.svg" alt="Före: panna och argrynka innan behandling" data-i18n-attr="alt:home.ba2.before" width="800" height="600" loading="lazy">
+              <img class="ba-after" src="assets/images/gallery-02-after.svg" alt="Efter: slätare panna efter botox" data-i18n-attr="alt:home.ba2.after" width="800" height="600" loading="lazy">
+              <span class="ba-tag ba-tag--before" aria-hidden="true" data-i18n="home.gallery.before">Före</span>
+              <span class="ba-tag ba-tag--after" aria-hidden="true" data-i18n="home.gallery.after">Efter</span>
               <span class="ba-divider"><span class="ba-knob"><svg class="icon" aria-hidden="true"><use href="#i-chevrons-lr"/></svg></span></span>
-              <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Jämför före och efter – botox panna och argrynka">
+              <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Jämför före och efter – botox panna och argrynka" data-i18n-attr="aria-label:home.ba2.range">
             </div>
-            <figcaption><strong>Panna &amp; argrynka</strong><span>Botox · Resultat efter 14 dagar</span></figcaption>
+            <figcaption data-i18n="home.ba2.caption"><strong>Panna &amp; argrynka</strong><span>Botox · Resultat efter 14 dagar</span></figcaption>
           </figure>
 
           <figure class="ba reveal" data-category="medicinskt">
             <div class="ba-frame">
-              <img class="ba-before" src="assets/images/gallery-03-before.svg" alt="Före: godartad hudförändring på kinden" width="800" height="600" loading="lazy">
-              <img class="ba-after" src="assets/images/gallery-03-after.svg" alt="Efter: läkt hud efter borttagning" width="800" height="600" loading="lazy">
-              <span class="ba-tag ba-tag--before" aria-hidden="true">Före</span>
-              <span class="ba-tag ba-tag--after" aria-hidden="true">Efter</span>
+              <img class="ba-before" src="assets/images/gallery-03-before.svg" alt="Före: godartad hudförändring på kinden" data-i18n-attr="alt:home.ba3.before" width="800" height="600" loading="lazy">
+              <img class="ba-after" src="assets/images/gallery-03-after.svg" alt="Efter: läkt hud efter borttagning" data-i18n-attr="alt:home.ba3.after" width="800" height="600" loading="lazy">
+              <span class="ba-tag ba-tag--before" aria-hidden="true" data-i18n="home.gallery.before">Före</span>
+              <span class="ba-tag ba-tag--after" aria-hidden="true" data-i18n="home.gallery.after">Efter</span>
               <span class="ba-divider"><span class="ba-knob"><svg class="icon" aria-hidden="true"><use href="#i-chevrons-lr"/></svg></span></span>
-              <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Jämför före och efter – borttagning av hudförändring">
+              <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Jämför före och efter – borttagning av hudförändring" data-i18n-attr="aria-label:home.ba3.range">
             </div>
-            <figcaption><strong>Borttagning av hudförändring</strong><span>Medicinskt · Efter 6 veckors läkning</span></figcaption>
+            <figcaption data-i18n="home.ba3.caption"><strong>Borttagning av hudförändring</strong><span>Medicinskt · Efter 6 veckors läkning</span></figcaption>
           </figure>
 
           <figure class="ba reveal" data-category="fotvard">
             <div class="ba-frame">
-              <img class="ba-before" src="assets/images/gallery-04-before.svg" alt="Före: förhårdnader under foten" width="800" height="600" loading="lazy">
-              <img class="ba-after" src="assets/images/gallery-04-after.svg" alt="Efter: mjuk och behandlad fotsula" width="800" height="600" loading="lazy">
-              <span class="ba-tag ba-tag--before" aria-hidden="true">Före</span>
-              <span class="ba-tag ba-tag--after" aria-hidden="true">Efter</span>
+              <img class="ba-before" src="assets/images/gallery-04-before.svg" alt="Före: förhårdnader under foten" data-i18n-attr="alt:home.ba4.before" width="800" height="600" loading="lazy">
+              <img class="ba-after" src="assets/images/gallery-04-after.svg" alt="Efter: mjuk och behandlad fotsula" data-i18n-attr="alt:home.ba4.after" width="800" height="600" loading="lazy">
+              <span class="ba-tag ba-tag--before" aria-hidden="true" data-i18n="home.gallery.before">Före</span>
+              <span class="ba-tag ba-tag--after" aria-hidden="true" data-i18n="home.gallery.after">Efter</span>
               <span class="ba-divider"><span class="ba-knob"><svg class="icon" aria-hidden="true"><use href="#i-chevrons-lr"/></svg></span></span>
-              <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Jämför före och efter – medicinsk fotvård">
+              <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Jämför före och efter – medicinsk fotvård" data-i18n-attr="aria-label:home.ba4.range">
             </div>
-            <figcaption><strong>Liktornar &amp; förhårdnader</strong><span>Fotvård · Efter en behandling</span></figcaption>
+            <figcaption data-i18n="home.ba4.caption"><strong>Liktornar &amp; förhårdnader</strong><span>Fotvård · Efter en behandling</span></figcaption>
           </figure>
         </div>
-        <p class="disclaimer">Resultat varierar från person till person. Vid konsultationen går vi igenom vad som är realistiskt för just dig.</p>
+        <p class="disclaimer" data-i18n="home.gallery.disclaimer">Resultat varierar från person till person. Vid konsultationen går vi igenom vad som är realistiskt för just dig.</p>
       </div>
     </section>
 
@@ -217,55 +225,55 @@
     <section class="section section--mint" id="lakare" aria-labelledby="lakare-title">
       <div class="container">
         <div class="section-head reveal">
-          <span class="eyebrow">Våra behandlare</span>
-          <h2 id="lakare-title">Möt vår läkare</h2>
+          <span class="eyebrow" data-i18n="home.team.eyebrow">Våra behandlare</span>
+          <h2 id="lakare-title" data-i18n="home.team.title">Möt vår läkare</h2>
         </div>
 
         <div class="doctor-feature">
           <div class="arch reveal">
-            <img src="assets/images/team-christian-navarro.svg" alt="Porträtt av Christian Navarro" width="600" height="750" loading="lazy">
+            <img src="assets/images/team-christian-navarro.svg" alt="Porträtt av Christian Navarro" data-i18n-attr="alt:team.christian.alt" width="600" height="750" loading="lazy">
           </div>
           <div class="reveal">
             <h3>Christian Navarro</h3>
-            <p class="role">Läkare · Specialist i allmänmedicin och allmän kirurgi</p>
-            <p class="bio">Christian kombinerar bred klinisk erfarenhet från akutsjukvård och kirurgi med ett stort intresse för medicinsk estetik. Hans filosofi är enkel: ärlig rådgivning, noggrann medicinsk bedömning och resultat som ser naturliga ut.</p>
+            <p class="role" data-i18n="team.christian.role">Läkare · Specialist i allmänmedicin och allmän kirurgi</p>
+            <p class="bio" data-i18n="home.christian.bio">Christian kombinerar bred klinisk erfarenhet från akutsjukvård och kirurgi med ett stort intresse för medicinsk estetik. Hans filosofi är enkel: ärlig rådgivning, noggrann medicinsk bedömning och resultat som ser naturliga ut.</p>
 
             <ul class="stat-row">
-              <li><strong>15+</strong><span>år som läkare</span></li>
-              <li><strong>2</strong><span>specialist&shy;kompetenser</span></li>
-              <li><strong>3&nbsp;000+</strong><span>utförda behandlingar</span></li>
+              <li><strong>15+</strong><span data-i18n="team.stat.years">år som läkare</span></li>
+              <li><strong>2</strong><span data-i18n="team.stat.specialties">specialist&shy;kompetenser</span></li>
+              <li><strong>3&nbsp;000+</strong><span data-i18n="team.stat.treatments">utförda behandlingar</span></li>
             </ul>
 
             <div class="cred-grid">
               <div>
-                <h4><svg class="icon icon--sm" aria-hidden="true"><use href="#i-cap"/></svg> Utbildning</h4>
+                <h4><svg class="icon icon--sm" aria-hidden="true"><use href="#i-cap"/></svg> <span data-i18n="team.education">Utbildning</span></h4>
                 <ul class="timeline">
-                  <li><span class="when">2008–2013</span><span class="what">Läkarexamen</span><span class="where">Läkarprogrammet, universitet</span></li>
-                  <li><span class="when">2019</span><span class="what">Specialist i allmän kirurgi</span><span class="where">Socialstyrelsen</span></li>
-                  <li><span class="when">2021</span><span class="what">Specialist i allmänmedicin</span><span class="where">Socialstyrelsen</span></li>
+                  <li><span class="when">2008–2013</span><span class="what" data-i18n="cv.degree">Läkarexamen</span><span class="where" data-i18n="cv.degreeWhere">Läkarprogrammet, universitet</span></li>
+                  <li><span class="when">2019</span><span class="what" data-i18n="cv.surgery">Specialist i allmän kirurgi</span><span class="where">Socialstyrelsen</span></li>
+                  <li><span class="when">2021</span><span class="what" data-i18n="cv.gp">Specialist i allmänmedicin</span><span class="where">Socialstyrelsen</span></li>
                 </ul>
               </div>
               <div>
-                <h4><svg class="icon icon--sm" aria-hidden="true"><use href="#i-briefcase"/></svg> Erfarenhet</h4>
+                <h4><svg class="icon icon--sm" aria-hidden="true"><use href="#i-briefcase"/></svg> <span data-i18n="team.experience">Erfarenhet</span></h4>
                 <ul class="timeline">
-                  <li><span class="when">2023–idag</span><span class="what">Grundare &amp; medicinskt ansvarig</span><span class="where">Mederinav Health Care</span></li>
-                  <li><span class="when">2019–2023</span><span class="what">Specialistläkare, kirurgi</span><span class="where">Akutsjukhus i Stockholm</span></li>
-                  <li><span class="when">2014–2019</span><span class="what">AT- &amp; ST-läkare</span><span class="where">Region Stockholm</span></li>
+                  <li><span class="when" data-i18n="cv.2023now">2023–idag</span><span class="what" data-i18n="cv.founder">Grundare &amp; medicinskt ansvarig</span><span class="where">Mederinav Health Care</span></li>
+                  <li><span class="when">2019–2023</span><span class="what" data-i18n="cv.surgeon">Specialistläkare, kirurgi</span><span class="where" data-i18n="cv.hospital">Akutsjukhus i Stockholm</span></li>
+                  <li><span class="when">2014–2019</span><span class="what" data-i18n="cv.atst">AT- &amp; ST-läkare</span><span class="where">Region Stockholm</span></li>
                 </ul>
               </div>
             </div>
 
-            <p style="margin-top: var(--s-5);"><a class="link-arrow" href="om-oss.html#christian">Läs mer om Christian <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></p>
+            <p style="margin-top: var(--s-5);"><a class="link-arrow" href="om-oss.html#christian"><span data-i18n="home.christian.more">Läs mer om Christian</span> <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></p>
           </div>
         </div>
 
         <div class="team-mini reveal">
-          <div class="arch"><img src="assets/images/team-lorena-munoz.svg" alt="Porträtt av Lorena Munoz" width="600" height="750" loading="lazy"></div>
+          <div class="arch"><img src="assets/images/team-lorena-munoz.svg" alt="Porträtt av Lorena Munoz" data-i18n-attr="alt:team.lorena.alt" width="600" height="750" loading="lazy"></div>
           <div>
             <h3>Lorena Munoz</h3>
-            <p class="role">Medicinsk fotterapeut &amp; hudterapeut</p>
-            <p>Lorena ansvarar för klinikens fotvård och hudvård. Med ett varsamt handlag och stor kunskap om fotens hälsa hjälper hon allt från förebyggande vård till besvärliga nagel- och hudproblem.</p>
-            <a class="link-arrow" href="om-oss.html#lorena">Läs mer om Lorena <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <p class="role" data-i18n="home.lorena.role">Medicinsk fotterapeut &amp; hudterapeut</p>
+            <p data-i18n="home.lorena.bio">Lorena ansvarar för klinikens fotvård och hudvård. Med ett varsamt handlag och stor kunskap om fotens hälsa hjälper hon allt från förebyggande vård till besvärliga nagel- och hudproblem.</p>
+            <a class="link-arrow" href="om-oss.html#lorena"><span data-i18n="home.lorena.more">Läs mer om Lorena</span> <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </div>
         </div>
       </div>
@@ -275,38 +283,38 @@
     <section class="section" id="hitta-hit" aria-labelledby="besok-title">
       <div class="container">
         <div class="section-head reveal">
-          <span class="eyebrow">Hitta hit</span>
-          <h2 id="besok-title">Besök oss</h2>
+          <span class="eyebrow" data-i18n="home.visit.eyebrow">Hitta hit</span>
+          <h2 id="besok-title" data-i18n="home.visit.title">Besök oss</h2>
         </div>
         <div class="visit-grid">
           <div class="visit-photo reveal">
-            <img src="assets/images/visit-clinic-street.svg" alt="Gatan utanför kliniken på Sjödalsvägen" width="600" height="900" loading="lazy">
+            <img src="assets/images/visit-clinic-street.svg" alt="Gatan utanför kliniken på Sjödalsvägen" data-i18n-attr="alt:home.visit.imgAlt" width="600" height="900" loading="lazy">
           </div>
           <div class="reveal">
             <div class="info-block">
-              <h3><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg> Adress</h3>
+              <h3><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg> <span data-i18n="home.visit.address">Adress</span></h3>
               <p>Sjödalsvägen 18, 141 47 Huddinge</p>
-              <p><a class="link-arrow" href="https://www.google.com/maps/search/?api=1&amp;query=Sj%C3%B6dalsv%C3%A4gen+18+141+47+Huddinge" target="_blank" rel="noopener">Öppna i kartan <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></p>
+              <p><a class="link-arrow" href="https://www.google.com/maps/search/?api=1&amp;query=Sj%C3%B6dalsv%C3%A4gen+18+141+47+Huddinge" target="_blank" rel="noopener"><span data-i18n="home.visit.map">Öppna i kartan</span> <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></p>
             </div>
             <div class="info-block">
-              <h3><svg class="icon" aria-hidden="true"><use href="#i-train"/></svg> Pendeltåg</h3>
-              <p>Pendeltåg till Huddinge station, därefter en kort promenad till kliniken.</p>
+              <h3><svg class="icon" aria-hidden="true"><use href="#i-train"/></svg> <span data-i18n="home.visit.train">Pendeltåg</span></h3>
+              <p data-i18n="home.visit.trainText">Pendeltåg till Huddinge station, därefter en kort promenad till kliniken.</p>
             </div>
             <div class="info-block">
-              <h3><svg class="icon" aria-hidden="true"><use href="#i-bus"/></svg> Buss</h3>
-              <p>Flera busslinjer stannar vid Huddinge centrum, några minuters promenad bort.</p>
+              <h3><svg class="icon" aria-hidden="true"><use href="#i-bus"/></svg> <span data-i18n="home.visit.bus">Buss</span></h3>
+              <p data-i18n="home.visit.busText">Flera busslinjer stannar vid Huddinge centrum, några minuters promenad bort.</p>
             </div>
           </div>
           <div class="reveal">
             <div class="info-block">
-              <h3><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg> Öppettider</h3>
+              <h3><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg> <span data-i18n="home.visit.hours">Öppettider</span></h3>
               <table class="hours-table" data-hours></table>
             </div>
             <div class="info-block">
-              <h3><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> Frågor?</h3>
-              <p>Ring oss på <a href="tel:+46737515457">073-751 54 57</a> eller mejla <a href="mailto:mederinav@gmail.com">mederinav@gmail.com</a>.</p>
+              <h3><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> <span data-i18n="home.visit.questions">Frågor?</span></h3>
+              <p data-i18n="home.visit.contact">Ring oss på <a href="tel:+46737515457">073-751 54 57</a> eller mejla <a href="mailto:mederinav@gmail.com">mederinav@gmail.com</a>.</p>
             </div>
-            <a class="btn btn--primary" href="boka.html" style="margin-top: var(--s-5);">Boka tid</a>
+            <a class="btn btn--primary" href="boka.html" style="margin-top: var(--s-5);" data-i18n="cta.book">Boka tid</a>
           </div>
         </div>
       </div>
@@ -319,17 +327,17 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <img src="assets/logo/logo.svg" alt="Mederinav Health Care" width="201" height="46" loading="lazy">
-          <p>Läkarledd klinik för medicinska behandlingar, estetik och fotvård i Huddinge.</p>
+          <p data-i18n="footer.about">Läkarledd klinik för medicinska behandlingar, estetik och fotvård i Huddinge.</p>
         </div>
         <div>
-          <h2>Följ oss</h2>
+          <h2 data-i18n="footer.follow">Följ oss</h2>
           <ul class="footer-links">
             <li><a href="https://www.instagram.com/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg> Instagram</a></li>
             <li><a href="https://www.facebook.com/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-facebook"/></svg> Facebook</a></li>
           </ul>
         </div>
         <div>
-          <h2>Kontakta oss</h2>
+          <h2 data-i18n="footer.contact">Kontakta oss</h2>
           <ul class="footer-links">
             <li><a href="mailto:mederinav@gmail.com"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> mederinav@gmail.com</a></li>
             <li><a href="tel:+46737515457"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> 073-751 54 57</a></li>

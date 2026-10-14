@@ -3,37 +3,45 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Boka tid – Mederinav Health Care</title>
-  <meta name="description" content="Boka tid online hos Mederinav Health Care i Huddinge. Välj behandling och en ledig tid i veckokalendern.">
+  <title data-i18n="meta.book.title">Boka tid – Mederinav Health Care</title>
+  <meta name="description" content="Boka tid online hos Mederinav Health Care i Huddinge. Välj behandling och en ledig tid i veckokalendern." data-i18n-attr="content:meta.book.desc">
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- Language: set early so Swedish text doesn't flash for Spanish visitors (see assets/js/i18n.js) -->
+  <script>(function(){var d=document.documentElement,l=new URLSearchParams(location.search).get("lang");d.classList.add("js");try{l=l||localStorage.getItem("mederinav-lang")}catch(e){}l=l||(/^es\b/i.test(navigator.language)?"es":"sv");if(l==="es"){d.lang="es";d.classList.add("i18n-pending")}})();</script>
+  <script src="assets/js/translations.js" defer></script>
+  <script src="assets/js/i18n.js" defer></script>
   <script src="assets/js/data.js" defer></script>
   <script src="assets/js/main.js" defer></script>
   <script src="assets/js/booking.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Hoppa till innehållet</a>
+  <a class="skip-link" href="#main" data-i18n="skip">Hoppa till innehållet</a>
 
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="index.html">
-        <img src="assets/logo/logo.svg" alt="Mederinav Health Care – startsida" width="201" height="46">
+        <img src="assets/logo/logo.svg" alt="Mederinav Health Care – startsida" data-i18n-attr="alt:brand.homeAlt" width="201" height="46">
       </a>
-      <nav id="site-nav" class="site-nav" aria-label="Huvudmeny">
+      <nav id="site-nav" class="site-nav" aria-label="Huvudmeny" data-i18n-attr="aria-label:nav.label">
         <ul class="nav-list">
-          <li><a href="behandlingar.html">Behandlingar</a></li>
-          <li><a href="priser.html">Priser</a></li>
-          <li><a href="index.html#galleri">Före &amp; efter</a></li>
-          <li><a href="index.html#kampanj">Kampanj</a></li>
-          <li><a href="om-oss.html">Om oss</a></li>
+          <li><a href="behandlingar.html" data-i18n="nav.treatments">Behandlingar</a></li>
+          <li><a href="priser.html" data-i18n="nav.prices">Priser</a></li>
+          <li><a href="index.html#galleri" data-i18n="nav.gallery">Före &amp; efter</a></li>
+          <li><a href="index.html#kampanj" data-i18n="nav.campaign">Kampanj</a></li>
+          <li><a href="om-oss.html" data-i18n="nav.about">Om oss</a></li>
         </ul>
-        <a class="btn btn--primary btn--block nav-mobile-cta" href="boka.html">Boka tid</a>
+        <a class="btn btn--primary btn--block nav-mobile-cta" href="boka.html" data-i18n="cta.book">Boka tid</a>
       </nav>
       <div class="header-actions">
-        <a class="btn btn--primary header-cta" href="boka.html" aria-current="page">Boka tid</a>
+        <div class="lang-switch" role="group" aria-label="Språk" data-i18n-attr="aria-label:lang.label">
+          <button type="button" data-set-lang="sv" lang="sv" aria-label="Svenska" aria-pressed="true">SV</button>
+          <button type="button" data-set-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
+        </div>
+        <a class="btn btn--primary header-cta" href="boka.html" aria-current="page" data-i18n="cta.book">Boka tid</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Öppna meny">
           <svg class="icon icon-open" aria-hidden="true"><use href="#i-menu"/></svg>
           <svg class="icon icon-close" aria-hidden="true"><use href="#i-x"/></svg>
@@ -45,99 +53,99 @@
   <main id="main">
     <section class="page-hero">
       <div class="container">
-        <span class="eyebrow">Onlinebokning</span>
-        <h1>Boka tid</h1>
-        <p class="lead">Välj behandling, hitta en ledig tid i veckokalendern och fyll i dina uppgifter. Det tar under en minut.</p>
+        <span class="eyebrow" data-i18n="book.eyebrow">Onlinebokning</span>
+        <h1 data-i18n="cta.book">Boka tid</h1>
+        <p class="lead" data-i18n="book.lead">Välj behandling, hitta en ledig tid i veckokalendern och fyll i dina uppgifter. Det tar under en minut.</p>
       </div>
     </section>
 
     <div class="container" style="padding-bottom: var(--s-8);">
-      <ol class="steps" id="steps" aria-label="Bokningssteg">
-        <li data-step="1" class="is-current">Behandling</li>
-        <li data-step="2">Tid</li>
-        <li data-step="3">Uppgifter</li>
+      <ol class="steps" id="steps" aria-label="Bokningssteg" data-i18n-attr="aria-label:book.stepsLabel">
+        <li data-step="1" class="is-current" data-i18n="book.step1">Behandling</li>
+        <li data-step="2" data-i18n="book.step2">Tid</li>
+        <li data-step="3" data-i18n="book.step3">Uppgifter</li>
       </ol>
 
       <div class="booking-layout">
         <div>
           <!-- Steg 1 -->
           <section class="panel" aria-labelledby="b-step1">
-            <h2 class="panel-title" id="b-step1"><span class="num">1.</span> Välj behandling</h2>
+            <h2 class="panel-title" id="b-step1"><span class="num">1.</span> <span data-i18n="book.title1">Välj behandling</span></h2>
             <div class="field-row field-row--2">
               <div class="field">
-                <label for="treatment">Behandling</label>
+                <label for="treatment" data-i18n="book.step1">Behandling</label>
                 <select id="treatment" class="select"></select>
               </div>
               <div class="field">
-                <label for="practitioner">Behandlare</label>
+                <label for="practitioner" data-i18n="book.practitioner">Behandlare</label>
                 <select id="practitioner" class="select"></select>
-                <span class="hint">”Första lediga” visar flest tider.</span>
+                <span class="hint" data-i18n="book.practitionerHint">”Första lediga” visar flest tider.</span>
               </div>
             </div>
           </section>
 
           <!-- Steg 2: veckokalender -->
           <section class="panel" aria-labelledby="b-step2">
-            <h2 class="panel-title" id="b-step2"><span class="num">2.</span> Välj tid</h2>
+            <h2 class="panel-title" id="b-step2"><span class="num">2.</span> <span data-i18n="book.title2">Välj tid</span></h2>
             <div class="week-toolbar">
               <div class="week-label" id="week-label" aria-live="polite"></div>
               <div class="week-nav">
-                <button class="today-btn" id="week-today" type="button">Denna vecka</button>
-                <button class="icon-btn" id="week-prev" type="button" aria-label="Föregående vecka">
+                <button class="today-btn" id="week-today" type="button" data-i18n="book.thisWeek">Denna vecka</button>
+                <button class="icon-btn" id="week-prev" type="button" aria-label="Föregående vecka" data-i18n-attr="aria-label:book.prevWeek">
                   <svg class="icon" aria-hidden="true"><use href="#i-chevron-left"/></svg>
                 </button>
-                <button class="icon-btn" id="week-next" type="button" aria-label="Nästa vecka">
+                <button class="icon-btn" id="week-next" type="button" aria-label="Nästa vecka" data-i18n-attr="aria-label:book.nextWeek">
                   <svg class="icon" aria-hidden="true"><use href="#i-chevron-right"/></svg>
                 </button>
               </div>
             </div>
             <div class="legend" aria-hidden="true">
-              <span><i class="l-free"></i> Ledig tid</span>
-              <span><i class="l-sel"></i> Vald tid</span>
+              <span><i class="l-free"></i> <span data-i18n="book.legendFree">Ledig tid</span></span>
+              <span><i class="l-sel"></i> <span data-i18n="book.legendSel">Vald tid</span></span>
             </div>
-            <div class="day-tabs" id="day-tabs" role="group" aria-label="Välj dag"></div>
+            <div class="day-tabs" id="day-tabs" role="group" aria-label="Välj dag" data-i18n-attr="aria-label:book.chooseDay"></div>
             <div class="week-grid" id="week-grid"></div>
           </section>
 
           <!-- Steg 3: uppgifter -->
           <section class="panel" id="details-panel" aria-labelledby="b-step3" hidden>
-            <h2 class="panel-title" id="b-step3" tabindex="-1"><span class="num">3.</span> Dina uppgifter</h2>
+            <h2 class="panel-title" id="b-step3" tabindex="-1"><span class="num">3.</span> <span data-i18n="book.title3">Dina uppgifter</span></h2>
             <div id="error-summary" class="error-summary" tabindex="-1" role="alert" hidden></div>
             <form id="booking-form" novalidate>
               <div class="field-row field-row--2">
                 <div class="field" data-field="name">
-                  <label for="f-name">För- och efternamn <span class="req" aria-hidden="true">*</span></label>
+                  <label for="f-name"><span data-i18n="book.fName">För- och efternamn</span> <span class="req" aria-hidden="true">*</span></label>
                   <input class="input" id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="e-name">
                   <span class="field-error" id="e-name"></span>
                 </div>
                 <div class="field" data-field="phone">
-                  <label for="f-phone">Telefon <span class="req" aria-hidden="true">*</span></label>
+                  <label for="f-phone"><span data-i18n="book.fPhone">Telefon</span> <span class="req" aria-hidden="true">*</span></label>
                   <input class="input" id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="e-phone">
                   <span class="field-error" id="e-phone"></span>
                 </div>
               </div>
               <div class="field-row" style="margin-top: var(--s-4);">
                 <div class="field" data-field="email">
-                  <label for="f-email">E-post <span class="req" aria-hidden="true">*</span></label>
+                  <label for="f-email"><span data-i18n="book.fEmail">E-post</span> <span class="req" aria-hidden="true">*</span></label>
                   <input class="input" id="f-email" name="email" type="email" autocomplete="email" required aria-describedby="h-email e-email">
-                  <span class="hint" id="h-email">Hit skickar vi bekräftelsen.</span>
+                  <span class="hint" id="h-email" data-i18n="book.emailHint">Hit skickar vi bekräftelsen.</span>
                   <span class="field-error" id="e-email"></span>
                 </div>
                 <div class="field" data-field="message">
-                  <label for="f-message">Meddelande <span class="hint" style="display:inline">(valfritt)</span></label>
+                  <label for="f-message"><span data-i18n="book.fMessage">Meddelande</span> <span class="hint" style="display:inline" data-i18n="book.optional">(valfritt)</span></label>
                   <textarea class="textarea" id="f-message" name="message" rows="3" aria-describedby="h-message"></textarea>
-                  <span class="hint" id="h-message">T.ex. om det är ditt första besök eller om du har allergier.</span>
+                  <span class="hint" id="h-message" data-i18n="book.messageHint">T.ex. om det är ditt första besök eller om du har allergier.</span>
                 </div>
                 <div class="field" data-field="consent">
                   <div class="check">
                     <input id="f-consent" name="consent" type="checkbox" required aria-describedby="e-consent">
-                    <label for="f-consent" style="font-weight:500; margin:0;">Jag godkänner att Mederinav Health Care sparar mina uppgifter för att hantera bokningen. <span class="req" aria-hidden="true">*</span></label>
+                    <label for="f-consent" style="font-weight:500; margin:0;"><span data-i18n="book.consent">Jag godkänner att Mederinav Health Care sparar mina uppgifter för att hantera bokningen.</span> <span class="req" aria-hidden="true">*</span></label>
                   </div>
                   <span class="field-error" id="e-consent"></span>
                 </div>
               </div>
               <button class="btn btn--primary btn--block" id="submit-btn" type="submit" style="margin-top: var(--s-5);">Bekräfta bokning</button>
-              <p class="hint" style="margin-top: var(--s-3); text-align:center;">Avbokning kostnadsfritt senast 24 timmar innan.</p>
+              <p class="hint" style="margin-top: var(--s-3); text-align:center;" data-i18n="book.cancelPolicy">Avbokning kostnadsfritt senast 24 timmar innan.</p>
             </form>
           </section>
 
@@ -148,21 +156,21 @@
               <h2 id="confirm-title" tabindex="-1">Tack för din bokning!</h2>
               <p id="confirm-text"></p>
               <span class="ref" id="confirm-ref"></span>
-              <div><button class="btn btn--ghost" id="book-again" type="button">Boka en till tid</button></div>
+              <div><button class="btn btn--ghost" id="book-again" type="button" data-i18n="book.again">Boka en till tid</button></div>
             </div>
           </section>
         </div>
 
         <aside class="panel summary" aria-labelledby="sum-title">
-          <h2 class="panel-title" id="sum-title">Din bokning</h2>
+          <h2 class="panel-title" id="sum-title" data-i18n="book.summary">Din bokning</h2>
           <dl>
-            <div><dt>Behandling</dt><dd id="sum-treatment" class="is-empty">Ej vald</dd></div>
-            <div><dt>Behandlare</dt><dd id="sum-practitioner" class="is-empty">Ej vald</dd></div>
-            <div><dt>Datum</dt><dd id="sum-date" class="is-empty">Ej vald</dd></div>
-            <div><dt>Tid</dt><dd id="sum-time" class="is-empty">Ej vald</dd></div>
-            <div><dt>Pris</dt><dd id="sum-price" class="is-empty">–</dd></div>
+            <div><dt data-i18n="book.step1">Behandling</dt><dd id="sum-treatment" class="is-empty">Ej vald</dd></div>
+            <div><dt data-i18n="book.practitioner">Behandlare</dt><dd id="sum-practitioner" class="is-empty">Ej vald</dd></div>
+            <div><dt data-i18n="book.date">Datum</dt><dd id="sum-date" class="is-empty">Ej vald</dd></div>
+            <div><dt data-i18n="book.step2">Tid</dt><dd id="sum-time" class="is-empty">Ej vald</dd></div>
+            <div><dt data-i18n="book.price">Pris</dt><dd id="sum-price" class="is-empty">–</dd></div>
           </dl>
-          <p class="help">Har du frågor? Ring oss på <a href="tel:+46737515457">073-751 54 57</a>.</p>
+          <p class="help" data-i18n="book.help">Har du frågor? Ring oss på <a href="tel:+46737515457">073-751 54 57</a>.</p>
         </aside>
       </div>
     </div>
@@ -173,17 +181,17 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <img src="assets/logo/logo.svg" alt="Mederinav Health Care" width="201" height="46" loading="lazy">
-          <p>Läkarledd klinik för medicinska behandlingar, estetik och fotvård i Huddinge.</p>
+          <p data-i18n="footer.about">Läkarledd klinik för medicinska behandlingar, estetik och fotvård i Huddinge.</p>
         </div>
         <div>
-          <h2>Följ oss</h2>
+          <h2 data-i18n="footer.follow">Följ oss</h2>
           <ul class="footer-links">
             <li><a href="https://www.instagram.com/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg> Instagram</a></li>
             <li><a href="https://www.facebook.com/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-facebook"/></svg> Facebook</a></li>
           </ul>
         </div>
         <div>
-          <h2>Kontakta oss</h2>
+          <h2 data-i18n="footer.contact">Kontakta oss</h2>
           <ul class="footer-links">
             <li><a href="mailto:mederinav@gmail.com"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> mederinav@gmail.com</a></li>
             <li><a href="tel:+46737515457"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> 073-751 54 57</a></li>
