@@ -30,6 +30,7 @@
         <ul class="nav-list">
           <li><a href="behandlingar.html" data-i18n="nav.treatments">Behandlingar</a></li>
           <li><a href="om-oss.html" data-i18n="nav.about">Om oss</a></li>
+          <li><a href="#oppettider" data-i18n="home.visit.hours">Öppettider</a></li>
         </ul>
         <a class="btn btn--primary btn--block nav-mobile-cta" href="boka.html" data-i18n="cta.book">Boka tid</a>
       </nav>
@@ -226,41 +227,20 @@
           <h2 id="lakare-title" data-i18n="home.team.title">Möt vår läkare</h2>
         </div>
 
-        <div class="doctor-feature">
-          <div class="arch reveal">
-            <img src="assets/images/team-christian-navarro.svg" alt="Porträtt av Christian Navarro" data-i18n-attr="alt:team.christian.alt" width="600" height="750" loading="lazy">
-          </div>
-          <div class="reveal">
+        <!-- Short versions; the full profiles (education, experience etc.) are on om-oss.html -->
+        <div class="team-mini reveal">
+          <div class="arch"><img src="assets/images/team-christian-navarro.svg" alt="Porträtt av Christian Navarro" data-i18n-attr="alt:team.christian.alt" width="600" height="750" loading="lazy"></div>
+          <div>
             <h3>Christian Navarro</h3>
             <p class="role" data-i18n="team.christian.role">Läkare · Specialist i allmänmedicin och allmän kirurgi</p>
-            <p class="bio" data-i18n="home.christian.bio">Christian kombinerar bred klinisk erfarenhet från akutsjukvård och kirurgi med ett stort intresse för medicinsk estetik. Hans filosofi är enkel: ärlig rådgivning, noggrann medicinsk bedömning och resultat som ser naturliga ut.</p>
-
-            <ul class="stat-row">
-              <li><strong>15+</strong><span data-i18n="team.stat.years">år som läkare</span></li>
-              <li><strong>2</strong><span data-i18n="team.stat.specialties">specialist&shy;kompetenser</span></li>
-              <li><strong>3&nbsp;000+</strong><span data-i18n="team.stat.treatments">utförda behandlingar</span></li>
-            </ul>
-
-            <div class="cred-grid">
-              <div>
-                <h4><svg class="icon icon--sm" aria-hidden="true"><use href="#i-cap"/></svg> <span data-i18n="team.education">Utbildning</span></h4>
-                <ul class="timeline">
-                  <li><span class="when">2008–2013</span><span class="what" data-i18n="cv.degree">Läkarexamen</span><span class="where" data-i18n="cv.degreeWhere">Läkarprogrammet, universitet</span></li>
-                  <li><span class="when">2019</span><span class="what" data-i18n="cv.surgery">Specialist i allmän kirurgi</span><span class="where">Socialstyrelsen</span></li>
-                  <li><span class="when">2021</span><span class="what" data-i18n="cv.gp">Specialist i allmänmedicin</span><span class="where">Socialstyrelsen</span></li>
-                </ul>
-              </div>
-              <div>
-                <h4><svg class="icon icon--sm" aria-hidden="true"><use href="#i-briefcase"/></svg> <span data-i18n="team.experience">Erfarenhet</span></h4>
-                <ul class="timeline">
-                  <li><span class="when" data-i18n="cv.2023now">2023–idag</span><span class="what" data-i18n="cv.founder">Grundare &amp; medicinskt ansvarig</span><span class="where">Mederinav Health Care</span></li>
-                  <li><span class="when">2019–2023</span><span class="what" data-i18n="cv.surgeon">Specialistläkare, kirurgi</span><span class="where" data-i18n="cv.hospital">Akutsjukhus i Stockholm</span></li>
-                  <li><span class="when">2014–2019</span><span class="what" data-i18n="cv.atst">AT- &amp; ST-läkare</span><span class="where">Region Stockholm</span></li>
-                </ul>
-              </div>
+            <div class="team-text" data-i18n="home.christian.text">
+              <p class="team-lead">Medicinsk kompetens, erfarenhet och estetisk medicin</p>
+              <p>På Mederinav Health Care i Huddinge möter du en läkare med bred medicinsk kompetens och ett personligt engagemang för varje patient.</p>
+              <p>Vår läkare har specialistkompetens inom kirurgi och allmänmedicin samt utbildning inom estetisk medicin och inom kärlområdet, med inriktning på behandling och kirurgiska ingrepp vid åderbråck.</p>
+              <p>Med sin medicinska bakgrund och kunskap inom både kirurgi och estetisk medicin erbjuder han ett individuellt bemötande med fokus på kvalitet, säkerhet och patientens behov.</p>
+              <p>Vårt mål är att varje patient ska känna sig trygg, välkommen och professionellt omhändertagen.</p>
             </div>
-
-            <p style="margin-top: var(--s-5);"><a class="link-arrow" href="om-oss.html#christian"><span data-i18n="home.christian.more">Läs mer om Christian</span> <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></p>
+            <a class="link-arrow" href="om-oss.html#christian"><span data-i18n="home.christian.more">Läs mer om Christian</span> <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </div>
         </div>
 
@@ -268,50 +248,55 @@
           <div class="arch"><img src="assets/images/team-lorena-munoz.svg" alt="Porträtt av Lorena Munoz" data-i18n-attr="alt:team.lorena.alt" width="600" height="750" loading="lazy"></div>
           <div>
             <h3>Lorena Munoz</h3>
-            <p class="role" data-i18n="home.lorena.role">Medicinsk fotterapeut &amp; hudterapeut</p>
-            <p data-i18n="home.lorena.bio">Lorena ansvarar för klinikens fotvård och hudvård. Med ett varsamt handlag och stor kunskap om fotens hälsa hjälper hon allt från förebyggande vård till besvärliga nagel- och hudproblem.</p>
+            <p class="role" data-i18n="home.lorena.role">Medicinsk fotterapeut</p>
+            <div class="team-text" data-i18n="home.lorena.text">
+              <p>Hon har särskild erfarenhet av medicinsk fotvård för patienter med diabetes, med fokus på förebyggande vård, god fothälsa och att minska risken för komplikationer.</p>
+              <p>Med sin kombination av sjuksköterskebakgrund och kompetens inom medicinsk fotvård erbjuder hon ett omsorgsfullt, noggrant och individuellt bemötande.</p>
+            </div>
             <a class="link-arrow" href="om-oss.html#lorena"><span data-i18n="home.lorena.more">Läs mer om Lorena</span> <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ===== Visit ===== -->
-    <section class="section" id="hitta-hit" aria-labelledby="besok-title">
+    <!-- ===== Opening hours & how to find us (the hours themselves come from data.js) ===== -->
+    <section class="section" id="oppettider" aria-labelledby="oppettider-title">
       <div class="container">
         <div class="section-head reveal">
           <span class="eyebrow" data-i18n="home.visit.eyebrow">Hitta hit</span>
-          <h2 id="besok-title" data-i18n="home.visit.title">Besök oss</h2>
+          <h2 id="oppettider-title" data-i18n="home.visit.hours">Öppettider</h2>
         </div>
         <div class="visit-grid">
           <div class="visit-photo reveal">
             <img src="assets/images/visit-clinic-street.svg" alt="Gatan utanför kliniken på Sjödalsvägen" data-i18n-attr="alt:home.visit.imgAlt" width="600" height="900" loading="lazy">
           </div>
-          <div class="reveal">
-            <div class="info-block">
-              <h3><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg> <span data-i18n="home.visit.address">Adress</span></h3>
-              <p>Sjödalsvägen 18, 141 47 Huddinge</p>
-              <p><a class="link-arrow" href="https://www.google.com/maps/search/?api=1&amp;query=Sj%C3%B6dalsv%C3%A4gen+18+141+47+Huddinge" target="_blank" rel="noopener"><span data-i18n="home.visit.map">Öppna i kartan</span> <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></p>
+          <div class="visit-info">
+            <div class="reveal">
+              <div class="info-block">
+                <h3><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg> <span data-i18n="home.hours.regular">Ordinarie tider</span></h3>
+                <table class="hours-table" data-hours></table>
+              </div>
+              <div class="info-block">
+                <h3><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> <span data-i18n="home.visit.questions">Frågor?</span></h3>
+                <p data-i18n="home.visit.contact">Ring oss på <a href="tel:+46737515457">073-751 54 57</a> eller mejla <a href="mailto:mederinav@gmail.com">mederinav@gmail.com</a>.</p>
+              </div>
+              <a class="btn btn--primary" href="boka.html" style="margin-top: var(--s-5);" data-i18n="cta.book">Boka tid</a>
             </div>
-            <div class="info-block">
-              <h3><svg class="icon" aria-hidden="true"><use href="#i-train"/></svg> <span data-i18n="home.visit.train">Pendeltåg</span></h3>
-              <p data-i18n="home.visit.trainText">Pendeltåg till Huddinge station, därefter en kort promenad till kliniken.</p>
+            <div class="reveal">
+              <div class="info-block">
+                <h3><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg> <span data-i18n="home.visit.address">Adress</span></h3>
+                <p>Sjödalsvägen 18, 141 47 Huddinge</p>
+                <p><a class="link-arrow" href="https://www.google.com/maps/search/?api=1&amp;query=Sj%C3%B6dalsv%C3%A4gen+18+141+47+Huddinge" target="_blank" rel="noopener"><span data-i18n="home.visit.map">Öppna i kartan</span> <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a></p>
+              </div>
+              <div class="info-block">
+                <h3><svg class="icon" aria-hidden="true"><use href="#i-train"/></svg> <span data-i18n="home.visit.train">Pendeltåg</span></h3>
+                <p data-i18n="home.visit.trainText">Pendeltåg till Huddinge station, därefter en kort promenad till kliniken.</p>
+              </div>
+              <div class="info-block">
+                <h3><svg class="icon" aria-hidden="true"><use href="#i-bus"/></svg> <span data-i18n="home.visit.bus">Buss</span></h3>
+                <p data-i18n="home.visit.busText">Flera busslinjer stannar vid Huddinge centrum, några minuters promenad bort.</p>
+              </div>
             </div>
-            <div class="info-block">
-              <h3><svg class="icon" aria-hidden="true"><use href="#i-bus"/></svg> <span data-i18n="home.visit.bus">Buss</span></h3>
-              <p data-i18n="home.visit.busText">Flera busslinjer stannar vid Huddinge centrum, några minuters promenad bort.</p>
-            </div>
-          </div>
-          <div class="reveal">
-            <div class="info-block">
-              <h3><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg> <span data-i18n="home.visit.hours">Öppettider</span></h3>
-              <table class="hours-table" data-hours></table>
-            </div>
-            <div class="info-block">
-              <h3><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> <span data-i18n="home.visit.questions">Frågor?</span></h3>
-              <p data-i18n="home.visit.contact">Ring oss på <a href="tel:+46737515457">073-751 54 57</a> eller mejla <a href="mailto:mederinav@gmail.com">mederinav@gmail.com</a>.</p>
-            </div>
-            <a class="btn btn--primary" href="boka.html" style="margin-top: var(--s-5);" data-i18n="cta.book">Boka tid</a>
           </div>
         </div>
       </div>
@@ -338,7 +323,7 @@
           <ul class="footer-links">
             <li><a href="mailto:mederinav@gmail.com"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> mederinav@gmail.com</a></li>
             <li><a href="tel:+46737515457"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> 073-751 54 57</a></li>
-            <li><a href="index.html#hitta-hit"><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg> Sjödalsvägen 18</a></li>
+            <li><a href="index.html#oppettider"><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg> Sjödalsvägen 18</a></li>
           </ul>
         </div>
       </div>

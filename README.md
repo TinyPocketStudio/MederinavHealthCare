@@ -46,7 +46,7 @@ Every placeholder shows its own file name and recommended size, so you can see w
 | `images/gallery-01…04-before/after.svg` | Before/after gallery | 800×600 (4:3); before and after must match |
 | `images/team-christian-navarro.svg`, `team-lorena-munoz.svg` | Home and Om oss | 600×750 (4:5) |
 | `images/about-clinic.svg` | Om oss | 1200×800 (3:2) |
-| `images/visit-clinic-street.svg` | "Besök oss" | 600×900 (2:3) |
+| `images/visit-clinic-street.svg` | "Öppettider" | 600×900 (2:3) |
 
 **Easiest way to replace an image:** save your photo (`.jpg` / `.webp`) in `assets/images/` and update the file name in the HTML. To find every place an image is used, search the project for its file name (for example `hero-clinic`). The four treatment images are referenced by category id in `assets/js/main.js` (`treatment-${cat.id}.svg`), so if you switch to `.jpg`, change the extension there too.
 

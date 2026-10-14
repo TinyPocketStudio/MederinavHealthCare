@@ -266,6 +266,11 @@ button { cursor: pointer; touch-action: manipulation; }
 }
 .nav-list a:hover { background: var(--mint-soft); }
 .nav-list a[aria-current="page"] { font-weight: 700; box-shadow: inset 0 -2px 0 var(--ink); border-radius: 0; }
+/* Just above the menu breakpoint the row is tight (longer Spanish labels + language switch). */
+@media (min-width: 901px) and (max-width: 1023px) {
+  .header-inner { gap: var(--s-4); }
+  .nav-list a { padding: 0 var(--s-2); }
+}
 
 .header-actions { display: flex; align-items: center; gap: var(--s-3); flex-shrink: 0; }
 
@@ -602,16 +607,7 @@ button { cursor: pointer; touch-action: manipulation; }
 .disclaimer { margin-top: var(--s-6); text-align: center; color: var(--ink-3); font-size: 0.875rem; }
 
 /* ---------- Team / doctor ---------- */
-.doctor-feature {
-  display: grid;
-  gap: var(--s-6);
-  align-items: center;
-}
-@media (min-width: 900px) { .doctor-feature { grid-template-columns: 0.8fr 1.2fr; gap: var(--s-8); } }
-.doctor-feature .arch { aspect-ratio: 4 / 5; max-width: 400px; width: 100%; margin-inline: auto; }
-.doctor-feature h3 { font-size: clamp(1.75rem, 2vw + 1rem, 2.25rem); }
 .role { margin-top: var(--s-2); color: var(--accent); font-weight: 700; }
-.doctor-feature .bio { margin-top: var(--s-4); color: var(--ink-2); font-size: 1.0625rem; max-width: 60ch; }
 
 .stat-row {
   display: grid;
@@ -632,17 +628,6 @@ button { cursor: pointer; touch-action: manipulation; }
 
 .cred-grid { display: grid; gap: var(--s-5); margin-top: var(--s-2); }
 @media (min-width: 640px) { .cred-grid { grid-template-columns: 1fr 1fr; } }
-.cred-grid h4 {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-  font-size: 0.875rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: var(--s-3);
-}
-
 .cred-grid .cred-title {
   display: flex;
   align-items: center;
@@ -683,10 +668,14 @@ button { cursor: pointer; touch-action: manipulation; }
   padding-top: var(--s-7);
   border-top: 1px solid var(--line-strong);
 }
-@media (min-width: 640px) { .team-mini { grid-template-columns: 160px 1fr; align-items: center; } }
+@media (min-width: 640px) { .team-mini { grid-template-columns: 160px 1fr; align-items: start; } }
 .team-mini .arch { width: 160px; aspect-ratio: 4 / 5; }
+.section-head + .team-mini { margin-top: 0; padding-top: 0; border-top: 0; } /* first card: no divider under the heading */
 .team-mini h3 { font-size: 1.375rem; }
 .team-mini p { margin-top: var(--s-2); color: var(--ink-2); }
+.team-text { max-width: 68ch; margin-bottom: var(--s-2); }
+.team-text p + p { margin-top: var(--s-3); }
+.team-text .team-lead { margin-top: var(--s-3); color: var(--ink); font-weight: 700; }
 
 /* About page profile */
 .profile {
@@ -745,7 +734,10 @@ button { cursor: pointer; touch-action: manipulation; }
 /* ---------- Visit ---------- */
 .visit-grid { display: grid; gap: var(--s-6); align-items: start; }
 @media (min-width: 768px) { .visit-grid { grid-template-columns: 300px 1fr; gap: var(--s-7); } }
-@media (min-width: 1024px) { .visit-grid { grid-template-columns: 340px 1fr 1fr; } }
+@media (min-width: 1024px) { .visit-grid { grid-template-columns: 340px 1fr; } }
+/* Text columns next to the photo: stacked on tablets, side by side on desktop. */
+.visit-info { display: grid; gap: var(--s-5); align-content: start; }
+@media (min-width: 1024px) { .visit-info { grid-template-columns: 1fr 1fr; gap: var(--s-7); } }
 .visit-photo { border-radius: var(--r-md); overflow: hidden; aspect-ratio: 2 / 3; max-height: 460px; }
 .visit-photo img { width: 100%; height: 100%; object-fit: cover; }
 .info-block + .info-block { margin-top: var(--s-5); }

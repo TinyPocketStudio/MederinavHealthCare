@@ -174,14 +174,20 @@ window.MEDERINAV_I18N = {
 
     "home.team.eyebrow": "Nuestros profesionales",
     "home.team.title": "Conoce a nuestro médico",
-    "home.christian.bio": "Christian combina una amplia experiencia clínica en urgencias y cirugía con un gran interés por la medicina estética. Su filosofía es sencilla: asesoramiento honesto, una evaluación médica minuciosa y resultados de aspecto natural.",
+    "home.christian.text":
+      '<p class="team-lead">Competencia médica, experiencia y medicina estética</p>' +
+      "<p>En Mederinav Health Care, en Huddinge, te atiende un médico con una amplia competencia médica y un compromiso personal con cada paciente.</p>" +
+      "<p>Nuestro médico es especialista en cirugía y medicina de familia, y tiene formación en medicina estética y en el área vascular, con orientación al tratamiento y la cirugía de las varices.</p>" +
+      "<p>Gracias a su formación médica y a sus conocimientos tanto de cirugía como de medicina estética, ofrece una atención individualizada centrada en la calidad, la seguridad y las necesidades del paciente.</p>" +
+      "<p>Nuestro objetivo es que cada paciente se sienta seguro, bien recibido y atendido con profesionalidad.</p>",
     "home.christian.more": "Más sobre Christian",
-    "home.lorena.role": "Podóloga clínica y terapeuta de la piel",
-    "home.lorena.bio": "Lorena se encarga de la podología y del cuidado de la piel en la clínica. Con un trato delicado y un gran conocimiento de la salud del pie, ayuda con todo, desde el cuidado preventivo hasta problemas difíciles de uñas y piel.",
+    "home.lorena.role": "Podóloga clínica",
+    "home.lorena.text":
+      "<p>Tiene una experiencia especial en podología médica para pacientes con diabetes, con énfasis en la prevención, la buena salud de los pies y la reducción del riesgo de complicaciones.</p>" +
+      "<p>Gracias a su combinación de formación en enfermería y competencia en podología médica, ofrece una atención cuidadosa, minuciosa y personalizada.</p>",
     "home.lorena.more": "Más sobre Lorena",
 
     "home.visit.eyebrow": "Cómo llegar",
-    "home.visit.title": "Visítanos",
     "home.visit.imgAlt": "La calle frente a la clínica en Sjödalsvägen",
     "home.visit.address": "Dirección",
     "home.visit.map": "Abrir en el mapa",
@@ -190,6 +196,7 @@ window.MEDERINAV_I18N = {
     "home.visit.bus": "Autobús",
     "home.visit.busText": "Varias líneas de autobús paran en Huddinge centrum, a pocos minutos a pie.",
     "home.visit.hours": "Horario",
+    "home.hours.regular": "Horario habitual",
     "home.visit.questions": "¿Preguntas?",
     "home.visit.contact": 'Llámanos al <a href="tel:+46737515457">073-751 54 57</a> o escríbenos a <a href="mailto:mederinav@gmail.com">mederinav@gmail.com</a>.',
 
