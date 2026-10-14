@@ -580,7 +580,9 @@ button { cursor: pointer; touch-action: manipulation; }
   letter-spacing: 0.06em;
   text-transform: uppercase;
   pointer-events: none;
+  transition: opacity var(--t-fast) ease;
 }
+.ba-tag.is-covered { opacity: 0; } /* the divider has moved over this tag (set in main.js) */
 .ba-tag--before { left: var(--s-3); }
 .ba-tag--after { right: var(--s-3); }
 .ba-range {

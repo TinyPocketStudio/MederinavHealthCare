@@ -167,15 +167,24 @@
   document.querySelectorAll(".ba-frame").forEach((frame) => {
     const range = frame.querySelector(".ba-range");
     if (!range) return;
+    const tagBefore = frame.querySelector(".ba-tag--before");
+    const tagAfter = frame.querySelector(".ba-tag--after");
     const update = () => {
       const v = Number(range.value);
       frame.style.setProperty("--pos", `${v}%`);
       range.setAttribute("aria-valuetext", t("gallery.valueText", { n: 100 - v }));
+      // Fade out a tag once the divider reaches it, so "Före" never sits on the after image (and vice versa).
+      if (!frame.offsetWidth) return;
+      const x = (frame.offsetWidth * v) / 100;
+      const gap = 8;
+      if (tagBefore) tagBefore.classList.toggle("is-covered", x < tagBefore.offsetLeft + tagBefore.offsetWidth + gap);
+      if (tagAfter) tagAfter.classList.toggle("is-covered", x > tagAfter.offsetLeft - gap);
     };
     range.addEventListener("input", update);
     update();
     baUpdaters.push(update);
   });
+  window.addEventListener("resize", () => baUpdaters.forEach((update) => update()), { passive: true });
 
   const filterBar = document.querySelector("[data-gallery-filter]");
   const galleryStatus = document.getElementById("gallery-status");
