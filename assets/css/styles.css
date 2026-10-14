@@ -312,6 +312,9 @@ button { cursor: pointer; touch-action: manipulation; }
   .brand { flex: 0 1 175px; min-width: 0; }
   .brand img { width: 100%; height: auto; }
 }
+@media (max-width: 360px) {
+  .header-actions .header-cta { padding: 0 var(--s-3); font-size: 0.9375rem; }
+}
 
 .nav-toggle {
   display: none;
@@ -330,7 +333,10 @@ button { cursor: pointer; touch-action: manipulation; }
 /* Menu breakpoint – keep in sync with matchMedia("(min-width: 901px)") in main.js */
 @media (max-width: 900px) {
   .nav-toggle { display: inline-flex; }
-  .header-cta { display: none; }
+  /* Header keeps "Boka tid"; the language switch moves into the menu (.nav-lang). */
+  .header-cta { min-height: 44px; padding: 0 var(--s-4); }
+  .js .header-actions > .lang-switch { display: none; }
+  .js .nav-lang { display: flex; }
   .site-nav {
     position: fixed;
     inset: var(--header-h) 0 auto 0;
@@ -353,9 +359,9 @@ button { cursor: pointer; touch-action: manipulation; }
   .nav-list { flex-direction: column; align-items: stretch; gap: 0; }
   .nav-list a { min-height: 56px; font-size: 1.25rem; border-radius: var(--r-sm); border-bottom: 1px solid var(--line); }
   .nav-list a[aria-current="page"] { box-shadow: none; background: var(--mint-soft); }
-  .nav-mobile-cta { display: flex !important; margin-top: var(--s-5); }
 }
-.nav-mobile-cta { display: none; }
+.nav-lang { display: none; align-items: center; justify-content: space-between; gap: var(--s-4); margin-top: var(--s-5); padding-inline: var(--s-3); }
+.nav-lang-label { font-weight: 600; color: var(--ink-2); }
 
 /* ---------- Hero ---------- */
 .hero { padding-block: var(--s-7) var(--s-8); }
