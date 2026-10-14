@@ -89,7 +89,7 @@
         toggle.focus();
       }
     });
-    window.matchMedia("(min-width: 1101px)").addEventListener("change", (e) => { if (e.matches) setOpen(false); });
+    window.matchMedia("(min-width: 901px)").addEventListener("change", (e) => { if (e.matches) setOpen(false); });
   }
 
   /* ---------- Footer year ---------- */
@@ -255,50 +255,17 @@
     window.addEventListener("hashchange", openFromHash);
   }
 
-  /* ---------- Price list page ---------- */
-  const pRoot = document.querySelector("[data-render='prices']");
-  function renderPrices() {
-    if (!pRoot || !DATA.categories) return;
-    const campaign = isCampaignActive();
-    pRoot.innerHTML = DATA.categories
-      .map(
-        (cat) => `
-      <section class="price-group" id="${cat.id}" aria-labelledby="p-${cat.id}">
-        <h2 id="p-${cat.id}">${escapeHtml(loc(cat, "name"))}</h2>
-        <table class="price-table">
-          <caption class="visually-hidden">${escapeHtml(t("prices.caption", { cat: loc(cat, "name") }))}</caption>
-          <tbody>
-            ${cat.items
-              .map((it) => {
-                const onSale = campaign && it.campaignPrice;
-                const name = loc(it, "name");
-                return `<tr>
-                  <th scope="row">${escapeHtml(name)} ${onSale ? `<span class="badge">${escapeHtml(loc(DATA.campaign, "name"))}</span>` : ""}<small>${it.duration} min</small></th>
-                  <td>${onSale ? `<del><span class="visually-hidden">${t("price.regular")}</span>${kr(it.price)}</del><strong><span class="visually-hidden">${t("price.campaign")}</span>${kr(it.campaignPrice)}</strong>` : `<strong>${kr(it.price)}</strong>`}</td>
-                  <td class="t-book"><a href="boka.html?behandling=${encodeURIComponent(it.id)}" aria-label="${escapeHtml(t("prices.bookLabel", { name }))}">${t("prices.book")}</a></td>
-                </tr>`;
-              })
-              .join("")}
-          </tbody>
-        </table>
-      </section>`
-      )
-      .join("");
-  }
-
   /* ---------- Everything above that depends on the language ---------- */
   renderHours();
   renderFromPrices();
   renderCampaign();
   renderOffers();
-  renderPrices();
   I18N.onChange(() => {
     renderHours();
     renderFromPrices();
     renderCampaign();
     renderOffers();
     renderTreatments();
-    renderPrices();
     baUpdaters.forEach((update) => update());
     if (galleryStatus) galleryStatus.textContent = "";
   });

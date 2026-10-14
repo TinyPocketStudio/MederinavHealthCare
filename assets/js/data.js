@@ -2,7 +2,7 @@
  * Mederinav Health Care – innehållsdata
  * ------------------------------------------------------------
  * Redigera behandlingar, priser, behandlare och öppettider här.
- * Sidorna Behandlingar, Priser och Boka tid läser allt från denna fil.
+ * Sidorna Behandlingar och Boka tid läser allt från denna fil.
  * Alla texter och priser nedan är EXEMPEL/PLATSHÅLLARE – byt ut innan lansering.
  *
  * Spanska: blocken `es: { … }` innehåller den spanska versionen av texten bredvid.

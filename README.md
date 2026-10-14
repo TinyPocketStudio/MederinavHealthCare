@@ -5,14 +5,13 @@ Static site (HTML + CSS + vanilla JS). There's no build step: open `index.html` 
 ```
 index.html          Home: hero, treatments, seasonal campaign, before/after gallery, doctor, visit us
 behandlingar.html   Treatments with descriptions (accordion)
-priser.html         Price list
 om-oss.html         About: clinic and full staff profiles (education, experience, specialties)
 boka.html           Online booking with a week-by-week calendar
 assets/css/styles.css
 assets/js/data.js   ← treatments, prices, staff, opening hours, campaign end date
 assets/js/translations.js ← Spanish text (and Swedish text built by JS)
 assets/js/i18n.js   Language switching (SV | ES)
-assets/js/main.js   Shared behaviour (menu, gallery slider, rendering of treatments/prices)
+assets/js/main.js   Shared behaviour (menu, gallery slider, rendering of treatments)
 assets/js/booking.js Booking calendar
 assets/images/      Placeholder images (SVG)
 assets/logo/        Placeholder logos (SVG)
@@ -55,7 +54,7 @@ All images use `object-fit: cover`, so photos with slightly different proportion
 
 ## Editing content
 
-- **Treatments, descriptions, prices, durations:** `assets/js/data.js`. The Behandlingar, Priser and Boka tid pages, plus the "Från X kr" prices on the home page, all update from this file.
+- **Treatments, descriptions, prices, durations:** `assets/js/data.js`. The Behandlingar and Boka tid pages, plus the "Från X kr" prices on the home page, all update from this file.
 - **Seasonal campaign:** to put a treatment on offer, give it a `campaignPrice` in `data.js`. Set the campaign's end date in `campaign.endDate`. The offer list, the "up to −X%" badge, the countdown and the campaign badges are all generated automatically. The headline text lives in `index.html` (`#kampanj`), with the Spanish version under `home.campaign.title` in `translations.js`.
 - **Opening hours, staff working days, booking window:** `hours`, `team[].days`, `bookingWeeksAhead` and `minNoticeHours` in `data.js`.
 - **Before/after cases:** `index.html` → `#galleri`. Copy a `<figure class="ba">` block to add a case. `data-category` controls which filter it belongs to.

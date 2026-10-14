@@ -47,9 +47,6 @@ window.MEDERINAV_I18N = {
 
     "treat.suitable": "Passar dig som:",
     "treat.book": ({ name }) => `Boka ${name.toLowerCase()}`,
-    "prices.caption": "Priser för {cat}",
-    "prices.book": "Boka",
-    "prices.bookLabel": "Boka {name}",
 
     "book.chooseTreatment": "Välj behandling…",
     "book.firstAvailable": "Första lediga",
@@ -96,8 +93,6 @@ window.MEDERINAV_I18N = {
     "meta.home.desc": "Clínica dirigida por médicos en Huddinge (Estocolmo): tratamientos médicos, rellenos, botox y podología médica. Reserva tu cita en línea.",
     "meta.treat.title": "Tratamientos – Mederinav Health Care",
     "meta.treat.desc": "Tratamientos médicos, rellenos dérmicos, botox y podología médica en Mederinav Health Care, Huddinge.",
-    "meta.prices.title": "Precios – Mederinav Health Care",
-    "meta.prices.desc": "Lista de precios de tratamientos médicos, rellenos, botox y podología en Mederinav Health Care, Huddinge.",
     "meta.about.title": "Sobre nosotros – Mederinav Health Care",
     "meta.about.desc": "Conoce al equipo de Mederinav Health Care: el médico Christian Navarro y la podóloga Lorena Munoz.",
     "meta.book.title": "Reservar cita – Mederinav Health Care",
@@ -108,9 +103,7 @@ window.MEDERINAV_I18N = {
     "lang.label": "Idioma",
     "nav.label": "Menú principal",
     "nav.treatments": "Tratamientos",
-    "nav.prices": "Precios",
     "nav.gallery": "Antes y después",
-    "nav.campaign": "Campaña",
     "nav.about": "Sobre nosotros",
     "cta.book": "Reservar cita",
     "menu.open": "Abrir menú",
@@ -254,17 +247,10 @@ window.MEDERINAV_I18N = {
     "about.lorena.book": "Reservar cita con Lorena",
     "about.questions": '¿Tienes preguntas? Llámanos al <a href="tel:+46737515457">073-751 54 57</a>.',
 
-    /* ---------- Treatments & prices pages ---------- */
+    /* ---------- Treatments page ---------- */
     "treat.lead": "Cada tratamiento empieza con una consulta en la que revisamos tus deseos, tu salud y qué es realista. Haz clic en un tratamiento para leer más.",
     "treat.jumpLabel": "Ir a la categoría",
     "treat.cta": "¿No sabes qué te conviene? Empieza con una consulta.",
-    "prices.title": "Lista de precios",
-    "prices.lead": "Precios claros, sin costes ocultos. La consulta siempre está incluida en los tratamientos estéticos.",
-    "prices.notesTitle": "Información útil",
-    "prices.note1": "Todos los precios están en coronas suecas (kr) e incluyen IVA cuando corresponde.",
-    "prices.note2": "Las cancelaciones deben hacerse con al menos 24 horas de antelación; de lo contrario, se cobra el 50 % del precio del tratamiento.",
-    "prices.note3": "Los precios de campaña son válidos durante el período de la campaña y no se pueden combinar con otras ofertas.",
-    "prices.cta": "¿Has encontrado el tratamiento adecuado?",
 
     /* ---------- Booking page (static) ---------- */
     "book.eyebrow": "Reserva en línea",
@@ -325,9 +311,6 @@ window.MEDERINAV_I18N = {
 
     "treat.suitable": "Ideal para:",
     "treat.book": ({ name }) => `Reservar: ${name}`,
-    "prices.caption": "Precios de {cat}",
-    "prices.book": "Reservar",
-    "prices.bookLabel": "Reservar {name}",
 
     "book.chooseTreatment": "Elige un tratamiento…",
     "book.firstAvailable": "Primer profesional disponible",

@@ -267,14 +267,6 @@ button { cursor: pointer; touch-action: manipulation; }
 .nav-list a:hover { background: var(--mint-soft); }
 .nav-list a[aria-current="page"] { font-weight: 700; box-shadow: inset 0 -2px 0 var(--ink); border-radius: 0; }
 
-/* Between the menu breakpoint and wide desktop the full row (incl. the longer
-   Spanish labels and the language switch) is tight, so the nav gets denser. */
-@media (min-width: 1101px) and (max-width: 1279px) {
-  .header-inner { gap: var(--s-4); }
-  .nav-list { gap: 0; }
-  .nav-list a { padding: 0 var(--s-2); font-size: 1rem; }
-}
-
 .header-actions { display: flex; align-items: center; gap: var(--s-3); flex-shrink: 0; }
 
 /* Language switch (SV | ES). Needs JS, so it only shows once the .js class is set in <head>. */
@@ -330,8 +322,8 @@ button { cursor: pointer; touch-action: manipulation; }
 .nav-toggle[aria-expanded="true"] .icon-open { display: none; }
 .nav-toggle[aria-expanded="true"] .icon-close { display: block; }
 
-/* Menu breakpoint – keep in sync with matchMedia("(min-width: 1101px)") in main.js */
-@media (max-width: 1100px) {
+/* Menu breakpoint – keep in sync with matchMedia("(min-width: 901px)") in main.js */
+@media (max-width: 900px) {
   .nav-toggle { display: inline-flex; }
   .header-cta { display: none; }
   .site-nav {
@@ -848,24 +840,6 @@ button { cursor: pointer; touch-action: manipulation; }
   text-transform: uppercase;
   white-space: nowrap;
 }
-
-/* ---------- Price list ---------- */
-.price-group + .price-group { margin-top: var(--s-7); }
-.price-group h2 { font-size: 1rem; font-weight: 600; letter-spacing: 0; color: var(--ink-2); margin-bottom: var(--s-2); }
-.price-table { width: 100%; border-collapse: collapse; border-top: 1.5px solid var(--ink); font-variant-numeric: tabular-nums; }
-.price-table th, .price-table td { padding: var(--s-4) 0; border-bottom: 1px solid var(--ink); vertical-align: middle; }
-.price-table th { text-align: left; font-size: 1.125rem; }
-.price-table th small { display: block; font-weight: 500; font-size: 0.875rem; color: var(--ink-3); margin-top: 2px; }
-.price-table td { text-align: right; white-space: nowrap; padding-left: var(--s-4); }
-.price-table td del { color: var(--ink-3); margin-right: var(--s-2); font-size: 0.9375rem; }
-.price-table td strong { font-size: 1.125rem; }
-.price-table .t-book { width: 1%; }
-.price-table .t-book a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; font-size: 0.9375rem; }
-@media (max-width: 560px) {
-  .price-table .t-book { display: none; }
-}
-.price-notes { margin-top: var(--s-7); padding: var(--s-5); border-radius: var(--r-md); background: var(--mint-soft); color: var(--ink-2); font-size: 0.9375rem; }
-.price-notes ul { margin: var(--s-2) 0 0; padding-left: 1.2em; }
 
 .page-cta { text-align: center; padding-block: var(--s-7) var(--s-8); }
 .page-cta p { color: var(--ink-2); margin-bottom: var(--s-4); }
