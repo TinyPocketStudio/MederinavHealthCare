@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" preserveAspectRatio="xMidYMid slice">
+  <!-- PLATSHÅLLARE: ersätt denna fil med en riktig bild (600×600 px eller samma proportioner). -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C9E9FB"/><stop offset="1" stop-color="#F3FCFF"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="600" fill="url(#sky)"/>
+  <g fill="#FFFFFF">
+    <circle cx="252" cy="144" r="46"/>
+    <circle cx="200" cy="162" r="30"/>
+    <circle cx="306" cy="164" r="28"/>
+    <rect x="170" y="162" width="164" height="30" rx="15"/>
+  </g>
+  <path d="M0 408.00000000000006 C 150 378.00000000000006, 300 420.00000000000006, 600 444.00000000000006 L 600 600 L 0 600 Z" fill="#C8DF85"/>
+  <path d="M0 462.00000000000006 C 180 402.00000000000006, 372 420.00000000000006, 600 456.00000000000006 L 600 600 L 0 600 Z" fill="#8AA600"/>
+  
+  <g transform="translate(165 532)">
+    <rect width="270" height="40" rx="20" fill="#FFFFFF" fill-opacity="0.88"/>
+    <text x="135" y="25" text-anchor="middle" font-family="Figtree, Arial, sans-serif" font-size="14" font-weight="600" fill="#0E1A1C">treatment-botox · 600×600</text>
+  </g>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" preserveAspectRatio="xMidYMid slice">
+  <!-- PLATSHÅLLARE: ersätt denna fil med en riktig bild (800×600 px eller samma proportioner). -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C9E9FB"/><stop offset="1" stop-color="#F3FCFF"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#sky)"/>
+  <g fill="#FFFFFF">
+    <circle cx="336" cy="144" r="46"/>
+    <circle cx="284" cy="162" r="30"/>
+    <circle cx="390" cy="164" r="28"/>
+    <rect x="254" y="162" width="164" height="30" rx="15"/>
+  </g>
+  <path d="M0 408.00000000000006 C 200 378.00000000000006, 400 420.00000000000006, 800 444.00000000000006 L 800 600 L 0 600 Z" fill="#C8DF85"/>
+  <path d="M0 462.00000000000006 C 240 402.00000000000006, 496 420.00000000000006, 800 456.00000000000006 L 800 600 L 0 600 Z" fill="#8AA600"/>
+  <g transform="translate(24 24)"><rect width="96" height="40" rx="20" fill="#0E1A1C"/><text x="48" y="26" text-anchor="middle" font-family="Figtree, Arial, sans-serif" font-size="16" font-weight="700" fill="#fff" letter-spacing="1">EFTER</text></g>
+  <g transform="translate(260.4 532)">
+    <rect width="279.2" height="40" rx="20" fill="#FFFFFF" fill-opacity="0.88"/>
+    <text x="139.6" y="25" text-anchor="middle" font-family="Figtree, Arial, sans-serif" font-size="14" font-weight="600" fill="#0E1A1C">gallery-01-after · 800×600</text>
+  </g>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" preserveAspectRatio="xMidYMid slice">
+  <!-- PLATSHÅLLARE: ersätt denna fil med en riktig bild (800×1000 px eller samma proportioner). -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C9E9FB"/><stop offset="1" stop-color="#F3FCFF"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#sky)"/>
+  <g fill="#FFFFFF">
+    <circle cx="336" cy="240" r="61.33333333333333"/>
+    <circle cx="266.6666666666667" cy="264" r="40"/>
+    <circle cx="408" cy="266.6666666666667" r="37.33333333333333"/>
+    <rect x="226.66666666666669" y="264" width="218.66666666666666" height="40" rx="20"/>
+  </g>
+  <path d="M0 680 C 200 630, 400 700, 800 740 L 800 1000 L 0 1000 Z" fill="#C8DF85"/>
+  <path d="M0 770 C 240 670, 496 700, 800 760 L 800 1000 L 0 1000 Z" fill="#8AA600"/>
+  
+  <g transform="translate(238.40000000000003 909.3333333333333)">
+    <rect width="323.19999999999993" height="53.33333333333333" rx="26.666666666666664" fill="#FFFFFF" fill-opacity="0.88"/>
+    <text x="161.59999999999997" y="33.33333333333333" text-anchor="middle" font-family="Figtree, Arial, sans-serif" font-size="18.666666666666664" font-weight="600" fill="#0E1A1C">hero-clinic · 800×1000</text>
+  </g>
+</svg>

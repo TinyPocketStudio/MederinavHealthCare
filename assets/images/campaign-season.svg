@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" width="900" height="700" preserveAspectRatio="xMidYMid slice">
+  <!-- PLATSHÅLLARE: ersätt denna fil med en riktig bild (900×700 px eller samma proportioner). -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F1DFC4"/><stop offset="1" stop-color="#FBF4EA"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="700" fill="url(#sky)"/>
+  <g fill="#FFFDF8">
+    <circle cx="378" cy="168" r="53.66666666666667"/>
+    <circle cx="317.3333333333333" cy="189" r="35"/>
+    <circle cx="441" cy="191.33333333333334" r="32.66666666666667"/>
+    <rect x="282.3333333333333" y="189" width="191.33333333333334" height="35" rx="17.5"/>
+  </g>
+  <path d="M0 476.00000000000006 C 225 441.00000000000006, 450 490.00000000000006, 900 518 L 900 700 L 0 700 Z" fill="#E3C79C"/>
+  <path d="M0 539 C 270 469.00000000000006, 558 490.00000000000006, 900 532 L 900 700 L 0 700 Z" fill="#B98B52"/>
+  
+  <g transform="translate(292.5 620.6666666666667)">
+    <rect width="315" height="46.66666666666667" rx="23.333333333333336" fill="#FFFFFF" fill-opacity="0.88"/>
+    <text x="157.5" y="29.16666666666667" text-anchor="middle" font-family="Figtree, Arial, sans-serif" font-size="16.333333333333336" font-weight="600" fill="#0E1A1C">campaign-season · 900×700</text>
+  </g>
+</svg>

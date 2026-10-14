@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- PLATSHÅLLARE: favicon. -->
+  <rect width="64" height="64" rx="14" fill="#C7E2E4"/>
+  <path d="M8 56V8h12.5L32 29.5 43.5 8H56v48H45.5V27.2L35.2 46h-6.4L18.5 27.2V56z" fill="#0E1A1C" transform="translate(9.6 9.6) scale(0.7)"/>
+</svg>

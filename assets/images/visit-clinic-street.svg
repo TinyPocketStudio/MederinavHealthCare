@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" width="600" height="900" preserveAspectRatio="xMidYMid slice">
+  <!-- PLATSHÅLLARE: ersätt denna fil med en riktig bild (600×900 px eller samma proportioner). -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C9E9FB"/><stop offset="1" stop-color="#F3FCFF"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="900" fill="url(#sky)"/>
+  <g fill="#FFFFFF">
+    <circle cx="252" cy="216" r="46"/>
+    <circle cx="200" cy="234" r="30"/>
+    <circle cx="306" cy="236" r="28"/>
+    <rect x="170" y="234" width="164" height="30" rx="15"/>
+  </g>
+  <path d="M0 612 C 150 567, 300 630, 600 666 L 600 900 L 0 900 Z" fill="#C8DF85"/>
+  <path d="M0 693 C 180 603, 372 630, 600 684 L 600 900 L 0 900 Z" fill="#8AA600"/>
+  
+  <g transform="translate(146.60000000000002 832)">
+    <rect width="306.79999999999995" height="40" rx="20" fill="#FFFFFF" fill-opacity="0.88"/>
+    <text x="153.39999999999998" y="25" text-anchor="middle" font-family="Figtree, Arial, sans-serif" font-size="14" font-weight="600" fill="#0E1A1C">visit-clinic-street · 600×900</text>
+  </g>
+</svg>

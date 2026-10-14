@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 750" width="600" height="750" preserveAspectRatio="xMidYMid slice">
+  <!-- PLATSHÅLLARE: ersätt denna fil med en riktig bild (600×750 px eller samma proportioner). -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C9E9FB"/><stop offset="1" stop-color="#F3FCFF"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="750" fill="url(#sky)"/>
+  <g fill="#FFFFFF">
+    <circle cx="252" cy="180" r="46"/>
+    <circle cx="200" cy="198" r="30"/>
+    <circle cx="306" cy="200" r="28"/>
+    <rect x="170" y="198" width="164" height="30" rx="15"/>
+  </g>
+  <path d="M0 510.00000000000006 C 150 472.50000000000006, 300 525, 600 555 L 600 750 L 0 750 Z" fill="#C8DF85"/>
+  <path d="M0 577.5 C 180 502.50000000000006, 372 525, 600 570 L 600 750 L 0 750 Z" fill="#8AA600"/>
+  
+  <g transform="translate(132.8 682)">
+    <rect width="334.4" height="40" rx="20" fill="#FFFFFF" fill-opacity="0.88"/>
+    <text x="167.2" y="25" text-anchor="middle" font-family="Figtree, Arial, sans-serif" font-size="14" font-weight="600" fill="#0E1A1C">team-christian-navarro · 600×750</text>
+  </g>
+</svg>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Priser – Mederinav Health Care</title>
+  <meta name="description" content="Prislista för medicinska behandlingar, fillers, botox och fotvård hos Mederinav Health Care i Huddinge.">
+  <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Hoppa till innehållet</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img src="assets/logo/logo.svg" alt="Mederinav Health Care – startsida" width="201" height="46">
+      </a>
+      <nav id="site-nav" class="site-nav" aria-label="Huvudmeny">
+        <ul class="nav-list">
+          <li><a href="behandlingar.html">Behandlingar</a></li>
+          <li><a href="priser.html" aria-current="page">Priser</a></li>
+          <li><a href="index.html#galleri">Före &amp; efter</a></li>
+          <li><a href="index.html#kampanj">Kampanj</a></li>
+          <li><a href="om-oss.html">Om oss</a></li>
+        </ul>
+        <a class="btn btn--primary btn--block nav-mobile-cta" href="boka.html">Boka tid</a>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn--primary header-cta" href="boka.html">Boka tid</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Öppna meny">
+          <svg class="icon icon-open" aria-hidden="true"><use href="#i-menu"/></svg>
+          <svg class="icon icon-close" aria-hidden="true"><use href="#i-x"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Priser</span>
+        <h1>Prislista</h1>
+        <p class="lead">Tydliga priser utan dolda avgifter. Konsultationen ingår alltid vid estetiska behandlingar.</p>
+      </div>
+    </section>
+
+    <div class="container narrow">
+      <!-- Priserna renderas från assets/js/data.js -->
+      <div data-render="prices">
+        <noscript><p>Aktivera JavaScript för att se prislistan, eller ring oss på 073-751 54 57.</p></noscript>
+      </div>
+
+      <aside class="price-notes" aria-label="Bra att veta">
+        <strong>Bra att veta</strong>
+        <ul>
+          <li>Alla priser är i svenska kronor inklusive moms där moms tillkommer.</li>
+          <li>Avbokning senast 24 timmar innan, annars debiteras 50 % av behandlingspriset.</li>
+          <li>Kampanjpriser gäller under kampanjperioden och kan inte kombineras med andra erbjudanden.</li>
+        </ul>
+      </aside>
+
+      <div class="page-cta">
+        <p>Hittat rätt behandling?</p>
+        <a class="btn btn--primary" href="boka.html"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> Boka tid</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="assets/logo/logo.svg" alt="Mederinav Health Care" width="201" height="46" loading="lazy">
+          <p>Läkarledd klinik för medicinska behandlingar, estetik och fotvård i Huddinge.</p>
+        </div>
+        <div>
+          <h2>Sidor</h2>
+          <ul class="footer-links">
+            <li><a href="behandlingar.html">Behandlingar</a></li>
+            <li><a href="priser.html">Priser</a></li>
+            <li><a href="om-oss.html">Om oss</a></li>
+            <li><a href="boka.html">Boka tid</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Följ oss</h2>
+          <ul class="footer-links">
+            <li><a href="https://www.instagram.com/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-instagram"/></svg> Instagram</a></li>
+            <li><a href="https://www.facebook.com/" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-facebook"/></svg> Facebook</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Kontakta oss</h2>
+          <ul class="footer-links">
+            <li><a href="mailto:mederinav@gmail.com"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> mederinav@gmail.com</a></li>
+            <li><a href="tel:+46737515457"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> 073-751 54 57</a></li>
+            <li><a href="index.html#hitta-hit"><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg> Sjödalsvägen 18</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> Mederinav Health Care</span>
+        <span>Sjödalsvägen 18, 141 47 Huddinge</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
