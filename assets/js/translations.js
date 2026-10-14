@@ -173,18 +173,19 @@ window.MEDERINAV_I18N = {
     "home.ba4.caption": "<strong>Callos y durezas</strong><span>Podología · Tras una sesión</span>",
 
     "home.team.eyebrow": "Nuestros profesionales",
-    "home.team.title": "Conoce a nuestro médico",
+    "home.team.title": "Conoce a nuestro equipo",
     "home.christian.text":
-      '<p class="team-lead">Competencia médica, experiencia y medicina estética</p>' +
-      "<p>En Mederinav Health Care, en Huddinge, te atiende un médico con una amplia competencia médica y un compromiso personal con cada paciente.</p>" +
-      "<p>Nuestro médico es especialista en cirugía y medicina de familia, y tiene formación en medicina estética y en el área vascular, con orientación al tratamiento y la cirugía de las varices.</p>" +
-      "<p>Gracias a su formación médica y a sus conocimientos tanto de cirugía como de medicina estética, ofrece una atención individualizada centrada en la calidad, la seguridad y las necesidades del paciente.</p>" +
-      "<p>Nuestro objetivo es que cada paciente se sienta seguro, bien recibido y atendido con profesionalidad.</p>",
+      '<p class="team-lead">Amplia competencia médica, de la cirugía a la medicina estética</p>' +
+      "<p>Christian Navarro es especialista en cirugía general y medicina de familia, con formación en medicina estética y en el área vascular, donde se ha orientado especialmente al tratamiento y la cirugía de las varices.</p>" +
+      "<p>Cada tratamiento comienza con una evaluación médica minuciosa. Recibirás información clara sobre las alternativas, el resultado esperado y los posibles riesgos, para que puedas tomar una decisión bien fundamentada.</p>" +
+      "<p>Con la seguridad del paciente y la calidad médica como prioridad, el objetivo es que cada paciente se sienta seguro y bien atendido.</p>",
     "home.christian.more": "Más sobre Christian",
     "home.lorena.role": "Podóloga clínica",
     "home.lorena.text":
-      "<p>Tiene una experiencia especial en podología médica para pacientes con diabetes, con énfasis en la prevención, la buena salud de los pies y la reducción del riesgo de complicaciones.</p>" +
-      "<p>Gracias a su combinación de formación en enfermería y competencia en podología médica, ofrece una atención cuidadosa, minuciosa y personalizada.</p>",
+      '<p class="team-lead">Podología médica con el rigor de la atención sanitaria</p>' +
+      "<p>Lorena Munoz es podóloga clínica con formación previa como enfermera. Esto le aporta una visión integral, en la que la salud del pie se valora junto con el estado de salud general del paciente.</p>" +
+      "<p>Tiene una experiencia especial en el cuidado de los pies de pacientes con diabetes, donde la prevención y el seguimiento regular son clave para reducir el riesgo de úlceras y otras complicaciones.</p>" +
+      "<p>Cada tratamiento se realiza con minuciosidad y cuidado, adaptado a tus necesidades y circunstancias.</p>",
     "home.lorena.more": "Más sobre Lorena",
 
     "home.visit.eyebrow": "Cómo llegar",
@@ -207,29 +208,8 @@ window.MEDERINAV_I18N = {
     "team.stat.years": "años como médico",
     "team.stat.specialties": "especiali&shy;dades",
     "team.stat.treatments": "tratamientos realizados",
-    "team.education": "Formación",
-    "team.experience": "Experiencia",
     "team.specialties": "Especialidades",
     "team.languages": "Idiomas",
-    "cv.degree": "Título de Medicina",
-    "cv.degreeWhere": "Grado en Medicina, universidad",
-    "cv.license": "Licencia para ejercer la medicina",
-    "cv.surgery": "Especialista en cirugía general",
-    "cv.gp": "Especialista en medicina de familia",
-    "cv.aesthetic": "Formación continua en tratamientos estéticos inyectables",
-    "cv.aestheticWhere": "Rellenos y toxina botulínica, nivel avanzado",
-    "cv.2023now": "2023–actualidad",
-    "cv.founder": "Fundador y director médico",
-    "cv.gpDoctor": "Médico especialista, medicina de familia",
-    "cv.healthCentre": "Centro de salud, Estocolmo",
-    "cv.surgeon": "Médico especialista, cirugía",
-    "cv.hospital": "Hospital de urgencias en Estocolmo",
-    "cv.atst": "Médico interno y residente (AT/ST)",
-    "cv.footTherapist": "Podóloga clínica",
-    "cv.skinTherapist": "Terapeuta de la piel",
-    "cv.vocational": "Formación profesional superior",
-    "cv.footSkin": "Podóloga y terapeuta de la piel",
-    "cv.footClinic": "Clínica de podología, Estocolmo",
 
     /* ---------- About ---------- */
     "about.title": 'Una clínica basada en la <span class="serif">confianza</span>',

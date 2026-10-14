@@ -645,28 +645,6 @@ button { cursor: pointer; touch-action: manipulation; }
   margin-bottom: var(--s-3);
 }
 
-.timeline { margin: 0; padding: 0; list-style: none; }
-.timeline li {
-  position: relative;
-  padding: 0 0 var(--s-4) var(--s-5);
-  border-left: 1.5px solid var(--line-strong);
-}
-.timeline li:last-child { padding-bottom: 0; border-left-color: transparent; }
-.timeline li::before {
-  content: "";
-  position: absolute;
-  left: -6px;
-  top: 6px;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: var(--bg);
-  border: 2px solid var(--accent);
-}
-.timeline .when { display: block; font-size: 0.8125rem; font-weight: 700; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-.timeline .what { display: block; font-weight: 700; line-height: 1.35; }
-.timeline .where { display: block; font-size: 0.9375rem; color: var(--ink-2); }
-
 .team-mini {
   display: grid;
   gap: var(--s-5);
