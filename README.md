@@ -12,9 +12,10 @@ assets/js/data.js   ← treatments, prices, staff, opening hours, campaign end d
 assets/js/translations.js ← Spanish text (and Swedish text built by JS)
 assets/js/i18n.js   Language switching (SV | ES)
 assets/js/main.js   Shared behaviour (menu, gallery slider, rendering of treatments)
-assets/js/booking.js Booking calendar
+assets/js/booking.js Booking calendar (talks to booking-api)
 assets/images/      Placeholder images (SVG)
 assets/logo/        Placeholder logos (SVG)
+booking-api/        Booking backend (Cloudflare Worker + D1 database) at api.mederinavhealthcare.se
 ```
 
 ## Languages: Swedish and Spanish
@@ -62,18 +63,55 @@ All images use `object-fit: cover`, so photos with slightly different proportion
 
 > ⚠️ All bios, education entries, years, statistics ("15+ år", "3 000+ behandlingar"), prices and transport details are **placeholder text**. Replace them with real information before launch.
 
-## Booking: important before going live
+## Booking backend
 
-The calendar runs in **demo mode**:
-- Available times are simulated in `isTaken()` in `assets/js/booking.js`.
-- Bookings are only saved in the visitor's own browser (localStorage) by `submitBooking()`. **No booking reaches the clinic, and no email is sent.**
+Bookings are stored by a small backend in `booking-api/`: a Cloudflare Worker with a D1 database, served at `https://api.mederinavhealthcare.se`.
 
-Before launch, connect these two functions to a real booking system or API (for example your booking provider's API or your own backend). Everything else (calendar, steps, validation, confirmation) can stay as it is.
+- `GET /availability?from=…&to=…` returns which times are taken (max 14 days). It contains no names or contact details.
+- `POST /bookings` saves a booking and returns a booking number such as `MH-7KQ2XD`.
+
+The backend checks everything again: the treatment, the staff member, their working days, opening hours, minimum notice and the booking window. It saves each booking with a single "only if still free" step, so two people can never book the same time. The second person sees "Den valda tiden är inte längre ledig" (the chosen time is no longer available) and picks another time.
+
+**One source of truth.** The backend reads treatments, durations, staff days and opening hours straight from `assets/js/data.js`. After editing that file, push to GitHub: both the website and the backend update, the backend through the Cloudflare ↔ GitHub connection.
+
+**No secrets in the repo.** Keys for later stages (email, spam check) are stored as encrypted secrets in Cloudflare. For local testing they go in `booking-api/.dev.vars`, which Git ignores. Patient data only lives in the D1 database, never in the repo.
+
+Still to come: confirmation emails (stage 2), a staff page for phone bookings, cancellations and time off (stage 3), and a spam check plus privacy policy (stage 4).
+
+> ⚠️ Until stage 2 is done, no email is sent, even though the confirmation text says one will be.
 
 Deep links work: `boka.html?behandling=fillers-lappar` preselects a treatment, and `boka.html?behandlare=lorena` preselects a staff member.
 
 ## Running locally
 
+Website only:
+
 ```bash
 npx http-server -p 5173
 ```
+
+Website + booking backend (needs Node.js). The first time, run this inside `booking-api/`:
+
+```bash
+npm install
+```
+
+```bash
+cp .dev.vars.example .dev.vars
+```
+
+```bash
+npm run db:migrate:local
+```
+
+Then start the backend in `booking-api/` and the website in the project folder, in two terminals:
+
+```bash
+npm run dev
+```
+
+```bash
+npx http-server -p 5173
+```
+
+Open `http://localhost:5173/boka.html`. When the site runs on `localhost`, the calendar automatically uses the local backend (`http://localhost:8787`) with its own test database, so nothing touches real bookings.

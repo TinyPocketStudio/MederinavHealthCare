@@ -1,10 +1,9 @@
 /*
  * Mederinav Health Care – veckobaserad onlinebokning
  * ------------------------------------------------------------
- * DEMO-LÄGE: lediga tider simuleras i `isTaken()` och bokningar sparas
- * bara i besökarens webbläsare (localStorage) via `submitBooking()`.
- * Koppla dessa två funktioner till ert riktiga bokningssystem/API
- * innan sidan används skarpt.
+ * Lediga tider och bokningar hanteras av bokningssystemet i booking-api/
+ * (Cloudflare Worker, adress i data.js → booking.apiBase). Servern kontrollerar
+ * allt igen och förhindrar dubbelbokningar.
  */
 (function () {
   "use strict";
@@ -15,7 +14,6 @@
   if (!D || !UI || !I18N || !document.getElementById("week-grid")) return;
 
   const $ = (id) => document.getElementById(id);
-  const STORAGE_KEY = "mederinav-bookings";
   const tr = I18N.t; // `t` is used below for the current treatment
   const loc = I18N.loc;
 
@@ -37,40 +35,43 @@
   const longDate = (d) => tr("date.long", { dow: tr("daysLower")[d.getDay()], day: d.getDate(), month: tr("months")[d.getMonth()] });
   const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
-  /* ---------- Availability (DEMO) ---------- */
-  function hash(str) {
-    let h = 2166136261;
-    for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
-    return h >>> 0;
+  /* ---------- Booking API (booking-api/) ---------- */
+  // When the site is opened from this computer (localhost), talk to the local test backend.
+  const isLocal = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  const API = (isLocal ? "http://localhost:8787" : (D.booking || {}).apiBase || "").replace(/\/$/, "");
+  const CACHE_MS = 60000;
+  const weekCache = {}; // ymd(weekStart) → { busy: [{ p, date, start, end }], at }
+
+  async function loadWeek(ws) {
+    const key = ymd(ws);
+    const cached = weekCache[key];
+    if (cached && Date.now() - cached.at < CACHE_MS) return cached.busy;
+    const res = await fetch(`${API}/availability?from=${key}&to=${ymd(addDays(ws, 6))}`);
+    if (!res.ok) throw new Error(`availability ${res.status}`);
+    const data = await res.json();
+    weekCache[key] = { busy: data.busy || [], at: Date.now() };
+    return weekCache[key].busy;
   }
-  function loadBookings() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch (e) { return []; }
-  }
-  function storeBooking(b) {
-    try { const all = loadBookings(); all.push(b); localStorage.setItem(STORAGE_KEY, JSON.stringify(all)); } catch (e) { /* storage unavailable */ }
+  const forgetWeek = (dateStr) => { delete weekCache[ymd(startOfWeek(parseYmd(dateStr)))]; };
+
+  // Busy entries without a practitioner (p = null) close the whole clinic.
+  function overlapsBusy(dateStr, pid, start, end) {
+    const week = weekCache[ymd(startOfWeek(parseYmd(dateStr)))];
+    return !!week && week.busy.some((b) => b.date === dateStr && (b.p === pid || b.p == null) && b.start < end && b.end > start);
   }
 
-  // Byt ut mot ett anrop till ert bokningssystem.
-  function isTaken(dateStr, time, pid, duration, stored) {
-    const start = toMin(time);
-    const end = start + duration;
-    const clash = stored.some((b) => b.date === dateStr && b.practitioner === pid &&
-      toMin(b.time) < end && toMin(b.time) + b.duration > start);
-    if (clash) return true;
-    for (let m = start; m < end; m += 30) {
-      if (hash(`${dateStr}|${fromMin(m - (m % 30))}|${pid}`) % 100 < 36) return true;
-    }
-    return false;
-  }
-
-  // Byt ut mot ett POST-anrop till ert bokningssystem. Ska returnera en Promise.
-  function submitBooking(payload) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        storeBooking({ date: payload.date, time: payload.time, practitioner: payload.practitioner, duration: payload.duration });
-        resolve({ reference: `MH-${Date.now().toString(36).slice(-5).toUpperCase()}` });
-      }, 900);
+  async function submitBooking(payload) {
+    const res = await fetch(`${API}/bookings`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
     });
+    const data = await res.json().catch(() => ({}));
+    if (res.status === 201) return data;
+    const err = new Error(data.error || `HTTP ${res.status}`);
+    err.status = res.status;
+    err.data = data;
+    throw err;
   }
 
   /* ---------- State ---------- */
@@ -84,6 +85,9 @@
     weekStart: firstWeek,
     slot: null,      // { date, time, practitioner }
     activeDay: null, // yyyy-mm-dd (mobile day tabs)
+    loading: false,  // fetching taken times for the shown week
+    loadError: false,
+    notice: null,    // translation key of the message above the calendar, e.g. "book.err.slotTaken"
   };
 
   const els = {
@@ -95,6 +99,7 @@
     todayBtn: $("week-today"),
     tabs: $("day-tabs"),
     grid: $("week-grid"),
+    notice: $("week-notice"),
     details: $("details-panel"),
     confirm: $("confirm-panel"),
     form: $("booking-form"),
@@ -142,7 +147,6 @@
       .filter((id) => (D.team.find((p) => p.id === id) || { days: [] }).days.includes(dow));
     if (!pids.length) return { status: "unstaffed", slots: [] };
 
-    const stored = loadBookings();
     const earliest = new Date(Date.now() + D.minNoticeHours * 3600000);
     const open = toMin(hours[0]);
     const close = toMin(hours[1]);
@@ -151,7 +155,7 @@
       const time = fromMin(m);
       const at = new Date(date.getFullYear(), date.getMonth(), date.getDate(), Math.floor(m / 60), m % 60);
       if (at < earliest) continue;
-      const pid = pids.find((id) => !isTaken(dateStr, time, id, t.duration, stored));
+      const pid = pids.find((id) => !overlapsBusy(dateStr, id, m, m + t.duration));
       if (pid) slots.push({ time, practitioner: pid });
     }
     return { status: slots.length ? "open" : "full", slots };
@@ -173,6 +177,16 @@
       els.tabs.innerHTML = "";
       els.grid.innerHTML = `<div class="empty-week" style="grid-column: 1 / -1;">
         <p>${tr("book.emptyPick")}</p></div>`;
+      return;
+    }
+
+    if (state.loading || state.loadError) {
+      els.tabs.innerHTML = "";
+      els.grid.innerHTML = state.loadError
+        ? `<div class="empty-week" style="grid-column: 1 / -1;">
+            <p>${tr("book.loadError")}</p>
+            <button type="button" class="btn btn--primary" data-action="retry">${tr("book.retry")}</button></div>`
+        : `<div class="empty-week" style="grid-column: 1 / -1;"><p>${tr("book.loading")}</p></div>`;
       return;
     }
 
@@ -255,33 +269,60 @@
     setStep(!t ? 1 : !state.slot ? 2 : 3);
   }
 
-  function refresh() {
-    renderWeek();
+  // Message above the calendar (e.g. "that time was just taken"); null hides it.
+  function renderNotice() {
+    els.notice.hidden = !state.notice;
+    els.notice.innerHTML = state.notice ? `<h3>${tr(state.notice)}</h3>` : "";
+  }
+  function setNotice(key) {
+    state.notice = key;
+    renderNotice();
+  }
+
+  // Renders right away, fetches the shown week's taken times, then renders again.
+  // Only the newest request may update the page (fast clicking between weeks).
+  let loadSeq = 0;
+  async function refresh() {
     renderSummary();
     els.details.hidden = !state.slot;
+    if (!currentTreatment()) { renderWeek(); return; }
+    const seq = ++loadSeq;
+    const ws = state.weekStart;
+    const slow = setTimeout(() => { if (seq === loadSeq) { state.loading = true; renderWeek(); } }, 200);
+    let failed = false;
+    try { await loadWeek(ws); } catch (err) { failed = true; }
+    clearTimeout(slow);
+    if (seq !== loadSeq) return;
+    state.loading = false;
+    state.loadError = failed;
+    renderWeek();
   }
 
   /* ---------- Events ---------- */
   els.treatment.addEventListener("change", () => {
     state.treatment = els.treatment.value || null;
     state.slot = null;
+    setNotice(null);
     fillPractitionerSelect();
     refresh();
   });
   els.practitioner.addEventListener("change", () => {
     state.practitioner = els.practitioner.value;
     state.slot = null;
+    setNotice(null);
     refresh();
   });
 
-  const goWeek = (ws) => { state.weekStart = ws; state.activeDay = null; renderWeek(); };
+  const goWeek = (ws) => { state.weekStart = ws; state.activeDay = null; refresh(); };
   els.prev.addEventListener("click", () => goWeek(addDays(state.weekStart, -7)));
   els.next.addEventListener("click", () => goWeek(addDays(state.weekStart, 7)));
   els.todayBtn.addEventListener("click", () => goWeek(firstWeek));
   els.grid.addEventListener("click", (e) => {
     if (e.target.closest("[data-action='next-week']")) { goWeek(addDays(state.weekStart, 7)); els.next.focus(); return; }
+    if (e.target.closest("[data-action='retry']")) { refresh(); return; }
     const btn = e.target.closest(".slot");
     if (!btn || btn.disabled) return;
+    setNotice(null);
     state.slot = { date: btn.dataset.date, time: btn.dataset.time, practitioner: btn.dataset.pid };
     els.grid.querySelectorAll(".slot[aria-pressed='true']").forEach((b) => b.setAttribute("aria-pressed", "false"));
     btn.setAttribute("aria-pressed", "true");
@@ -385,12 +426,14 @@
         practitioner: state.slot.practitioner,
         date: state.slot.date,
         time: state.slot.time,
-        duration: t.duration,
         name: fields.name.el.value.trim(),
         phone: fields.phone.el.value.trim(),
         email: fields.email.el.value.trim(),
         message: $("f-message").value.trim(),
+        consent: fields.consent.el.checked,
+        lang: I18N.lang,
       });
+      forgetWeek(state.slot.date); // the booked time is now taken
       lastConfirmation = {
         treatment: t.id,
         practitioner: state.slot.practitioner,
@@ -406,9 +449,18 @@
       setStep(3, true);
       $("confirm-title").focus();
     } catch (err) {
-      summaryState = { failed: true };
-      renderErrorSummary();
-      els.errorSummary.focus();
+      if (err.status === 409 || (err.data && err.data.error === "invalid_slot")) {
+        // Someone else got the time first (or it's now too close to book): back to step 2.
+        forgetWeek(state.slot.date);
+        state.slot = null;
+        setNotice("book.err.slotTaken");
+        await refresh();
+        els.notice.focus();
+      } else {
+        summaryState = { failed: true };
+        renderErrorSummary();
+        els.errorSummary.focus();
+      }
     } finally {
       els.submit.disabled = false;
       els.submit.textContent = tr("book.submit");
@@ -439,6 +491,7 @@
     fillPractitionerSelect();
     renderWeek();
     renderSummary();
+    renderNotice();
     if (!els.confirm.hidden) { setStep(3, true); renderConfirmation(); }
     Object.keys(fields).forEach((k) => { if (fields[k].el.getAttribute("aria-invalid") === "true") validateField(k); });
     if (!els.errorSummary.hidden) renderErrorSummary();
