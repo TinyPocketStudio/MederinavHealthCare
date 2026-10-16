@@ -1,0 +1,24 @@
+# Mederinav booking API – Cloudflare Worker
+# Nothing in this file is secret. Keys (email, spam check) are added later as
+# encrypted Cloudflare secrets and never committed (see README "Booking backend").
+name = "mederinav-booking"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+workers_dev = false
+
+# Cloudflare creates the DNS record and certificate for this address on deploy.
+routes = [{ pattern = "api.mederinavhealthcare.se", custom_domain = true }]
+
+[vars]
+# Websites allowed to call the API from a browser. Local testing adds localhost via .dev.vars.
+ALLOWED_ORIGINS = "https://www.mederinavhealthcare.se,https://mederinavhealthcare.se"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mederinav-bookings"
+# From Cloudflare → Storage & databases → D1. An identifier, not a secret.
+database_id = "e5c60deb-4a68-46fc-8901-f0085b2f5e17"
+migrations_dir = "migrations"
+
+[observability]
+enabled = true

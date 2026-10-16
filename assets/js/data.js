@@ -37,6 +37,11 @@ window.MEDERINAV = {
   bookingWeeksAhead: 8,  // Hur många veckor framåt man kan boka
   minNoticeHours: 2,     // Minsta framförhållning för en bokning
 
+  // Bokningssystemet (mappen booking-api/). När sidan öppnas lokalt (localhost)
+  // används automatiskt testservern på http://localhost:8787 i stället.
+  // OBS: bokningssystemet läser också den här filen – ändringar här gäller båda.
+  booking: { apiBase: "https://api.mederinavhealthcare.se" },
+
   // Säsongskampanj – rabatterade behandlingar visas med kampanjpris.
   campaign: {
     name: "Höstkampanj",
