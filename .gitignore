@@ -1,0 +1,5 @@
+# Booking backend (booking-api/)
+booking-api/node_modules/
+booking-api/.wrangler/
+# Local secrets for `npm run dev` – never commit
+booking-api/.dev.vars
