@@ -12,6 +12,16 @@ routes = [{ pattern = "api.mederinavhealthcare.se", custom_domain = true }]
 [vars]
 # Websites allowed to call the API from a browser. Local testing adds localhost via .dev.vars.
 ALLOWED_ORIGINS = "https://www.mederinavhealthcare.se,https://mederinavhealthcare.se"
+# Booking emails (domain authenticated in Brevo, mailboxes at Loopia).
+MAIL_FROM = "noreply@mederinavhealthcare.se"
+MAIL_FROM_NAME = "Mederinav Health Care"
+# Where patients' replies to their confirmation go.
+MAIL_REPLY_TO = "kundservice@mederinavhealthcare.se"
+
+# Set in Cloudflare → Worker → Settings → Variables and secrets (type "Secret"), never here:
+#   BREVO_API_KEY        Brevo → Settings → SMTP & API → API keys
+#   CLINIC_NOTIFY_EMAIL  who gets "Ny bokning" emails (bokning@mederinavhealthcare.se);
+#                        several addresses separated by commas
 
 [[d1_databases]]
 binding = "DB"

@@ -74,11 +74,26 @@ The backend checks everything again: the treatment, the staff member, their work
 
 **One source of truth.** The backend reads treatments, durations, staff days and opening hours straight from `assets/js/data.js`. After editing that file, push to GitHub: both the website and the backend update, the backend through the Cloudflare ↔ GitHub connection.
 
-**No secrets in the repo.** Keys for later stages (email, spam check) are stored as encrypted secrets in Cloudflare. For local testing they go in `booking-api/.dev.vars`, which Git ignores. Patient data only lives in the D1 database, never in the repo.
+**No secrets in the repo.** Keys are stored as encrypted secrets in Cloudflare. For local testing they go in `booking-api/.dev.vars`, which Git ignores. Patient data only lives in the D1 database, never in the repo.
 
-Still to come: confirmation emails (stage 2), a staff page for phone bookings, cancellations and time off (stage 3), and a spam check plus privacy policy (stage 4).
+**Emails.** After each booking, `booking-api/src/email.js` sends two emails through Brevo (an EU email service), from `noreply@mederinavhealthcare.se`:
+- **To the patient:** a confirmation in Swedish or Spanish, matching the site's language when they booked. Replies go to `kundservice@mederinavhealthcare.se`.
+- **To the clinic** (`CLINIC_NOTIFY_EMAIL`, i.e. `bokning@mederinavhealthcare.se`): "Ny bokning" with all details. Replying writes directly to the patient.
 
-> ⚠️ Until stage 2 is done, no email is sent, even though the confirmation text says one will be.
+The mailboxes are at Loopia. The domain's DNS is at Cloudflare, so Cloudflare holds the MX records that point mail to Loopia (`mailcluster.loopia.se` priority 10, `mail2.loopia.se` priority 20), plus one combined SPF record.
+
+The emails are sent in the background: a booking is saved even if an email fails, and failures show up in Cloudflare → Worker → **Observability / Logs**.
+
+Settings in Cloudflare → Workers & Pages → `mederinav-booking` → **Settings → Variables and secrets** (type **Secret**):
+
+| Name | What |
+|---|---|
+| `BREVO_API_KEY` | Brevo → Settings → SMTP & API → API keys |
+| `CLINIC_NOTIFY_EMAIL` | Who gets "Ny bokning" emails. Several addresses separated by commas. Change it any time; no push needed |
+
+The sender, its name and the reply address are in `booking-api/wrangler.toml` (`MAIL_FROM`, `MAIL_FROM_NAME`, `MAIL_REPLY_TO`). Locally, without a Brevo key, emails are only printed in the terminal.
+
+Still to come: a staff page for phone bookings, cancellations and time off (stage 3), and a spam check plus privacy policy (stage 4).
 
 Deep links work: `boka.html?behandling=fillers-lappar` preselects a treatment, and `boka.html?behandlare=lorena` preselects a staff member.
 

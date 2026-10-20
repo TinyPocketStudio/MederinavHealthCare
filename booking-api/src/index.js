@@ -2,11 +2,12 @@
  * Mederinav booking API (Cloudflare Worker), served at https://api.mederinavhealthcare.se
  *
  *   GET  /availability?from=YYYY-MM-DD&to=YYYY-MM-DD   taken times (no personal data)
- *   POST /bookings                                     create a booking
+ *   POST /bookings                                     create a booking (+ confirmation emails)
  *
  * Everything is re-checked here; the browser is never trusted.
  */
 import { parseDate, validateSlot } from "./schedule.js";
+import { sendBookingEmails } from "./email.js";
 
 const MAX_RANGE_DAYS = 14;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -60,7 +61,7 @@ async function availability(url, env, cors) {
   return json({ busy: [...booked.results, ...blocked.results] }, 200, cors);
 }
 
-async function createBooking(request, env, cors) {
+async function createBooking(request, env, ctx, cors) {
   let body;
   try { body = await request.json(); } catch { body = null; }
   if (!body || typeof body !== "object") return json({ error: "invalid", fields: ["body"] }, 400, cors);
@@ -108,6 +109,21 @@ async function createBooking(request, env, cors) {
         input.name, input.phone, input.email, input.message, input.lang, slot.end
       ).run();
       if (!result.meta.changes) return json({ error: "slot_taken" }, 409, cors);
+      // Emails go out in the background: the patient gets the booking number right away,
+      // and an email problem can never undo a saved booking.
+      ctx.waitUntil(sendBookingEmails(env, {
+        reference,
+        treatmentId: input.treatment,
+        practitionerId: input.practitioner,
+        date: input.date,
+        time: input.time,
+        startMin: slot.start,
+        name: input.name,
+        phone: input.phone,
+        email: input.email,
+        message: input.message,
+        lang: input.lang,
+      }).catch((err) => console.error("Booking emails failed:", err)));
       return json({ reference }, 201, cors);
     } catch (err) {
       // Extremely unlikely: the random reference already exists. Try a new one.
@@ -118,7 +134,7 @@ async function createBooking(request, env, cors) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const cors = corsHeaders(request, env);
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
@@ -128,7 +144,7 @@ export default {
         return request.method === "GET" ? await availability(url, env, cors) : json({ error: "method" }, 405, cors);
       }
       if (url.pathname === "/bookings") {
-        return request.method === "POST" ? await createBooking(request, env, cors) : json({ error: "method" }, 405, cors);
+        return request.method === "POST" ? await createBooking(request, env, ctx, cors) : json({ error: "method" }, 405, cors);
       }
       return json({ error: "not_found" }, 404, cors);
     } catch (err) {

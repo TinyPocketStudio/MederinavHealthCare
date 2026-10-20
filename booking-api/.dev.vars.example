@@ -1,3 +1,10 @@
 # Copy this file to .dev.vars for local testing (`npm run dev`).
 # .dev.vars is ignored by Git – put local test keys there, never in wrangler.toml.
 ALLOWED_ORIGINS="http://localhost:5173,http://127.0.0.1:5173"
+
+# Who gets the "Ny bokning" email locally.
+CLINIC_NOTIFY_EMAIL="clinic@example.com"
+
+# Leave empty to only print emails in the terminal instead of sending them.
+# To really send test emails, paste a Brevo API key here (never commit it).
+BREVO_API_KEY=""
