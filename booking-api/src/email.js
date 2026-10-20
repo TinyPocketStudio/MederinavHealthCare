@@ -29,6 +29,10 @@ const TEXT = {
     address: "Adress", map: "Öppna i kartan",
     cancel: ({ phone }) => `Behöver du avboka eller flytta tiden? Avbokning är kostnadsfri senast 24 timmar innan. Ring oss på ${phone} eller svara på det här mejlet.`,
     outro: "Varmt välkommen!",
+    cancelledSubject: ({ treatment, date, time }) => `Avbokad: ${treatment}, ${date} kl. ${time}`,
+    cancelledIntro: "Din tid hos Mederinav Health Care har avbokats:",
+    rebook: ({ phone }) => `Vill du boka en ny tid? Boka på www.mederinavhealthcare.se/boka.html, ring oss på ${phone} eller svara på det här mejlet.`,
+    regards: "Vänliga hälsningar,",
   },
   es: {
     subject: ({ treatment, date, time }) => `Confirmación de reserva: ${treatment}, ${date} a las ${time}`,
@@ -38,6 +42,10 @@ const TEXT = {
     address: "Dirección", map: "Abrir en el mapa",
     cancel: ({ phone }) => `¿Necesitas cancelar o cambiar la cita? La cancelación es gratuita hasta 24 horas antes. Llámanos al ${phone} o responde a este correo.`,
     outro: "¡Te esperamos!",
+    cancelledSubject: ({ treatment, date, time }) => `Cita cancelada: ${treatment}, ${date} a las ${time}`,
+    cancelledIntro: "Tu cita en Mederinav Health Care ha sido cancelada:",
+    rebook: ({ phone }) => `¿Quieres reservar una nueva cita? Reserva en www.mederinavhealthcare.se/boka.html, llámanos al ${phone} o responde a este correo.`,
+    regards: "Saludos cordiales,",
   },
 };
 
@@ -82,6 +90,30 @@ ${detailsTable(rows)}
   return { subject: T.subject({ treatment: b.treatmentName, date: b.dateLong, time: b.time }), html, text };
 }
 
+function cancellationEmail(b) {
+  const T = TEXT[b.lang] || TEXT.sv;
+  const rows = [
+    [T.treatment, `${b.treatmentName} (${b.duration} min)`],
+    [T.practitioner, b.practitionerName],
+    [T.date, b.dateLong],
+    [T.time, `${b.time}–${b.endTime}`],
+    [T.reference, b.reference],
+  ];
+  const phone = DATA.clinic.phoneDisplay;
+  const html = layout(`
+<p style="margin:0 0 8px">${esc(T.hello(b.first))}</p>
+<p style="margin:0">${esc(T.cancelledIntro)}</p>
+${detailsTable(rows)}
+<p style="margin:16px 0">${esc(T.rebook({ phone }))}</p>
+<p style="margin:0">${esc(T.regards)}<br>Mederinav Health Care</p>`);
+  const text = [
+    T.hello(b.first), "", T.cancelledIntro, "",
+    ...rows.map(([k, v]) => `${k}: ${v}`), "",
+    T.rebook({ phone }), "", T.regards, "Mederinav Health Care",
+  ].join("\n");
+  return { subject: T.cancelledSubject({ treatment: b.treatmentName, date: b.dateLong, time: b.time }), html, text };
+}
+
 function clinicEmail(b) {
   const rows = [
     ["Datum", b.dateLongSv],
@@ -124,12 +156,12 @@ async function send(env, { to, replyTo, subject, html, text, tag }) {
   if (!res.ok) throw new Error(`Brevo ${res.status}: ${await res.text()}`);
 }
 
-/** Sends the patient confirmation and the clinic notification. Errors are logged, never thrown to the patient. */
-export async function sendBookingEmails(env, booking) {
+// Everything the templates need about one booking, in the patient's language.
+function describe(booking) {
   const treatment = allTreatments().find((t) => t.id === booking.treatmentId);
   const person = DATA.team.find((p) => p.id === booking.practitionerId);
   const lang = booking.lang === "es" ? "es" : "sv";
-  const b = {
+  return {
     ...booking,
     lang,
     first: booking.name.split(/\s+/)[0],
@@ -142,18 +174,30 @@ export async function sendBookingEmails(env, booking) {
     endTime: fromMin(booking.startMin + treatment.duration),
     price: kr(priceOf(treatment), lang),
   };
+}
+
+const patientReplyTo = (env) => ({ email: env.MAIL_REPLY_TO || DATA.clinic.email, name: DATA.clinic.name });
+
+/**
+ * Sends the patient confirmation and (unless clinic = false, e.g. for phone bookings made
+ * by staff) the clinic notification. Errors are logged, never thrown to the patient.
+ */
+export async function sendBookingEmails(env, booking, { clinic = true } = {}) {
+  const b = describe(booking);
 
   const jobs = [];
   const patient = patientEmail(b);
   jobs.push(send(env, {
     to: [{ email: b.email, name: b.name }],
-    replyTo: { email: env.MAIL_REPLY_TO || DATA.clinic.email, name: DATA.clinic.name },
+    replyTo: patientReplyTo(env),
     ...patient,
     tag: "booking-confirmation",
   }));
 
-  const clinicTo = (env.CLINIC_NOTIFY_EMAIL || "").split(",").map((s) => s.trim()).filter(Boolean);
-  if (clinicTo.length) {
+  const clinicTo = clinic ? (env.CLINIC_NOTIFY_EMAIL || "").split(",").map((s) => s.trim()).filter(Boolean) : [];
+  if (!clinic) {
+    // Staff made this booking themselves – no "Ny bokning" email needed.
+  } else if (clinicTo.length) {
     const clinic = clinicEmail(b);
     jobs.push(send(env, {
       to: clinicTo.map((email) => ({ email })),
@@ -167,4 +211,14 @@ export async function sendBookingEmails(env, booking) {
 
   const results = await Promise.allSettled(jobs);
   results.forEach((r) => { if (r.status === "rejected") console.error("Email failed:", r.reason && r.reason.message); });
+}
+
+/** Tells the patient their booking was cancelled (sent when staff tick "send email" when cancelling). */
+export async function sendCancellationEmail(env, booking) {
+  const b = describe(booking);
+  try {
+    await send(env, { to: [{ email: b.email, name: b.name }], replyTo: patientReplyTo(env), ...cancellationEmail(b), tag: "booking-cancelled" });
+  } catch (err) {
+    console.error("Cancellation email failed:", err.message);
+  }
 }

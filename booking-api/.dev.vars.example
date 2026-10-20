@@ -8,3 +8,7 @@ CLINIC_NOTIFY_EMAIL="clinic@example.com"
 # Leave empty to only print emails in the terminal instead of sending them.
 # To really send test emails, paste a Brevo API key here (never commit it).
 BREVO_API_KEY=""
+
+# Local testing of the staff page (/admin/) without Cloudflare Access.
+# Only works on localhost – it has no effect on the live site.
+ADMIN_DEV_EMAIL="christian@mederinavhealthcare.se"

@@ -22,6 +22,14 @@ MAIL_REPLY_TO = "kundservice@mederinavhealthcare.se"
 #   BREVO_API_KEY        Brevo → Settings → SMTP & API → API keys
 #   CLINIC_NOTIFY_EMAIL  who gets "Ny bokning" emails (bokning@mederinavhealthcare.se);
 #                        several addresses separated by commas
+#   ACCESS_TEAM_DOMAIN   staff page login: "<team name>.cloudflareaccess.com"
+#   ACCESS_AUD           staff page login: Zero Trust → Access → Applications → the staff page
+#                        → "Application Audience (AUD) Tag"
+# Until both ACCESS_* are set, the staff API refuses everyone.
+
+# The staff page (public/admin/) – served at https://api.mederinavhealthcare.se/admin/
+[assets]
+directory = "./public"
 
 [[d1_databases]]
 binding = "DB"

@@ -32,9 +32,12 @@ export function clinicNow(now = new Date()) {
 
 /**
  * Returns { start, end } in minutes if the slot can be booked, otherwise { error }.
- * error: treatment | practitioner | date | time | closed | too_soon | too_far
+ * error: treatment | practitioner | date | time | closed | past | too_soon | too_far
+ *
+ * staff = true (phone bookings from the staff page): no minimum notice and no booking
+ * window, but still within opening hours and never in the past.
  */
-export function validateSlot({ treatmentId, practitionerId, date, time }, now = new Date()) {
+export function validateSlot({ treatmentId, practitionerId, date, time }, { staff = false, now = new Date() } = {}) {
   const treatment = allTreatments().find((t) => t.id === treatmentId);
   if (!treatment) return { error: "treatment" };
   const person = DATA.team.find((p) => p.id === practitionerId);
@@ -54,9 +57,10 @@ export function validateSlot({ treatmentId, practitionerId, date, time }, now = 
   if (start < open || end > close || (start - open) % DATA.slotMinutes !== 0) return { error: "time" };
 
   const nowLocal = clinicNow(now);
-  if (dayNumber(day) * 1440 + start < nowLocal.day * 1440 + nowLocal.minutes + DATA.minNoticeHours * 60) {
-    return { error: "too_soon" };
-  }
+  const slotKey = dayNumber(day) * 1440 + start;
+  const nowKey = nowLocal.day * 1440 + nowLocal.minutes;
+  if (staff) return slotKey < nowKey ? { error: "past" } : { start, end };
+  if (slotKey < nowKey + DATA.minNoticeHours * 60) return { error: "too_soon" };
   // Same window as the calendar: this week plus (bookingWeeksAhead - 1) more weeks, Monday–Sunday.
   const weekday = new Date(nowLocal.day * DAY_MS).getUTCDay();
   const firstMonday = nowLocal.day - ((weekday + 6) % 7);

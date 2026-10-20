@@ -93,7 +93,28 @@ Settings in Cloudflare → Workers & Pages → `mederinav-booking` → **Setting
 
 The sender, its name and the reply address are in `booking-api/wrangler.toml` (`MAIL_FROM`, `MAIL_FROM_NAME`, `MAIL_REPLY_TO`). Locally, without a Brevo key, emails are only printed in the terminal.
 
-Still to come: a staff page for phone bookings, cancellations and time off (stage 3), and a spam check plus privacy policy (stage 4).
+## Staff page
+
+Staff manage bookings at **https://api.mederinavhealthcare.se/admin/** (Swedish, works on phones):
+
+- **The week's bookings:** all bookings per week, with a filter per staff member. "Visa avbokade" also shows cancelled ones.
+- **Ny bokning:** add a phone booking.
+  - Short notice and more than 8 weeks ahead are allowed; past times, closed days and taken times are not.
+  - Optionally emails the patient a confirmation. The clinic gets no "Ny bokning" email for these.
+- **Avboka:** cancel a booking, optionally with a cancellation email to the patient. The time becomes bookable again.
+- **Blockera tid:** block time for one person or the whole clinic, for one or several days, as a whole day or a time range (vacation, sick days, lunch).
+  - Blocked time can't be booked online.
+  - Existing bookings in that time are *not* cancelled automatically; the page lists them so staff can contact the patients.
+
+**Login** is Cloudflare Access (Zero Trust). Staff type their own email and get a one-time code; there are no passwords.
+- **Who may log in:** the email list in the Access application's policy (Cloudflare → Zero Trust → Access → Applications).
+- **Second check:** the backend also verifies the Access login itself (`booking-api/src/auth.js`, using the Cloudflare secrets `ACCESS_TEAM_DOMAIN` and `ACCESS_AUD`). If those are empty, it refuses everyone.
+
+The page itself is in `booking-api/public/admin/` and its API in `booking-api/src/admin.js`. Every phone booking, cancellation and block records which staff email did it.
+
+For local testing, `ADMIN_DEV_EMAIL` in `booking-api/.dev.vars` logs you in as that address. It only works on `localhost`.
+
+Still to come: a spam check plus privacy policy (stage 4).
 
 Deep links work: `boka.html?behandling=fillers-lappar` preselects a treatment, and `boka.html?behandlare=lorena` preselects a staff member.
 

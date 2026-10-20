@@ -3,16 +3,18 @@
  *
  *   GET  /availability?from=YYYY-MM-DD&to=YYYY-MM-DD   taken times (no personal data)
  *   POST /bookings                                     create a booking (+ confirmation emails)
+ *   /admin/                                            staff page (behind Cloudflare Access)
+ *   /admin/api/*                                       staff API, see admin.js
  *
  * Everything is re-checked here; the browser is never trusted.
  */
 import { parseDate, validateSlot } from "./schedule.js";
 import { sendBookingEmails } from "./email.js";
+import { insertBooking } from "./store.js";
+import { handleAdmin } from "./admin.js";
 
 const MAX_RANGE_DAYS = 14;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-// No 0/O or 1/I so references are easy to read out over the phone.
-const REF_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
 function json(body, status, cors) {
   return new Response(JSON.stringify(body), {
@@ -35,11 +37,6 @@ function corsHeaders(request, env) {
     });
   }
   return headers;
-}
-
-function newReference() {
-  const bytes = crypto.getRandomValues(new Uint8Array(6));
-  return "MH-" + Array.from(bytes, (b) => REF_ALPHABET[b % REF_ALPHABET.length]).join("");
 }
 
 async function availability(url, env, cors) {
@@ -90,47 +87,29 @@ async function createBooking(request, env, ctx, cors) {
   const slot = validateSlot({ treatmentId: input.treatment, practitionerId: input.practitioner, date: input.date, time: input.time });
   if (slot.error) return json({ error: "invalid_slot", reason: slot.error }, 400, cors);
 
-  // One statement = atomic: the row is only inserted if nothing overlaps at that moment,
-  // so two people clicking the same time can never both get it.
-  for (let attempt = 0; attempt < 3; attempt++) {
-    const reference = newReference();
-    try {
-      const result = await env.DB.prepare(
-        `INSERT INTO bookings (reference, treatment_id, practitioner_id, date, start_min, duration, name, phone, email, message, lang)
-         SELECT ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11
-          WHERE NOT EXISTS (SELECT 1 FROM bookings
-                             WHERE practitioner_id = ?3 AND date = ?4 AND status = 'confirmed'
-                               AND start_min < ?12 AND start_min + duration > ?5)
-            AND NOT EXISTS (SELECT 1 FROM blocks
-                             WHERE (practitioner_id = ?3 OR practitioner_id IS NULL) AND date = ?4
-                               AND start_min < ?12 AND end_min > ?5)`
-      ).bind(
-        reference, input.treatment, input.practitioner, input.date, slot.start, slot.end - slot.start,
-        input.name, input.phone, input.email, input.message, input.lang, slot.end
-      ).run();
-      if (!result.meta.changes) return json({ error: "slot_taken" }, 409, cors);
-      // Emails go out in the background: the patient gets the booking number right away,
-      // and an email problem can never undo a saved booking.
-      ctx.waitUntil(sendBookingEmails(env, {
-        reference,
-        treatmentId: input.treatment,
-        practitionerId: input.practitioner,
-        date: input.date,
-        time: input.time,
-        startMin: slot.start,
-        name: input.name,
-        phone: input.phone,
-        email: input.email,
-        message: input.message,
-        lang: input.lang,
-      }).catch((err) => console.error("Booking emails failed:", err)));
-      return json({ reference }, 201, cors);
-    } catch (err) {
-      // Extremely unlikely: the random reference already exists. Try a new one.
-      if (attempt < 2 && String(err).includes("UNIQUE")) continue;
-      throw err;
-    }
-  }
+  const reference = await insertBooking(env, {
+    treatmentId: input.treatment, practitionerId: input.practitioner, date: input.date,
+    start: slot.start, end: slot.end,
+    name: input.name, phone: input.phone, email: input.email, message: input.message, lang: input.lang,
+  });
+  if (!reference) return json({ error: "slot_taken" }, 409, cors);
+
+  // Emails go out in the background: the patient gets the booking number right away,
+  // and an email problem can never undo a saved booking.
+  ctx.waitUntil(sendBookingEmails(env, {
+    reference,
+    treatmentId: input.treatment,
+    practitionerId: input.practitioner,
+    date: input.date,
+    time: input.time,
+    startMin: slot.start,
+    name: input.name,
+    phone: input.phone,
+    email: input.email,
+    message: input.message,
+    lang: input.lang,
+  }).catch((err) => console.error("Booking emails failed:", err)));
+  return json({ reference }, 201, cors);
 }
 
 export default {
@@ -140,6 +119,9 @@ export default {
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
 
     try {
+      // Staff page API (the page itself, /admin/, is a static file in public/admin/).
+      if (url.pathname.startsWith("/admin/api/")) return await handleAdmin(request, env, ctx, url);
+
       if (url.pathname === "/availability") {
         return request.method === "GET" ? await availability(url, env, cors) : json({ error: "method" }, 405, cors);
       }
