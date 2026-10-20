@@ -41,13 +41,13 @@ Every placeholder shows its own file name and recommended size, so you can see w
 | `logo/logo.svg` | Header and footer on every page | ~280×64 (wide) |
 | `logo/logo-mark.svg`, `logo/logo-light.svg` | Extras: symbol only, and a white version | |
 | `logo/favicon.svg` | Browser tab | square |
-| `images/hero-clinic.svg` | Home hero (arch) | 800×1000 (4:5) |
+| `images/hero-clinic.jpg` | Home hero (arch) | 800×1000 (4:5) |
 | `images/treatment-medicinskt/fillers/botox/fotvard.svg` | Treatment circles on home, icons on Behandlingar | 600×600 (1:1) |
 | `images/campaign-season.svg` | Campaign section | 900×700 |
 | `images/gallery-01…04-before/after.svg` | Before/after gallery | 800×600 (4:3); before and after must match |
-| `images/team-christian-navarro.svg`, `team-lorena-munoz.svg` | Home and Om oss | 600×750 (4:5) |
-| `images/about-clinic.svg` | Om oss | 1200×800 (3:2) |
-| `images/visit-clinic-street.svg` | "Öppettider" | 600×900 (2:3) |
+| `images/team-christian-navarro.jpg`, `team-lorena-munoz.svg` | Home and Om oss | 600×750 (4:5) |
+| `images/about-clinic.jpg` | Om oss | 1200×800 (3:2) |
+| `images/visit-clinic-street.jpg` | "Öppettider" | 600×900 (2:3) |
 
 **Easiest way to replace an image:** save your photo (`.jpg` / `.webp`) in `assets/images/` and update the file name in the HTML. To find every place an image is used, search the project for its file name (for example `hero-clinic`). The four treatment images are referenced by category id in `assets/js/main.js` (`treatment-${cat.id}.svg`), so if you switch to `.jpg`, change the extension there too.
 
@@ -61,7 +61,7 @@ All images use `object-fit: cover`, so photos with slightly different proportion
 - **Before/after cases:** `index.html` → `#galleri`. Copy a `<figure class="ba">` block to add a case. `data-category` controls which filter it belongs to.
 - **Staff profiles (education, experience, etc.):** `om-oss.html`, with a shorter version in `index.html` → `#lakare`.
 
-> ⚠️ All bios, education entries, years, statistics ("15+ år", "3 000+ behandlingar"), prices and transport details are **placeholder text**. Replace them with real information before launch.
+> ⚠️ All bios, education entries, years, statistics ("30+ år", "3 000+ behandlingar"), prices and transport details are **placeholder text**. Replace them with real information before launch.
 
 ## Booking backend
 

@@ -13,7 +13,7 @@ window.MEDERINAV = {
     name: "Mederinav Health Care",
     phone: "+46737515457",
     phoneDisplay: "073-751 54 57",
-    email: "mederinav@gmail.com",
+    email: "kundservice@mederinavhealthcare.se",
     address: "Sjödalsvägen 18, 141 47 Huddinge",
   },
 
@@ -25,12 +25,12 @@ window.MEDERINAV = {
 
   // Öppettider per veckodag: [öppnar, stänger] eller null = stängt.
   hours: {
-    1: ["09:00", "17:00"],
-    2: ["09:00", "17:00"],
-    3: ["09:00", "19:00"],
-    4: ["09:00", "17:00"],
+    1: ["09:00", "16:00"],
+    2: ["09:00", "16:00"],
+    3: ["09:00", "16:00"],
+    4: ["09:00", "16:00"],
     5: ["09:00", "16:00"],
-    6: ["10:00", "14:00"],
+    6: null,
     0: null,
   },
   slotMinutes: 30,       // Intervall mellan bokningsbara starttider
