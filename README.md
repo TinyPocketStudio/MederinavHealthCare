@@ -116,7 +116,9 @@ For local testing, `ADMIN_DEV_EMAIL` in `booking-api/.dev.vars` logs you in as t
 
 Still to come: a spam check plus privacy policy (stage 4).
 
-Deep links work: `boka.html?behandling=fillers-lappar` preselects a treatment, and `boka.html?behandlare=lorena` preselects a staff member.
+Deep links work: `/boka?behandling=fillers-lappar` preselects a treatment, and `/boka?behandlare=lorena` preselects a staff member.
+
+**Clean addresses.** All links use addresses without `.html` (`/behandlingar`, `/om-oss`, `/boka`, `/`). GitHub Pages serves `behandlingar.html` for `/behandlingar` automatically, and the old `.html` addresses keep working. Each page has a `<link rel="canonical">` so search engines show the clean address.
 
 ## Running locally
 

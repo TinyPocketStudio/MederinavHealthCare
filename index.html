@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title data-i18n="meta.home.title">Mederinav Health Care – Medicinsk estetik & fotvård i Huddinge</title>
   <meta name="description" content="Läkarledd klinik i Huddinge för medicinska behandlingar, fillers, botox och medicinsk fotvård. Boka tid online." data-i18n-attr="content:meta.home.desc">
+  <link rel="canonical" href="https://www.mederinavhealthcare.se/">
   <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,13 +24,13 @@
   <!-- ===== Header ===== -->
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="index.html">
+      <a class="brand" href="/">
         <img src="assets/logo/logo.svg" alt="Mederinav Health Care – startsida" data-i18n-attr="alt:brand.homeAlt" width="201" height="46">
       </a>
       <nav id="site-nav" class="site-nav" aria-label="Huvudmeny" data-i18n-attr="aria-label:nav.label">
         <ul class="nav-list">
-          <li><a href="behandlingar.html" data-i18n="nav.treatments">Behandlingar</a></li>
-          <li><a href="om-oss.html" data-i18n="nav.about">Om oss</a></li>
+          <li><a href="/behandlingar" data-i18n="nav.treatments">Behandlingar</a></li>
+          <li><a href="/om-oss" data-i18n="nav.about">Om oss</a></li>
           <li><a href="#oppettider" data-i18n="home.visit.hours">Öppettider</a></li>
         </ul>
         <div class="nav-lang">
@@ -45,7 +46,7 @@
           <button type="button" data-set-lang="sv" lang="sv" aria-label="Svenska" aria-pressed="true">SV</button>
           <button type="button" data-set-lang="es" lang="es" aria-label="Español" aria-pressed="false">ES</button>
         </div>
-        <a class="btn btn--primary header-cta" href="boka.html" data-i18n="cta.book">Boka tid</a>
+        <a class="btn btn--primary header-cta" href="/boka" data-i18n="cta.book">Boka tid</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Öppna meny">
           <svg class="icon icon-open" aria-hidden="true"><use href="#i-menu"/></svg>
           <svg class="icon icon-close" aria-hidden="true"><use href="#i-x"/></svg>
@@ -63,8 +64,8 @@
           <h1 id="hero-title" data-i18n="home.hero.title">Naturliga resultat, <span class="serif">i trygga händer.</span></h1>
           <p class="lead" data-i18n="home.hero.lead">Mederinav Health Care är en läkarledd klinik för medicinska behandlingar, estetiska injektioner och fotvård. Vi tar oss tid att lyssna – och behandlar bara när det är rätt för dig.</p>
           <div class="hero-actions">
-            <a class="btn btn--primary" href="boka.html"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> <span data-i18n="cta.book">Boka tid</span></a>
-            <a class="btn btn--ghost" href="behandlingar.html" data-i18n="home.hero.seeTreatments">Se behandlingar</a>
+            <a class="btn btn--primary" href="/boka"><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg> <span data-i18n="cta.book">Boka tid</span></a>
+            <a class="btn btn--ghost" href="/behandlingar" data-i18n="home.hero.seeTreatments">Se behandlingar</a>
           </div>
           <ul class="trust-list">
             <li><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg> <span data-i18n="home.trust.doctor">Legitimerad läkare</span></li>
@@ -98,28 +99,28 @@
             <h3 data-i18n="cat.medicinskt">Medicinska behandlingar</h3>
             <p data-i18n="home.cat.medicinskt">Läkarkonsultation, födelsemärkeskontroll och borttagning av hudförändringar.</p>
             <span class="from" data-from="medicinskt"></span>
-            <a class="link-arrow" href="behandlingar.html#medicinskt"><span data-i18n="home.cat.more.medicinskt">Läs mer <span class="visually-hidden">om medicinska behandlingar</span></span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="/behandlingar#medicinskt"><span data-i18n="home.cat.more.medicinskt">Läs mer <span class="visually-hidden">om medicinska behandlingar</span></span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </article>
           <article class="cat-card reveal">
             <div class="circle"><img src="assets/images/treatment-fillers.svg" alt="" width="600" height="600" loading="lazy"></div>
             <h3 data-i18n="cat.fillers">Fillers</h3>
             <p data-i18n="home.cat.fillers">Hyaluronsyra för läppar, kindben och käklinje – subtilt och naturligt.</p>
             <span class="from" data-from="fillers"></span>
-            <a class="link-arrow" href="behandlingar.html#fillers"><span data-i18n="home.cat.more.fillers">Läs mer <span class="visually-hidden">om fillers</span></span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="/behandlingar#fillers"><span data-i18n="home.cat.more.fillers">Läs mer <span class="visually-hidden">om fillers</span></span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </article>
           <article class="cat-card reveal">
             <div class="circle"><img src="assets/images/treatment-botox.svg" alt="" width="600" height="600" loading="lazy"></div>
             <h3 data-i18n="cat.botox">Botox</h3>
             <p data-i18n="home.cat.botox">Mjukar upp mimikrynkor i panna och kring ögon, samt behandlar svettningar.</p>
             <span class="from" data-from="botox"></span>
-            <a class="link-arrow" href="behandlingar.html#botox"><span data-i18n="home.cat.more.botox">Läs mer <span class="visually-hidden">om botox</span></span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="/behandlingar#botox"><span data-i18n="home.cat.more.botox">Läs mer <span class="visually-hidden">om botox</span></span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </article>
           <article class="cat-card reveal">
             <div class="circle"><img src="assets/images/treatment-fotvard.svg" alt="" width="600" height="600" loading="lazy"></div>
             <h3 data-i18n="cat.fotvard">Fotvård</h3>
             <p data-i18n="home.cat.fotvard">Medicinsk fotvård, nageltrång, liktornar och anpassad vård vid diabetes.</p>
             <span class="from" data-from="fotvard"></span>
-            <a class="link-arrow" href="behandlingar.html#fotvard"><span data-i18n="home.cat.more.fotvard">Läs mer <span class="visually-hidden">om fotvård</span></span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="/behandlingar#fotvard"><span data-i18n="home.cat.more.fotvard">Läs mer <span class="visually-hidden">om fotvård</span></span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </article>
         </div>
       </div>
@@ -142,7 +143,7 @@
               <!-- Fylls automatiskt med behandlingar som har campaignPrice i data.js -->
             </ul>
             <div class="campaign-actions">
-              <a class="btn btn--primary" href="boka.html" data-i18n="home.campaign.cta">Boka kampanjpris</a>
+              <a class="btn btn--primary" href="/boka" data-i18n="home.campaign.cta">Boka kampanjpris</a>
               <span class="campaign-note" data-i18n="home.campaign.note">Kampanjpriset gäller vid bokning under kampanjperioden.</span>
             </div>
           </div>
@@ -245,7 +246,7 @@
               <p>Varje behandling börjar med en noggrann medicinsk bedömning. Du får tydlig information om alternativ, förväntat resultat och eventuella risker, så att ditt beslut blir väl underbyggt.</p>
               <p>Med patientsäkerhet och medicinsk kvalitet i fokus är målet att varje patient ska känna sig trygg och väl omhändertagen.</p>
             </div>
-            <a class="link-arrow" href="om-oss.html#christian"><span data-i18n="home.christian.more">Läs mer om Christian</span> <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="/om-oss#christian"><span data-i18n="home.christian.more">Läs mer om Christian</span> <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </div>
         </div>
 
@@ -260,7 +261,7 @@
               <p>Hon har särskild erfarenhet av fotvård för patienter med diabetes, där förebyggande behandling och regelbunden uppföljning är viktiga för att minska risken för sår och andra komplikationer.</p>
               <p>Varje behandling utförs noggrant och med omsorg, anpassad efter dina behov och förutsättningar.</p>
             </div>
-            <a class="link-arrow" href="om-oss.html#lorena"><span data-i18n="home.lorena.more">Läs mer om Lorena</span> <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a class="link-arrow" href="/om-oss#lorena"><span data-i18n="home.lorena.more">Läs mer om Lorena</span> <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
           </div>
         </div>
       </div>
@@ -287,7 +288,7 @@
                 <h3><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> <span data-i18n="home.visit.questions">Frågor?</span></h3>
                 <p data-i18n="home.visit.contact">Ring oss på <a href="tel:+46737515457">073-751 54 57</a> eller mejla <a href="mailto:kundservice@mederinavhealthcare.se">kundservice@mederinavhealthcare.se</a>.</p>
               </div>
-              <a class="btn btn--primary" href="boka.html" style="margin-top: var(--s-5);" data-i18n="cta.book">Boka tid</a>
+              <a class="btn btn--primary" href="/boka" style="margin-top: var(--s-5);" data-i18n="cta.book">Boka tid</a>
             </div>
             <div class="reveal">
               <div class="info-block">
@@ -329,7 +330,7 @@
           <ul class="footer-links">
             <li><a href="mailto:kundservice@mederinavhealthcare.se"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg> kundservice@mederinavhealthcare.se</a></li>
             <li><a href="tel:+46737515457"><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg> 073-751 54 57</a></li>
-            <li><a href="index.html#oppettider"><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg> Sjödalsvägen 18</a></li>
+            <li><a href="/#oppettider"><svg class="icon" aria-hidden="true"><use href="#i-map-pin"/></svg> Sjödalsvägen 18</a></li>
           </ul>
         </div>
       </div>

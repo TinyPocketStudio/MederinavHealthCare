@@ -31,7 +31,7 @@ const TEXT = {
     outro: "Varmt välkommen!",
     cancelledSubject: ({ treatment, date, time }) => `Avbokad: ${treatment}, ${date} kl. ${time}`,
     cancelledIntro: "Din tid hos Mederinav Health Care har avbokats:",
-    rebook: ({ phone }) => `Vill du boka en ny tid? Boka på www.mederinavhealthcare.se/boka.html, ring oss på ${phone} eller svara på det här mejlet.`,
+    rebook: ({ phone }) => `Vill du boka en ny tid? Boka på www.mederinavhealthcare.se/boka, ring oss på ${phone} eller svara på det här mejlet.`,
     regards: "Vänliga hälsningar,",
   },
   es: {
@@ -44,7 +44,7 @@ const TEXT = {
     outro: "¡Te esperamos!",
     cancelledSubject: ({ treatment, date, time }) => `Cita cancelada: ${treatment}, ${date} a las ${time}`,
     cancelledIntro: "Tu cita en Mederinav Health Care ha sido cancelada:",
-    rebook: ({ phone }) => `¿Quieres reservar una nueva cita? Reserva en www.mederinavhealthcare.se/boka.html, llámanos al ${phone} o responde a este correo.`,
+    rebook: ({ phone }) => `¿Quieres reservar una nueva cita? Reserva en www.mederinavhealthcare.se/boka, llámanos al ${phone} o responde a este correo.`,
     regards: "Saludos cordiales,",
   },
 };

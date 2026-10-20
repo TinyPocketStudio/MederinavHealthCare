@@ -127,7 +127,9 @@
     const raw = a.getAttribute("href");
     if (!raw || raw.startsWith("#") || /^(mailto|tel):/i.test(raw)) return;
     const url = new URL(a.href, location.href);
-    if (url.origin !== location.origin || !/(\.html|\/)$/.test(url.pathname)) return;
+    // Our pages: "/", "/boka", "/om-oss" … (and old-style "/boka.html"). Not files like images or PDFs.
+    const isPage = /(\/|\.html)$/.test(url.pathname) || !/\.[a-z0-9]+$/i.test(url.pathname);
+    if (url.origin !== location.origin || !isPage) return;
     a.href = withLang(url.href).href;
   }
 

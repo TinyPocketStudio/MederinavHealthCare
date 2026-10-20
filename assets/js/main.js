@@ -242,7 +242,7 @@
                   <li>${icon("user")} ${it.practitioners.map(teamName).map(escapeHtml).join(", ")}</li>
                   <li>${icon("tag")} ${onSale ? `<del>${kr(it.price)}</del>&nbsp;${kr(it.campaignPrice)}` : kr(it.price)}</li>
                 </ul>
-                <a class="btn btn--primary" href="boka.html?behandling=${encodeURIComponent(it.id)}">${icon("calendar")} ${escapeHtml(t("treat.book", { name }))}</a>
+                <a class="btn btn--primary" href="/boka?behandling=${encodeURIComponent(it.id)}">${icon("calendar")} ${escapeHtml(t("treat.book", { name }))}</a>
               </div>
             </details>`;
             })
