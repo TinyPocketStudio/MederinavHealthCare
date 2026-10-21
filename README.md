@@ -73,6 +73,8 @@ The backend checks everything again: the treatment, the staff member, their work
 
 **Limit per person.** One person (same email or same phone number, however it's written) can have at most 2 upcoming bookings through the website; a third attempt is refused with "Du har redan bokade tider – ring oss". Staff phone bookings are never limited. Change the number in `MAX_UPCOMING_PER_PERSON` at the top of `booking-api/src/index.js`.
 
+**Bot check (Cloudflare Turnstile).** The booking form gets a short-lived token from Cloudflare that proves a real browser filled it in; the backend checks it with Cloudflare before saving. It is invisible for most visitors. The public site key is `booking.turnstileSiteKey` in `assets/js/data.js`; the secret key is the Cloudflare secret `TURNSTILE_SECRET`. Without that secret the check is switched off (the Worker log says so). Locally, Cloudflare's official test keys are used automatically.
+
 **One source of truth.** The backend reads treatments, durations, staff days and opening hours straight from `assets/js/data.js`. After editing that file, push to GitHub: both the website and the backend update, the backend through the Cloudflare ↔ GitHub connection.
 
 **No secrets in the repo.** Keys are stored as encrypted secrets in Cloudflare. For local testing they go in `booking-api/.dev.vars`, which Git ignores. Patient data only lives in the D1 database, never in the repo.

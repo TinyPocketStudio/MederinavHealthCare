@@ -39,6 +39,38 @@
   // When the site is opened from this computer (localhost), talk to the local test backend.
   const isLocal = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   const API = (isLocal ? "http://localhost:8787" : (D.booking || {}).apiBase || "").replace(/\/$/, "");
+
+  /* ---------- Bot check (Cloudflare Turnstile) ---------- */
+  // Invisible for most visitors; only suspicious ones get a checkbox. The site key is public (data.js);
+  // locally we use Cloudflare's official always-pass test key. No key = no bot check.
+  const TURNSTILE_KEY = isLocal ? "1x00000000000000000000AA" : (D.booking || {}).turnstileSiteKey || "";
+  let botWidget = null;
+  if (TURNSTILE_KEY) {
+    window.mederinavTurnstileReady = () => {
+      botWidget = window.turnstile.render("#turnstile", {
+        sitekey: TURNSTILE_KEY, appearance: "interaction-only", language: I18N.lang, action: "booking",
+      });
+    };
+    const s = document.createElement("script");
+    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=mederinavTurnstileReady";
+    s.async = true;
+    document.head.append(s);
+  }
+  // The invisible check takes a second or two – wait a little for the token if the visitor is quick.
+  async function getBotToken() {
+    if (!TURNSTILE_KEY) return "";
+    for (let i = 0; i < 40; i++) {
+      const token = botWidget !== null && window.turnstile ? window.turnstile.getResponse(botWidget) : "";
+      if (token) return token;
+      await new Promise((r) => setTimeout(r, 200));
+    }
+    return "";
+  }
+  // A token works only once, so get a fresh one after every attempt.
+  function resetBotCheck() {
+    if (botWidget !== null && window.turnstile) window.turnstile.reset(botWidget);
+  }
+
   const CACHE_MS = 60000;
   const weekCache = {}; // ymd(weekStart) → { busy: [{ p, date, start, end }], at }
 
@@ -361,13 +393,15 @@
   };
 
   // What the error summary currently shows, so it can be redrawn in another language.
-  let summaryState = null; // { errors: [keys] } | { failed: true } | { tooMany: n } | null
+  let summaryState = null; // { errors: [keys] } | { failed: true } | { tooMany: n } | { botCheck: true } | null
   let lastConfirmation = null;
 
   function renderErrorSummary() {
     if (!summaryState) { els.errorSummary.hidden = true; return; }
     if (summaryState.failed) {
       els.errorSummary.innerHTML = `<h3>${tr("book.failTitle")}</h3><p>${tr("book.failText", { phone: D.clinic.phoneDisplay })}</p>`;
+    } else if (summaryState.botCheck) {
+      els.errorSummary.innerHTML = `<h3>${tr("book.botTitle")}</h3><p>${tr("book.botText", { phone: D.clinic.phoneDisplay })}</p>`;
     } else if (summaryState.tooMany) {
       els.errorSummary.innerHTML = `<h3>${tr("book.tooManyTitle")}</h3><p>${tr("book.tooManyText", { n: summaryState.tooMany, phone: D.clinic.phoneDisplay })}</p>`;
     } else {
@@ -445,6 +479,7 @@
         message: $("f-message").value.trim(),
         consent: fields.consent.el.checked,
         lang: I18N.lang,
+        turnstileToken: await getBotToken(),
       });
       forgetWeek(state.slot.date); // the booked time is now taken
       lastConfirmation = {
@@ -474,12 +509,17 @@
         summaryState = { tooMany: err.data.max || 2 };
         renderErrorSummary();
         els.errorSummary.focus();
+      } else if (err.status === 403 && err.data && err.data.error === "bot_check") {
+        summaryState = { botCheck: true };
+        renderErrorSummary();
+        els.errorSummary.focus();
       } else {
         summaryState = { failed: true };
         renderErrorSummary();
         els.errorSummary.focus();
       }
     } finally {
+      resetBotCheck();
       els.submit.disabled = false;
       els.submit.textContent = tr("book.submit");
     }

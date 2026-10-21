@@ -1134,3 +1134,7 @@ button { cursor: pointer; touch-action: manipulation; }
   }
   .js .reveal { opacity: 1; transform: none; }
 }
+
+/* Bot check (Cloudflare Turnstile) – usually invisible; takes no space until a checkbox is shown */
+.turnstile { margin-top: var(--s-4); }
+.turnstile:empty { display: none; }

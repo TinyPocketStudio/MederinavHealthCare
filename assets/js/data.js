@@ -40,7 +40,9 @@ window.MEDERINAV = {
   // Bokningssystemet (mappen booking-api/). När sidan öppnas lokalt (localhost)
   // används automatiskt testservern på http://localhost:8787 i stället.
   // OBS: bokningssystemet läser också den här filen – ändringar här gäller båda.
-  booking: { apiBase: "https://api.mederinavhealthcare.se" },
+  // turnstileSiteKey: robotkontrollen på bokningsformuläret (Cloudflare Turnstile).
+  // Nyckeln är offentlig och får ligga här – den hemliga nyckeln finns bara i Cloudflare.
+  booking: { apiBase: "https://api.mederinavhealthcare.se", turnstileSiteKey: "0x4AAAAAAFfLN3KU1XMYM3HH" },
 
   // Säsongskampanj – rabatterade behandlingar visas med kampanjpris.
   campaign: {

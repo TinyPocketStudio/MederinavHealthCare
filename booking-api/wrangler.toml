@@ -25,6 +25,8 @@ MAIL_REPLY_TO = "kundservice@mederinavhealthcare.se"
 #   ACCESS_TEAM_DOMAIN   staff page login: "<team name>.cloudflareaccess.com"
 #   ACCESS_AUD           staff page login: Zero Trust → Access → Applications → the staff page
 #                        → "Application Audience (AUD) Tag"
+#   TURNSTILE_SECRET     bot check on the booking form: Turnstile → the widget → "Secret key"
+#                        (the matching public site key is in assets/js/data.js). Not set = no bot check.
 # Until both ACCESS_* are set, the staff API refuses everyone.
 
 # The staff page (public/admin/) – served at https://api.mederinavhealthcare.se/admin/

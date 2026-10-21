@@ -23,6 +23,29 @@ const MAX_UPCOMING_PER_PERSON = 2;
 const normEmail = (s) => String(s || "").trim().toLowerCase();
 const normPhone = (s) => String(s || "").replace(/\D/g, "").replace(/^0046/, "0").replace(/^46/, "0");
 
+// Bot check (Cloudflare Turnstile). The booking page sends a short-lived token; Cloudflare tells us
+// whether it came from a real browser. Not enforced until the TURNSTILE_SECRET secret is set.
+async function passesBotCheck(env, token, ip) {
+  if (!env.TURNSTILE_SECRET) {
+    console.warn("TURNSTILE_SECRET is not set – bot check skipped");
+    return true;
+  }
+  if (!token) return false;
+  const form = new FormData();
+  form.append("secret", env.TURNSTILE_SECRET);
+  form.append("response", token);
+  if (ip) form.append("remoteip", ip);
+  try {
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body: form });
+    const out = await res.json();
+    if (!out.success) console.warn("Bot check failed:", (out["error-codes"] || []).join(", "));
+    return out.success === true;
+  } catch (err) {
+    console.error("Bot check could not be verified:", err.message);
+    return false;
+  }
+}
+
 async function upcomingBookingsFor(env, email, phone) {
   const { results } = await env.DB.prepare(
     `SELECT email, phone FROM bookings WHERE status = 'confirmed' AND date >= ?1`
@@ -99,6 +122,10 @@ async function createBooking(request, env, ctx, cors) {
   if (!EMAIL_RE.test(input.email)) fields.push("email");
   if (body.consent !== true) fields.push("consent");
   if (fields.length) return json({ error: "invalid", fields }, 400, cors);
+
+  if (!(await passesBotCheck(env, str(body.turnstileToken, 2048), request.headers.get("CF-Connecting-IP")))) {
+    return json({ error: "bot_check" }, 403, cors);
+  }
 
   const slot = validateSlot({ treatmentId: input.treatment, practitionerId: input.practitioner, date: input.date, time: input.time });
   if (slot.error) return json({ error: "invalid_slot", reason: slot.error }, 400, cors);
