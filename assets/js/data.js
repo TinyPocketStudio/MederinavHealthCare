@@ -125,6 +125,7 @@ window.MEDERINAV = {
           name: "Botox – bekymmersrynka",
           duration: 15,
           price: 1500,
+          campaignPrice: 1200, // 20 % rabatt
           practitioners: ["christian"],
           description: "Botox mjukar upp bekymmersrynkan mellan ögonbrynen. Effekten kommer efter några dagar och håller i regel 3–4 månader.",
           suitable: "Dig som vill mjuka upp den lodräta rynkan mellan ögonbrynen.",
@@ -139,6 +140,7 @@ window.MEDERINAV = {
           name: "Botox – två områden",
           duration: 15,
           price: 2500,
+          campaignPrice: 2000, // 20 % rabatt
           practitioners: ["christian"],
           description: "Behandling av två områden vid samma besök, till exempel panna och bekymmersrynka, för ett harmoniskt resultat.",
           suitable: "Dig som vill mjuka upp mimikrynkor i två närliggande områden.",
@@ -153,6 +155,7 @@ window.MEDERINAV = {
           name: "Botox – tre områden",
           duration: 15,
           price: 3000,
+          campaignPrice: 2400, // 20 % rabatt
           practitioners: ["christian"],
           description: "Helhetsbehandling av panna, bekymmersrynka och kråksparkar vid ett och samma besök.",
           suitable: "Dig som vill ha en balanserad föryngring av hela övre delen av ansiktet.",
@@ -167,6 +170,7 @@ window.MEDERINAV = {
           name: "Fillerbehandling – läppar",
           duration: 15,
           price: 1800,
+          campaignPrice: 1440, // 20 % rabatt
           practitioners: ["christian"],
           description: "Hyaluronsyra ger läpparna mer volym, en tydligare kontur eller jämnare symmetri, med ett mjukt och naturligt resultat.",
           suitable: "Dig som vill ha fylligare, mer definierade eller mer symmetriska läppar.",
