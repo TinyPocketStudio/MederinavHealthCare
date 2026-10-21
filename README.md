@@ -41,7 +41,7 @@ Every placeholder shows its own file name and recommended size, so you can see w
 | `logo/logo.jpg` | Header and footer on every page (shown round, next to the name as text) | square, e.g. 1254×1254 |
 | `logo/favicon.png` | Browser tab icon: a round copy of logo.jpg with transparent corners (192×192). Make a new one if the logo changes | 192×192 |
 | `images/hero-clinic.jpg` | Home hero (arch) | 800×1000 (4:5) |
-| `images/treatment-medicinskt/fillers/botox/fotvard.svg` | Treatment circles on home, icons on Behandlingar | 600×600 (1:1) |
+| `images/treatment-medicinskt/injektioner/hudvard/fotvard.svg` | Treatment circles on home, icons on Behandlingar. Flat illustrations: medicinskt is the supplied doctor-and-patient picture (PNG inside the SVG), the other three were drawn to match it | square, transparent |
 | `images/campaign-season.svg` | Campaign section | 900×700 |
 | `images/gallery-01…04-before/after.svg` | Before/after gallery | 800×600 (4:3); before and after must match |
 | `images/team-christian-navarro.jpg`, `team-lorena-munoz.svg` | Home and Om oss | 600×750 (4:5) |

@@ -1,22 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" preserveAspectRatio="xMidYMid slice">
-  <!-- PLATSHÅLLARE: ersätt denna fil med en riktig bild (600×600 px eller samma proportioner). -->
-  <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#C9E9FB"/><stop offset="1" stop-color="#F3FCFF"/>
-    </linearGradient>
-  </defs>
-  <rect width="600" height="600" fill="url(#sky)"/>
-  <g fill="#FFFFFF">
-    <circle cx="252" cy="144" r="46"/>
-    <circle cx="200" cy="162" r="30"/>
-    <circle cx="306" cy="164" r="28"/>
-    <rect x="170" y="162" width="164" height="30" rx="15"/>
-  </g>
-  <path d="M0 408.00000000000006 C 150 378.00000000000006, 300 420.00000000000006, 600 444.00000000000006 L 600 600 L 0 600 Z" fill="#C8DF85"/>
-  <path d="M0 462.00000000000006 C 180 402.00000000000006, 372 420.00000000000006, 600 456.00000000000006 L 600 600 L 0 600 Z" fill="#8AA600"/>
-  
-  <g transform="translate(155.8 532)">
-    <rect width="288.4" height="40" rx="20" fill="#FFFFFF" fill-opacity="0.88"/>
-    <text x="144.2" y="25" text-anchor="middle" font-family="Figtree, Arial, sans-serif" font-size="14" font-weight="600" fill="#0E1A1C">treatment-injektioner · 600×600</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="Läkare ger en injektion">
+
+<!-- doctor -->
+<path d="M168,175 C160,115 195,100 222,104 C262,108 272,140 268,175 L274,232 C262,240 248,236 244,226 L186,226 C176,238 160,238 158,226 Z" fill="#0f4552"/>
+<rect x="201" y="208" width="28" height="44" fill="#d9967a"/>
+<ellipse cx="215" cy="172" rx="40" ry="50" fill="#f5b99a"/>
+<path d="M174,160 C178,120 208,108 236,114 C258,120 268,140 265,162 C248,142 222,134 200,141 C189,145 180,152 174,160 Z" fill="#0f4552"/>
+<path d="M120,600 L128,300 C130,268 160,252 190,246 L215,262 L240,246 C270,252 300,268 304,300 L312,600 Z" fill="#f1f2f1"/>
+<polygon points="190,246 215,262 240,246 236,282 215,312 194,282" fill="#ecdcc3"/>
+<polygon points="201,262 215,302 229,262" fill="#235d78"/>
+<path d="M190,250 L206,340 M240,250 L224,340" stroke="#dde2e2" stroke-width="4" fill="none"/>
+<path d="M194,254 C178,300 184,338 204,350 M236,254 C250,296 246,326 232,340" stroke="#4b4b4b" stroke-width="5" fill="none" stroke-linecap="round"/>
+<circle cx="204" cy="356" r="9" fill="#ffffff" stroke="#4b4b4b" stroke-width="4"/>
+<circle cx="215" cy="400" r="4" fill="#dde2e2"/><circle cx="215" cy="440" r="4" fill="#dde2e2"/>
+<!-- patient -->
+<path d="M372,210 C362,150 395,130 425,132 C468,134 482,172 476,214 C484,250 492,280 470,300 C455,312 440,300 438,288 L404,288 C398,305 372,312 362,290 C352,266 372,246 372,210 Z" fill="#15335a"/>
+<rect x="408" y="250" width="28" height="56" fill="#d9967a"/>
+<ellipse cx="420" cy="215" rx="44" ry="54" fill="#f5b99a"/>
+<path d="M380,192 C384,155 410,145 432,148 C460,152 474,175 470,205 C455,180 430,170 405,176 C394,179 386,184 380,192 Z" fill="#15335a"/>
+<path d="M340,600 L346,340 C350,312 375,300 400,296 C406,316 438,316 446,296 C472,300 494,312 498,340 L506,600 Z" fill="#9fd8f5"/>
+<!-- doctor's arm with syringe -->
+<path d="M282,282 C300,300 320,340 330,392 L304,402 C296,360 280,320 270,300 Z" fill="#f1f2f1" stroke="#dde2e2" stroke-width="2.5" stroke-linejoin="round"/>
+<polygon points="304,402 330,392 352,256 330,248" fill="#f1f2f1" stroke="#dde2e2" stroke-width="2.5" stroke-linejoin="round"/>
+<polygon points="330,248 352,256 350,268 328,260" fill="#5f9ea0"/>
+<g transform="translate(350,228) rotate(-45)">
+  <rect x="-44" y="-8" width="5" height="16" rx="2" fill="#9aa5a8"/>
+  <rect x="-40" y="-2" width="16" height="4" fill="#9aa5a8"/>
+  <rect x="-25" y="-7" width="50" height="14" rx="3" fill="#ffffff" stroke="#9aa5a8" stroke-width="2"/>
+  <rect x="-4" y="-4.5" width="27" height="9" rx="2" fill="#bfe6f0"/>
+  <rect x="25" y="-3" width="6" height="6" fill="#9aa5a8"/>
+  <line x1="31" y1="0" x2="53" y2="0" stroke="#6b7a7d" stroke-width="1.6"/>
+</g>
+<ellipse cx="342" cy="238" rx="15" ry="11" transform="rotate(-45 342 238)" fill="#8fd0de"/>
+<path d="M440,118 l4,10 l10,4 l-10,4 l-4,10 l-4,-10 l-10,-4 l10,-4 Z" fill="#5f9ea0" opacity=".7"/>
+
 </svg>

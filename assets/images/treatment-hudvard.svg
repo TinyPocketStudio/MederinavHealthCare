@@ -1,22 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" preserveAspectRatio="xMidYMid slice">
-  <!-- PLATSHÅLLARE: ersätt denna fil med en riktig bild (600×600 px eller samma proportioner). -->
-  <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#C9E9FB"/><stop offset="1" stop-color="#F3FCFF"/>
-    </linearGradient>
-  </defs>
-  <rect width="600" height="600" fill="url(#sky)"/>
-  <g fill="#FFFFFF">
-    <circle cx="252" cy="144" r="46"/>
-    <circle cx="200" cy="162" r="30"/>
-    <circle cx="306" cy="164" r="28"/>
-    <rect x="170" y="162" width="164" height="30" rx="15"/>
-  </g>
-  <path d="M0 408.00000000000006 C 150 378.00000000000006, 300 420.00000000000006, 600 444.00000000000006 L 600 600 L 0 600 Z" fill="#C8DF85"/>
-  <path d="M0 462.00000000000006 C 180 402.00000000000006, 372 420.00000000000006, 600 456.00000000000006 L 600 600 L 0 600 Z" fill="#8AA600"/>
-  
-  <g transform="translate(165 532)">
-    <rect width="270" height="40" rx="20" fill="#FFFFFF" fill-opacity="0.88"/>
-    <text x="135" y="25" text-anchor="middle" font-family="Figtree, Arial, sans-serif" font-size="14" font-weight="600" fill="#0E1A1C">treatment-hudvard · 600×600</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="Hudvårdsbehandling med apparat">
+
+<!-- practitioner standing behind the bed -->
+<rect x="290" y="430" width="22" height="80" fill="#235d78"/><rect x="330" y="430" width="22" height="80" fill="#235d78"/>
+<ellipse cx="300" cy="512" rx="18" ry="7" fill="#0f4552"/><ellipse cx="342" cy="512" rx="18" ry="7" fill="#0f4552"/>
+<circle cx="338" cy="74" r="18" fill="#0f4552"/>
+<path d="M298,128 C294,92 316,80 336,80 C362,80 378,100 374,130 C372,146 368,156 364,160 L304,160 C299,152 298,142 298,128 Z" fill="#0f4552"/>
+<rect x="323" y="160" width="24" height="50" fill="#d9967a"/>
+<ellipse cx="335" cy="130" rx="36" ry="44" fill="#f5b99a"/>
+<path d="M302,118 C306,92 330,84 350,88 C366,92 374,106 372,122 C356,106 334,102 316,108 C309,111 304,114 302,118 Z" fill="#0f4552"/>
+<path d="M255,440 L262,250 C266,222 292,210 316,204 L335,220 L354,204 C378,210 404,222 408,250 L415,440 Z" fill="#f1f2f1"/>
+<polygon points="316,204 335,220 354,204 350,238 335,258 320,238" fill="#ecdcc3"/>
+<polygon points="324,218 335,250 346,218" fill="#235d78"/>
+<path d="M316,208 L328,290 M354,208 L342,290" stroke="#dde2e2" stroke-width="4" fill="none"/>
+<!-- treatment bed -->
+<rect x="360" y="420" width="36" height="58" fill="#235d78"/>
+<rect x="318" y="474" width="120" height="12" rx="6" fill="#0f4552"/>
+<path d="M70,322 C90,310 112,310 132,318 L250,352 C272,358 290,378 310,394 L546,394 C558,394 562,404 556,412 L548,436 L306,436 C276,426 250,404 232,396 L82,348 C66,342 62,328 70,322 Z" fill="#e6eff0" stroke="#c7d7da" stroke-width="3"/>
+<!-- patient lying, head on the left -->
+<ellipse cx="100" cy="296" rx="42" ry="34" fill="#15335a"/>
+<ellipse cx="128" cy="314" rx="44" ry="14" transform="rotate(18 128 314)" fill="#ffffff" stroke="#c7d7da" stroke-width="2"/>
+<ellipse cx="132" cy="282" rx="38" ry="40" fill="#f5b99a"/>
+<path d="M96,268 C108,238 150,230 170,252 C150,246 120,252 102,282 Z" fill="#ffffff" stroke="#dde2e2" stroke-width="2"/>
+<path d="M150,300 C175,290 210,300 240,315 L335,354 C346,362 344,386 330,390 L230,372 C190,362 160,346 148,332 Z" fill="#9fd8f5"/>
+<path d="M188,322 C228,342 268,356 306,366" stroke="#f5b99a" stroke-width="16" stroke-linecap="round" fill="none"/>
+<path d="M318,356 L514,360 C528,361 530,386 516,388 L322,392 Z" fill="#235d78"/>
+<rect x="512" y="338" width="22" height="52" rx="9" fill="#f7e9d6"/>
+<!-- arm with skin device -->
+<path d="M266,232 C248,252 236,280 228,306 L250,316 C258,290 268,264 282,246 Z" fill="#f1f2f1" stroke="#dde2e2" stroke-width="2.5" stroke-linejoin="round"/>
+<polygon points="228,306 250,316 222,248 202,242" fill="#f1f2f1" stroke="#dde2e2" stroke-width="2.5" stroke-linejoin="round"/>
+<polygon points="202,242 222,248 220,258 200,252" fill="#5f9ea0"/>
+<path d="M216,222 C232,190 206,160 176,150" stroke="#9aa5a8" stroke-width="3" fill="none"/>
+<line x1="212" y1="226" x2="172" y2="252" stroke="#c7d7da" stroke-width="15" stroke-linecap="round"/>
+<line x1="212" y1="226" x2="172" y2="252" stroke="#ffffff" stroke-width="11" stroke-linecap="round"/>
+<circle cx="166" cy="256" r="7" fill="#5f9ea0"/>
+<ellipse cx="208" cy="232" rx="14" ry="11" transform="rotate(-60 208 232)" fill="#8fd0de"/>
+<path d="M150,206 l3,8 l8,3 l-8,3 l-3,8 l-3,-8 l-8,-3 l8,-3 Z M118,222 l2,5 l5,2 l-5,2 l-2,5 l-2,-5 l-5,-2 l5,-2 Z" fill="#5f9ea0" opacity=".7"/>
+
 </svg>

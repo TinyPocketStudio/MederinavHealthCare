@@ -1,22 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" preserveAspectRatio="xMidYMid slice">
-  <!-- PLATSHÅLLARE: ersätt denna fil med en riktig bild (600×600 px eller samma proportioner). -->
-  <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#C9E9FB"/><stop offset="1" stop-color="#F3FCFF"/>
-    </linearGradient>
-  </defs>
-  <rect width="600" height="600" fill="url(#sky)"/>
-  <g fill="#FFFFFF">
-    <circle cx="252" cy="144" r="46"/>
-    <circle cx="200" cy="162" r="30"/>
-    <circle cx="306" cy="164" r="28"/>
-    <rect x="170" y="162" width="164" height="30" rx="15"/>
-  </g>
-  <path d="M0 408.00000000000006 C 150 378.00000000000006, 300 420.00000000000006, 600 444.00000000000006 L 600 600 L 0 600 Z" fill="#C8DF85"/>
-  <path d="M0 462.00000000000006 C 180 402.00000000000006, 372 420.00000000000006, 600 456.00000000000006 L 600 600 L 0 600 Z" fill="#8AA600"/>
-  
-  <g transform="translate(155.8 532)">
-    <rect width="288.4" height="40" rx="20" fill="#FFFFFF" fill-opacity="0.88"/>
-    <text x="144.2" y="25" text-anchor="middle" font-family="Figtree, Arial, sans-serif" font-size="14" font-weight="600" fill="#0E1A1C">treatment-fotvard · 600×600</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="Medicinsk fotvård">
+
+<!-- patient's chair -->
+<rect x="520" y="250" width="22" height="145" rx="8" fill="#235d78"/>
+<rect x="410" y="394" width="10" height="76" fill="#0f4552"/><rect x="520" y="394" width="10" height="76" fill="#0f4552"/>
+<rect x="400" y="372" width="142" height="24" rx="8" fill="#235d78"/>
+<!-- patient -->
+<path d="M444,190 C440,150 462,138 482,138 C510,140 520,162 516,192 C522,220 526,246 512,256 C500,262 490,250 488,240 L460,240 C452,250 440,248 440,236 C436,222 446,210 444,190 Z" fill="#15335a"/>
+<rect x="467" y="214" width="22" height="30" fill="#d9967a"/>
+<ellipse cx="478" cy="194" rx="34" ry="42" fill="#f5b99a"/>
+<path d="M448,176 C452,150 470,142 488,144 C506,148 514,162 512,180 C500,164 482,158 466,162 C458,165 452,170 448,176 Z" fill="#15335a"/>
+<path d="M430,380 L436,264 C440,242 456,236 470,234 C474,246 490,246 494,234 C512,238 522,254 522,276 L522,380 Z" fill="#9fd8f5"/>
+<path d="M444,268 C438,300 440,330 452,356" stroke="#f5b99a" stroke-width="15" stroke-linecap="round" fill="none"/>
+<polygon points="352,392 378,392 382,466 358,466" fill="#0f4552"/>
+<ellipse cx="360" cy="470" rx="20" ry="8" fill="#f7e9d6"/>
+<path d="M440,360 L362,364 C346,366 344,394 360,396 L440,396 Z" fill="#235d78"/>
+<!-- footstool with towel -->
+<rect x="214" y="444" width="9" height="42" fill="#235d78"/><rect x="280" y="444" width="9" height="42" fill="#235d78"/>
+<rect x="200" y="428" width="104" height="18" rx="9" fill="#cfe9f3"/>
+<rect x="198" y="420" width="108" height="12" rx="6" fill="#ffffff" stroke="#dde2e2" stroke-width="2"/>
+<!-- raised leg and bare foot -->
+<polygon points="364,368 372,394 290,420 282,396" fill="#235d78"/>
+<polygon points="286,396 294,420 258,428 250,404" fill="#f5b99a"/>
+<path d="M256,402 C242,396 222,396 210,402 C202,408 204,418 212,420 L260,426 Z" fill="#f5b99a"/>
+<!-- podiatrist on a stool -->
+<rect x="124" y="440" width="12" height="44" fill="#0f4552"/>
+<rect x="98" y="482" width="64" height="8" rx="4" fill="#0f4552"/>
+<ellipse cx="130" cy="440" rx="42" ry="10" fill="#0f4552"/>
+<circle cx="132" cy="196" r="16" fill="#0f4552"/>
+<path d="M108,250 C104,214 126,200 146,200 C172,202 182,224 178,254 L176,272 L110,272 Z" fill="#0f4552"/>
+<rect x="132" y="270" width="20" height="26" fill="#d9967a"/>
+<ellipse cx="144" cy="250" rx="34" ry="42" fill="#f5b99a"/>
+<path d="M112,240 C114,214 134,204 152,206 C168,210 178,222 178,238 C164,226 146,222 130,228 C122,231 116,235 112,240 Z" fill="#0f4552"/>
+<path d="M90,440 L98,322 C102,300 122,290 136,288 L144,300 L156,288 C176,294 188,310 190,330 L186,440 Z" fill="#f1f2f1"/>
+<polygon points="136,288 144,300 156,288 154,314 146,328 140,314" fill="#ecdcc3"/>
+<path d="M96,420 L196,424 C210,426 210,452 196,454 L96,454 Z" fill="#235d78"/>
+<polygon points="176,450 200,450 204,500 180,500" fill="#235d78"/>
+<ellipse cx="198" cy="504" rx="22" ry="8" fill="#0f4552"/>
+<!-- podiatrist's arms and gloved hands -->
+<path d="M160,300 C178,318 192,340 198,362 L176,370 C172,348 160,328 148,314 Z" fill="#f1f2f1" stroke="#dde2e2" stroke-width="2.5" stroke-linejoin="round"/>
+<polygon points="176,370 198,362 234,398 216,410" fill="#f1f2f1" stroke="#dde2e2" stroke-width="2.5" stroke-linejoin="round"/>
+<polygon points="216,410 234,398 240,406 222,418" fill="#5f9ea0"/>
+<ellipse cx="236" cy="414" rx="15" ry="10" fill="#8fd0de"/>
+<line x1="222" y1="392" x2="204" y2="404" stroke="#9aa5a8" stroke-width="3" stroke-linecap="round"/>
+<ellipse cx="230" cy="392" rx="12" ry="9" transform="rotate(-20 230 392)" fill="#8fd0de"/>
+
 </svg>

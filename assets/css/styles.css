@@ -745,7 +745,7 @@ button { cursor: pointer; touch-action: manipulation; }
 
 .t-group + .t-group { margin-top: var(--s-7); }
 .t-group-head { display: flex; align-items: center; gap: var(--s-4); margin-bottom: var(--s-3); }
-.t-group-head img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; flex: none; }
+.t-group-head img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; flex: none; background: var(--mint-soft); }
 .t-group-head h2 { font-size: 1.5rem; }
 .t-group-head p { color: var(--ink-2); font-size: 0.9375rem; margin-top: 2px; }
 
