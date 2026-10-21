@@ -45,6 +45,14 @@ button { cursor: pointer; touch-action: manipulation; }
 .brand span { color: var(--accent); font-weight: 600; }
 .who { display: flex; gap: 12px; align-items: center; color: var(--ink-3); font-size: 0.9375rem; overflow-wrap: anywhere; }
 .link { color: var(--ink); font-weight: 600; }
+/* Language switch (SV | ES), same look as on the website */
+.lang { display: inline-flex; gap: 2px; padding: 2px; border: 1.5px solid var(--line-strong); border-radius: var(--r-pill); }
+.lang button {
+  min-width: 40px; min-height: 36px; padding: 0 8px; border: 0; border-radius: var(--r-pill);
+  background: transparent; color: var(--ink-2); font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.06em;
+}
+.lang button:hover { background: var(--mint-soft); color: var(--ink); }
+.lang button[aria-pressed="true"] { background: var(--ink); color: #fff; cursor: default; }
 
 /* Toolbar */
 .toolbar { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; padding: 24px 0 12px; }

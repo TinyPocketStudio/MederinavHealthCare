@@ -11,61 +11,69 @@
   <link rel="stylesheet" href="admin.css">
   <script src="admin.js" defer></script>
 </head>
+<!-- Texts marked data-t / data-t-attr are translated by admin.js (Swedish / Spanish). -->
 <body>
   <header class="top">
     <div class="wrap top-inner">
       <div class="brand"><strong>Mederinav</strong> <span>Personal</span></div>
-      <div class="who"><span id="who"></span> <a class="link" href="/cdn-cgi/access/logout">Logga ut</a></div>
+      <div class="who">
+        <span id="who"></span>
+        <div class="lang" role="group" aria-label="Språk" data-t-attr="aria-label:lang">
+          <button type="button" data-lang="sv" aria-pressed="true">SV</button>
+          <button type="button" data-lang="es" aria-pressed="false">ES</button>
+        </div>
+        <a class="link" href="/cdn-cgi/access/logout" data-t="logout">Logga ut</a>
+      </div>
     </div>
   </header>
 
   <main class="wrap" id="main">
     <div class="toolbar">
       <div class="week-nav">
-        <button class="btn btn--icon" id="prev" type="button" aria-label="Föregående vecka">
+        <button class="btn btn--icon" id="prev" type="button" aria-label="Föregående vecka" data-t-attr="aria-label:prevWeek">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
         </button>
-        <button class="btn btn--ghost" id="this-week" type="button">Denna vecka</button>
-        <button class="btn btn--icon" id="next" type="button" aria-label="Nästa vecka">
+        <button class="btn btn--ghost" id="this-week" type="button" data-t="thisWeek">Denna vecka</button>
+        <button class="btn btn--icon" id="next" type="button" aria-label="Nästa vecka" data-t-attr="aria-label:nextWeek">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
         </button>
-        <h1 id="week-label" aria-live="polite">Bokningar</h1>
+        <h1 id="week-label" aria-live="polite" data-t="bookings">Bokningar</h1>
       </div>
       <div class="filters">
-        <label class="visually-hidden" for="filter">Visa behandlare</label>
+        <label class="visually-hidden" for="filter" data-t="showPractitioner">Visa behandlare</label>
         <select id="filter" class="select"></select>
-        <label class="check"><input type="checkbox" id="show-cancelled"> Visa avbokade</label>
-        <button class="btn btn--primary" id="open-booking" type="button">+ Ny bokning</button>
-        <button class="btn" id="open-block" type="button">Blockera tid</button>
+        <label class="check"><input type="checkbox" id="show-cancelled"> <span data-t="showCancelled">Visa avbokade</span></label>
+        <button class="btn btn--primary" id="open-booking" type="button" data-t="newBookingBtn">+ Ny bokning</button>
+        <button class="btn" id="open-block" type="button" data-t="blockTime">Blockera tid</button>
       </div>
     </div>
 
     <p class="status" id="status" role="status" aria-live="polite"></p>
-    <div class="days" id="days"><p class="empty">Hämtar bokningar…</p></div>
+    <div class="days" id="days"><p class="empty" data-t="loading">Hämtar bokningar…</p></div>
   </main>
 
   <!-- Ny telefonbokning -->
   <dialog id="dlg-booking" aria-labelledby="dlg-booking-title">
     <form id="form-booking" novalidate>
-      <h2 id="dlg-booking-title">Ny bokning</h2>
+      <h2 id="dlg-booking-title" data-t="newBooking">Ny bokning</h2>
       <div class="grid2">
-        <label>Behandling <select class="select" name="treatment" required></select></label>
-        <label>Behandlare <select class="select" name="practitioner" required></select></label>
-        <label>Datum <input class="input" type="date" name="date" required></label>
-        <label>Tid <select class="select" name="time" required></select></label>
-        <label>Namn <input class="input" name="name" autocomplete="off" required></label>
-        <label>Telefon <input class="input" name="phone" type="tel" autocomplete="off" required></label>
-        <label>E-post <span class="opt">(valfritt)</span> <input class="input" name="email" type="email" autocomplete="off"></label>
-        <label>Språk för mejl
-          <select class="select" name="lang"><option value="sv">Svenska</option><option value="es">Spanska</option></select>
+        <label><span data-t="f.treatment">Behandling</span> <select class="select" name="treatment" required></select></label>
+        <label><span data-t="f.practitioner">Behandlare</span> <select class="select" name="practitioner" required></select></label>
+        <label><span data-t="f.date">Datum</span> <input class="input" type="date" name="date" required></label>
+        <label><span data-t="f.time">Tid</span> <select class="select" name="time" required></select></label>
+        <label><span data-t="f.name">Namn</span> <input class="input" name="name" autocomplete="off" required></label>
+        <label><span data-t="f.phone">Telefon</span> <input class="input" name="phone" type="tel" autocomplete="off" required></label>
+        <label><span data-t="f.email">E-post</span> <span class="opt" data-t="optional">(valfritt)</span> <input class="input" name="email" type="email" autocomplete="off"></label>
+        <label><span data-t="f.mailLang">Språk för mejl</span>
+          <select class="select" name="lang"><option value="sv" data-t="swedish">Svenska</option><option value="es" data-t="spanish">Spanska</option></select>
         </label>
       </div>
-      <label>Meddelande / anteckning <span class="opt">(valfritt)</span> <textarea class="input" name="message" rows="2"></textarea></label>
-      <label class="check"><input type="checkbox" name="sendConfirmation"> Skicka bekräftelse till patientens e-post</label>
+      <label><span data-t="f.message">Meddelande / anteckning</span> <span class="opt" data-t="optional">(valfritt)</span> <textarea class="input" name="message" rows="2"></textarea></label>
+      <label class="check"><input type="checkbox" name="sendConfirmation"> <span data-t="f.sendConfirmation">Skicka bekräftelse till patientens e-post</span></label>
       <p class="form-error" role="alert"></p>
       <div class="actions">
-        <button class="btn btn--ghost" type="button" data-close>Avbryt</button>
-        <button class="btn btn--primary" type="submit">Spara bokning</button>
+        <button class="btn btn--ghost" type="button" data-close data-t="cancel">Avbryt</button>
+        <button class="btn btn--primary" type="submit" data-t="saveBooking">Spara bokning</button>
       </div>
     </form>
   </dialog>
@@ -73,23 +81,23 @@
   <!-- Blockera tid -->
   <dialog id="dlg-block" aria-labelledby="dlg-block-title">
     <form id="form-block" novalidate>
-      <h2 id="dlg-block-title">Blockera tid</h2>
-      <p class="hint">Blockerad tid kan inte bokas på webben, t.ex. semester, sjukdom eller lunch.</p>
-      <label>Gäller <select class="select" name="practitioner"></select></label>
+      <h2 id="dlg-block-title" data-t="blockTime">Blockera tid</h2>
+      <p class="hint" data-t="blockHint">Blockerad tid kan inte bokas på webben, t.ex. semester, sjukdom eller lunch.</p>
+      <label><span data-t="f.appliesTo">Gäller</span> <select class="select" name="practitioner"></select></label>
       <div class="grid2">
-        <label>Från datum <input class="input" type="date" name="from" required></label>
-        <label>Till och med <input class="input" type="date" name="to"></label>
+        <label><span data-t="f.fromDate">Från datum</span> <input class="input" type="date" name="from" required></label>
+        <label><span data-t="f.toDate">Till och med</span> <input class="input" type="date" name="to"></label>
       </div>
-      <label class="check"><input type="checkbox" name="allDay" checked> Hela dagen</label>
+      <label class="check"><input type="checkbox" name="allDay" checked> <span data-t="allDay">Hela dagen</span></label>
       <div class="grid2" data-times hidden>
-        <label>Från kl. <input class="input" type="time" name="start" step="1800" value="12:00"></label>
-        <label>Till kl. <input class="input" type="time" name="end" step="1800" value="13:00"></label>
+        <label><span data-t="f.fromTime">Från kl.</span> <input class="input" type="time" name="start" step="1800" value="12:00"></label>
+        <label><span data-t="f.toTime">Till kl.</span> <input class="input" type="time" name="end" step="1800" value="13:00"></label>
       </div>
-      <label>Anteckning <span class="opt">(t.ex. Semester)</span> <input class="input" name="note" maxlength="200"></label>
+      <label><span data-t="f.note">Anteckning</span> <span class="opt" data-t="f.noteExample">(t.ex. Semester)</span> <input class="input" name="note" maxlength="200"></label>
       <p class="form-error" role="alert"></p>
       <div class="actions">
-        <button class="btn btn--ghost" type="button" data-close>Avbryt</button>
-        <button class="btn btn--primary" type="submit">Blockera</button>
+        <button class="btn btn--ghost" type="button" data-close data-t="cancel">Avbryt</button>
+        <button class="btn btn--primary" type="submit" data-t="block">Blockera</button>
       </div>
     </form>
   </dialog>
@@ -97,14 +105,14 @@
   <!-- Avboka -->
   <dialog id="dlg-cancel" aria-labelledby="dlg-cancel-title">
     <form id="form-cancel" novalidate>
-      <h2 id="dlg-cancel-title">Avboka tiden?</h2>
+      <h2 id="dlg-cancel-title" data-t="cancelTitle">Avboka tiden?</h2>
       <p id="cancel-summary"></p>
-      <label class="check" data-notify><input type="checkbox" name="notify" checked> Skicka avbokningsmejl till patienten</label>
-      <p class="hint" data-no-email hidden>Patienten har ingen e-postadress – ring och meddela i stället.</p>
+      <label class="check" data-notify><input type="checkbox" name="notify" checked> <span data-t="notifyPatient">Skicka avbokningsmejl till patienten</span></label>
+      <p class="hint" data-no-email hidden data-t="noEmail">Patienten har ingen e-postadress – ring och meddela i stället.</p>
       <p class="form-error" role="alert"></p>
       <div class="actions">
-        <button class="btn btn--ghost" type="button" data-close>Behåll tiden</button>
-        <button class="btn btn--danger" type="submit">Avboka</button>
+        <button class="btn btn--ghost" type="button" data-close data-t="keepBooking">Behåll tiden</button>
+        <button class="btn btn--danger" type="submit" data-t="cancelBooking">Avboka</button>
       </div>
     </form>
   </dialog>

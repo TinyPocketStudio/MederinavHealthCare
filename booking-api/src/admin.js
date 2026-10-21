@@ -51,8 +51,10 @@ function config() {
     clinic: { name: DATA.clinic.name, phoneDisplay: DATA.clinic.phoneDisplay },
     team: DATA.team.map((p) => ({ id: p.id, name: p.name, days: p.days })),
     categories: DATA.categories.map((c) => ({
-      id: c.id, name: c.name,
-      items: c.items.map((t) => ({ id: t.id, name: t.name, duration: t.duration, practitioners: t.practitioners })),
+      id: c.id, name: c.name, es: { name: (c.es && c.es.name) || c.name },
+      items: c.items.map((t) => ({
+        id: t.id, name: t.name, es: { name: (t.es && t.es.name) || t.name }, duration: t.duration, practitioners: t.practitioners,
+      })),
     })),
     hours: DATA.hours,
     slotMinutes: DATA.slotMinutes,
