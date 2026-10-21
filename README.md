@@ -71,6 +71,8 @@ Bookings are stored by a small backend in `booking-api/`: a Cloudflare Worker wi
 
 The backend checks everything again: the treatment, the staff member, their working days, opening hours, minimum notice and the booking window. It saves each booking with a single "only if still free" step, so two people can never book the same time. The second person sees "Den valda tiden är inte längre ledig" (the chosen time is no longer available) and picks another time.
 
+**Limit per person.** One person (same email or same phone number, however it's written) can have at most 2 upcoming bookings through the website; a third attempt is refused with "Du har redan bokade tider – ring oss". Staff phone bookings are never limited. Change the number in `MAX_UPCOMING_PER_PERSON` at the top of `booking-api/src/index.js`.
+
 **One source of truth.** The backend reads treatments, durations, staff days and opening hours straight from `assets/js/data.js`. After editing that file, push to GitHub: both the website and the backend update, the backend through the Cloudflare ↔ GitHub connection.
 
 **No secrets in the repo.** Keys are stored as encrypted secrets in Cloudflare. For local testing they go in `booking-api/.dev.vars`, which Git ignores. Patient data only lives in the D1 database, never in the repo.

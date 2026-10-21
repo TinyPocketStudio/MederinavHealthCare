@@ -8,13 +8,29 @@
  *
  * Everything is re-checked here; the browser is never trusted.
  */
-import { parseDate, validateSlot } from "./schedule.js";
+import { clinicNow, parseDate, validateSlot } from "./schedule.js";
 import { sendBookingEmails } from "./email.js";
 import { insertBooking } from "./store.js";
 import { handleAdmin } from "./admin.js";
 
 const MAX_RANGE_DAYS = 14;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+// One person (same email or same phone number) may have at most this many upcoming bookings
+// when booking on the website. Staff phone bookings are not limited. Change the number here.
+const MAX_UPCOMING_PER_PERSON = 2;
+
+// Make "Anna@Mail.se " and "anna@mail.se" – and "+46 70-123 45 67" and "0701234567" – count as the same.
+const normEmail = (s) => String(s || "").trim().toLowerCase();
+const normPhone = (s) => String(s || "").replace(/\D/g, "").replace(/^0046/, "0").replace(/^46/, "0");
+
+async function upcomingBookingsFor(env, email, phone) {
+  const { results } = await env.DB.prepare(
+    `SELECT email, phone FROM bookings WHERE status = 'confirmed' AND date >= ?1`
+  ).bind(clinicNow().date).all();
+  const e = normEmail(email);
+  const p = normPhone(phone);
+  return results.filter((b) => (e && normEmail(b.email) === e) || (p && normPhone(b.phone) === p)).length;
+}
 
 function json(body, status, cors) {
   return new Response(JSON.stringify(body), {
@@ -86,6 +102,10 @@ async function createBooking(request, env, ctx, cors) {
 
   const slot = validateSlot({ treatmentId: input.treatment, practitionerId: input.practitioner, date: input.date, time: input.time });
   if (slot.error) return json({ error: "invalid_slot", reason: slot.error }, 400, cors);
+
+  if (await upcomingBookingsFor(env, input.email, input.phone) >= MAX_UPCOMING_PER_PERSON) {
+    return json({ error: "too_many", max: MAX_UPCOMING_PER_PERSON }, 429, cors);
+  }
 
   const reference = await insertBooking(env, {
     treatmentId: input.treatment, practitionerId: input.practitioner, date: input.date,

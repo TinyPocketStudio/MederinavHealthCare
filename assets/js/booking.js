@@ -361,13 +361,15 @@
   };
 
   // What the error summary currently shows, so it can be redrawn in another language.
-  let summaryState = null; // { errors: [keys] } | { failed: true } | null
+  let summaryState = null; // { errors: [keys] } | { failed: true } | { tooMany: n } | null
   let lastConfirmation = null;
 
   function renderErrorSummary() {
     if (!summaryState) { els.errorSummary.hidden = true; return; }
     if (summaryState.failed) {
       els.errorSummary.innerHTML = `<h3>${tr("book.failTitle")}</h3><p>${tr("book.failText", { phone: D.clinic.phoneDisplay })}</p>`;
+    } else if (summaryState.tooMany) {
+      els.errorSummary.innerHTML = `<h3>${tr("book.tooManyTitle")}</h3><p>${tr("book.tooManyText", { n: summaryState.tooMany, phone: D.clinic.phoneDisplay })}</p>`;
     } else {
       const errors = summaryState.errors
         .map((k) => [k, fields[k].check(fields[k].el.value, fields[k].el)])
@@ -467,6 +469,11 @@
         setNotice("book.err.slotTaken");
         await refresh();
         els.notice.focus();
+      } else if (err.status === 429 && err.data && err.data.error === "too_many") {
+        // This person already has the maximum number of upcoming bookings (see booking-api/src/index.js).
+        summaryState = { tooMany: err.data.max || 2 };
+        renderErrorSummary();
+        els.errorSummary.focus();
       } else {
         summaryState = { failed: true };
         renderErrorSummary();

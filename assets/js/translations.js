@@ -88,6 +88,8 @@ window.MEDERINAV_I18N = {
     "book.ref": "Bokningsnummer: {ref}",
     "book.failTitle": "Bokningen kunde inte skickas",
     "book.failText": "Försök igen om en stund eller ring oss på {phone}.",
+    "book.tooManyTitle": "Du har redan bokade tider",
+    "book.tooManyText": "Du kan ha högst {n} kommande bokningar via webben. Vill du boka fler tider – ring oss på {phone}.",
   },
 
   /* ================= Español ================= */
@@ -342,5 +344,7 @@ window.MEDERINAV_I18N = {
     "book.ref": "Número de reserva: {ref}",
     "book.failTitle": "No se pudo enviar la reserva",
     "book.failText": "Inténtalo de nuevo en un momento o llámanos al {phone}.",
+    "book.tooManyTitle": "Ya tienes citas reservadas",
+    "book.tooManyText": "Puedes tener como máximo {n} citas próximas reservadas por la web. Si quieres reservar más, llámanos al {phone}.",
   },
 };
