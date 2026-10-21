@@ -656,8 +656,12 @@ button { cursor: pointer; touch-action: manipulation; }
   padding-top: var(--s-7);
   border-top: 1px solid var(--line-strong);
 }
-@media (min-width: 640px) { .team-mini { grid-template-columns: 160px 1fr; align-items: start; } }
+@media (min-width: 640px) { .team-mini { grid-template-columns: 160px 1fr; align-items: center; } }
 .team-mini .arch { width: 160px; aspect-ratio: 4 / 5; }
+/* Staff photos: soft rectangle instead of the arch shape */
+.team-mini .arch, .profile-media .arch { border-radius: var(--r-lg); }
+/* Photos centred horizontally when they sit above the text (phones) */
+.team-mini .arch, .profile-media .arch, .visit-photo { margin-inline: auto; }
 .section-head + .team-mini { margin-top: 0; padding-top: 0; border-top: 0; } /* first card: no divider under the heading */
 .team-mini h3 { font-size: 1.375rem; }
 .team-mini p { margin-top: var(--s-2); color: var(--ink-2); }
@@ -674,8 +678,7 @@ button { cursor: pointer; touch-action: manipulation; }
 }
 .profile:first-of-type { border-top: 0; padding-top: 0; }
 @media (min-width: 900px) {
-  .profile { grid-template-columns: 340px 1fr; gap: var(--s-8); align-items: start; }
-  .profile-media { position: sticky; top: calc(var(--header-h) + 24px); }
+  .profile { grid-template-columns: 340px 1fr; gap: var(--s-8); align-items: center; }
 }
 .profile-media .arch { aspect-ratio: 4 / 5; width: 100%; max-width: 340px; }
 .profile h2 { font-size: clamp(1.75rem, 2vw + 1rem, 2.5rem); }
@@ -715,8 +718,11 @@ button { cursor: pointer; touch-action: manipulation; }
 /* Text columns next to the photo: stacked on tablets, side by side on desktop. */
 .visit-info { display: grid; gap: var(--s-5); align-content: start; }
 @media (min-width: 1024px) { .visit-info { grid-template-columns: 1fr 1fr; gap: var(--s-7); } }
-.visit-photo { border-radius: var(--r-md); overflow: hidden; aspect-ratio: 2 / 3; max-height: 460px; }
+.visit-photo { width: 100%; max-width: 307px; border-radius: var(--r-md); overflow: hidden; aspect-ratio: 2 / 3; max-height: 460px; }
 .visit-photo img { width: 100%; height: 100%; object-fit: cover; }
+/* "Frågor?" + Boka tid: below the hours and address, across both columns on wide screens */
+.visit-contact .btn { margin-top: var(--s-5); }
+@media (min-width: 1024px) { .visit-contact { grid-column: 1 / -1; } }
 .info-block + .info-block { margin-top: var(--s-5); }
 .info-block h3 { display: flex; align-items: center; gap: var(--s-2); font-size: 1.0625rem; margin-bottom: var(--s-1); }
 .info-block h3 .icon { color: var(--accent); }
