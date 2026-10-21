@@ -52,7 +52,7 @@ async function availability(url, env, cors) {
        FROM bookings WHERE status = 'confirmed' AND date BETWEEN ?1 AND ?2`
   ).bind(from, to).all();
   const blocked = await env.DB.prepare(
-    `SELECT practitioner_id AS p, date, start_min AS start, end_min AS end
+    `SELECT practitioner_id AS p, date, start_min AS start, end_min AS end, 1 AS block
        FROM blocks WHERE date BETWEEN ?1 AND ?2`
   ).bind(from, to).all();
   return json({ busy: [...booked.results, ...blocked.results] }, 200, cors);

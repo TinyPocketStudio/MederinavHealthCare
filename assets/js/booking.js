@@ -60,6 +60,12 @@
     return !!week && week.busy.some((b) => b.date === dateStr && (b.p === pid || b.p == null) && b.start < end && b.end > start);
   }
 
+  // Time staff have blocked on the staff page (e.g. holiday). A day where every time is blocked shows "Stängt", not "Fullbokat".
+  function overlapsBlock(dateStr, pid, start, end) {
+    const week = weekCache[ymd(startOfWeek(parseYmd(dateStr)))];
+    return !!week && week.busy.some((b) => b.block && b.date === dateStr && (b.p === pid || b.p == null) && b.start < end && b.end > start);
+  }
+
   async function submitBooking(payload) {
     const res = await fetch(`${API}/bookings`, {
       method: "POST",
@@ -151,14 +157,19 @@
     const open = toMin(hours[0]);
     const close = toMin(hours[1]);
     const slots = [];
+    let considered = 0;
+    let blocked = 0;
     for (let m = open; m + t.duration <= close; m += D.slotMinutes) {
       const time = fromMin(m);
       const at = new Date(date.getFullYear(), date.getMonth(), date.getDate(), Math.floor(m / 60), m % 60);
       if (at < earliest) continue;
+      considered++;
+      if (pids.every((id) => overlapsBlock(dateStr, id, m, m + t.duration))) blocked++;
       const pid = pids.find((id) => !overlapsBusy(dateStr, id, m, m + t.duration));
       if (pid) slots.push({ time, practitioner: pid });
     }
-    return { status: slots.length ? "open" : "full", slots };
+    if (slots.length) return { status: "open", slots };
+    return { status: considered && blocked === considered ? "closed" : "full", slots };
   }
 
   /* ---------- Rendering ---------- */
