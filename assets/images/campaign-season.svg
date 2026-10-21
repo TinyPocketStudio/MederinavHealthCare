@@ -1,22 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" width="900" height="700" preserveAspectRatio="xMidYMid slice">
-  <!-- PLATSHÅLLARE: ersätt denna fil med en riktig bild (900×700 px eller samma proportioner). -->
-  <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#F1DFC4"/><stop offset="1" stop-color="#FBF4EA"/>
-    </linearGradient>
-  </defs>
-  <rect width="900" height="700" fill="url(#sky)"/>
-  <g fill="#FFFDF8">
-    <circle cx="378" cy="168" r="53.66666666666667"/>
-    <circle cx="317.3333333333333" cy="189" r="35"/>
-    <circle cx="441" cy="191.33333333333334" r="32.66666666666667"/>
-    <rect x="282.3333333333333" y="189" width="191.33333333333334" height="35" rx="17.5"/>
-  </g>
-  <path d="M0 476.00000000000006 C 225 441.00000000000006, 450 490.00000000000006, 900 518 L 900 700 L 0 700 Z" fill="#E3C79C"/>
-  <path d="M0 539 C 270 469.00000000000006, 558 490.00000000000006, 900 532 L 900 700 L 0 700 Z" fill="#B98B52"/>
-  
-  <g transform="translate(292.5 620.6666666666667)">
-    <rect width="315" height="46.66666666666667" rx="23.333333333333336" fill="#FFFFFF" fill-opacity="0.88"/>
-    <text x="157.5" y="29.16666666666667" text-anchor="middle" font-family="Figtree, Arial, sans-serif" font-size="16.333333333333336" font-weight="600" fill="#0E1A1C">campaign-season · 900×700</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" width="900" height="700" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Höstkampanj: botox och fillers">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F1DFC4"/><stop offset="1" stop-color="#FBF4EA"/></linearGradient>
+</defs>
+<rect width="900" height="700" fill="url(#sky)"/>
+<circle cx="450" cy="330" r="235" fill="#F8EBD8"/>
+<path d="M0 476 C 225 441, 450 490, 900 518 L 900 700 L 0 700 Z" fill="#E3C79C"/>
+<path d="M0 539 C 270 469, 558 490, 900 532 L 900 700 L 0 700 Z" fill="#B98B52"/>
+<g transform="translate(120 120) rotate(30) scale(1.1)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#c8834a"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<g transform="translate(205 250) rotate(-40) scale(0.8)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#d9a066"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<g transform="translate(90 330) rotate(70) scale(0.9)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#a85a2a"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<g transform="translate(250 110) rotate(120) scale(0.7)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#e0b47a"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<g transform="translate(175 430) rotate(-15) scale(0.75)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#b98b52"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<g transform="translate(690 150) rotate(-30) scale(0.9)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#c8834a"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<g transform="translate(770 300) rotate(50) scale(1.1)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#d9a066"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<g transform="translate(640 90) rotate(160) scale(0.7)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#a85a2a"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<g transform="translate(820 180) rotate(100) scale(0.8)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#e0b47a"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<g transform="translate(720 440) rotate(-60) scale(0.8)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#b98b52"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<g transform="translate(330 70) rotate(10) scale(0.6)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#c8834a"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<g transform="translate(585 60) rotate(-80) scale(0.65)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#d9a066"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<g transform="translate(300 470) rotate(140) scale(0.6)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#a85a2a"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<g transform="translate(610 510) rotate(25) scale(0.6)">
+  <path d="M0,-22 C15,-12 15,10 0,24 C-15,10 -15,-12 0,-22 Z" fill="#e0b47a"/>
+  <path d="M0,-18 L0,28" stroke="#8a4f24" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></g>
+<!-- woman, relaxed, eyes closed (faceless style) -->
+<path d="M380,300 C364,210 410,178 455,180 C512,182 536,228 528,300 C540,350 548,392 520,420 C500,440 476,424 472,408 L428,408 C420,428 388,440 370,416 C350,390 372,350 380,300 Z" fill="#15335a"/>
+<rect x="430" y="350" width="40" height="80" fill="#d9967a"/>
+<ellipse cx="450" cy="300" rx="60" ry="74" fill="#f5b99a"/>
+<path d="M392,280 C396,226 430,210 460,214 C500,220 516,252 510,292 C492,256 460,242 428,250 C410,255 398,266 392,280 Z" fill="#15335a"/>
+<path d="M300,700 L308,488 C314,446 350,428 392,420 C404,452 496,452 508,420 C550,428 586,446 592,488 L600,700 Z" fill="#c8834a"/>
+<path d="M392,420 C404,452 496,452 508,420 C512,436 506,452 496,462 C470,476 430,476 404,462 C394,452 388,436 392,420 Z" fill="#b06f3b"/>
+<path d="M360,560 L366,700 M540,560 L534,700" stroke="#b06f3b" stroke-width="4" fill="none"/>
+<!-- doctor's gloved hand with syringe, from the right -->
+<path d="M683.1,440.3 L553.1,331.3 L578.9,300.7 L708.9,409.7 Z" fill="#f1f2f1" stroke="#dde2e2" stroke-width="2.5" stroke-linejoin="round"/>
+<polygon points="553.1,331.3 578.9,300.7 569.7,293 543.9,323.6" fill="#5f9ea0"/>
+<g transform="translate(540,288) rotate(-140)">
+  <rect x="-44" y="-8" width="5" height="16" rx="2" fill="#9aa5a8"/>
+  <rect x="-40" y="-2" width="16" height="4" fill="#9aa5a8"/>
+  <rect x="-25" y="-7" width="50" height="14" rx="3" fill="#ffffff" stroke="#9aa5a8" stroke-width="2"/>
+  <rect x="-4" y="-4.5" width="27" height="9" rx="2" fill="#bfe6f0"/>
+  <rect x="25" y="-3" width="6" height="6" fill="#9aa5a8"/>
+  <line x1="31" y1="0" x2="50" y2="0" stroke="#6b7a7d" stroke-width="1.6"/>
+</g>
+<ellipse cx="548" cy="303" rx="20" ry="14" transform="rotate(40 548 303)" fill="#8fd0de"/>
+<path transform="translate(470 175) scale(1.3)" d="M0,-12 L3,-3 L12,0 L3,3 L0,12 L-3,3 L-12,0 L-3,-3 Z" fill="#ffffff"/><path transform="translate(380 205) scale(0.8)" d="M0,-12 L3,-3 L12,0 L3,3 L0,12 L-3,3 L-12,0 L-3,-3 Z" fill="#ffffff"/><path transform="translate(540 200) scale(0.7)" d="M0,-12 L3,-3 L12,0 L3,3 L0,12 L-3,3 L-12,0 L-3,-3 Z" fill="#ffffff"/>
 </svg>

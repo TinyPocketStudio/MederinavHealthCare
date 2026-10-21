@@ -147,7 +147,7 @@ window.MEDERINAV_I18N = {
     "home.cat.more.fotvard": 'Leer más <span class="visually-hidden">sobre podología</span>',
 
     "home.campaign.eyebrow": "Campaña de temporada",
-    "home.campaign.title": 'Campaña de otoño: <span class="serif">un nuevo comienzo para tu piel</span>',
+    "home.campaign.title": 'Campaña de otoño: <span class="serif">luce fresca y natural con bótox y rellenos</span>',
     "home.campaign.validUntil": "Válida hasta el",
     "home.campaign.cta": "Reservar con precio de campaña",
     "home.campaign.note": "El precio de campaña se aplica a las reservas hechas durante el período de la campaña.",
