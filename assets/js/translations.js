@@ -130,7 +130,7 @@ window.MEDERINAV_I18N = {
     "home.hero.lead": "Mederinav Health Care es una clínica dirigida por médicos para tratamientos médicos, inyecciones estéticas y podología. Nos tomamos el tiempo de escucharte y solo tratamos cuando es lo adecuado para ti.",
     "home.hero.seeTreatments": "Ver tratamientos",
     "home.hero.imgAlt": "Sala de tratamiento luminosa en la clínica",
-    "home.hero.badge": "<strong>30+ años</strong><span>de experiencia clínica en medicina y cirugía</span>",
+    "home.hero.badge": "<strong>15+ años</strong><span>de experiencia clínica en medicina y cirugía</span>",
     "home.trust.doctor": "Médico con licencia en Suecia",
     "home.trust.consult": "Consulta personalizada",
     "home.trust.central": "En el centro de Huddinge",

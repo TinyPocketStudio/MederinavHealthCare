@@ -14,7 +14,7 @@ assets/js/i18n.js   Language switching (SV | ES)
 assets/js/main.js   Shared behaviour (menu, gallery slider, rendering of treatments)
 assets/js/booking.js Booking calendar (talks to booking-api)
 assets/images/      Placeholder images (SVG)
-assets/logo/        Placeholder logos (SVG)
+assets/logo/        Logo (logo.jpg)
 booking-api/        Booking backend (Cloudflare Worker + D1 database) at api.mederinavhealthcare.se
 ```
 
@@ -38,9 +38,8 @@ Every placeholder shows its own file name and recommended size, so you can see w
 
 | File | Used on | Size / ratio |
 |---|---|---|
-| `logo/logo.svg` | Header and footer on every page | ~280×64 (wide) |
-| `logo/logo-mark.svg`, `logo/logo-light.svg` | Extras: symbol only, and a white version | |
-| `logo/favicon.svg` | Browser tab | square |
+| `logo/logo.jpg` | Header and footer on every page (shown round, next to the name as text) | square, e.g. 1254×1254 |
+| `logo/favicon.png` | Browser tab icon: a round copy of logo.jpg with transparent corners (192×192). Make a new one if the logo changes | 192×192 |
 | `images/hero-clinic.jpg` | Home hero (arch) | 800×1000 (4:5) |
 | `images/treatment-medicinskt/fillers/botox/fotvard.svg` | Treatment circles on home, icons on Behandlingar | 600×600 (1:1) |
 | `images/campaign-season.svg` | Campaign section | 900×700 |
