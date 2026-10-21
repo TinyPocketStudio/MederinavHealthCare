@@ -127,7 +127,7 @@ async function cancelBooking(request, env, ctx, user, reference) {
   const body = (await readJson(request)) || {};
   const booking = await env.DB.prepare(
     `SELECT reference, treatment_id AS treatmentId, practitioner_id AS practitionerId, date,
-            start_min AS startMin, name, phone, email, message, lang, status
+            start_min AS startMin, duration, name, phone, email, message, lang, status
        FROM bookings WHERE reference = ?1`
   ).bind(reference).first();
   if (!booking) return json({ error: "not_found" }, 404);

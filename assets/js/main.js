@@ -149,6 +149,9 @@
     const offerList = document.querySelector("[data-render='campaign-offers']");
     if (!offerList) return;
     const offers = allTreatments().filter((it) => it.campaignPrice);
+    // No campaign prices in data.js (or the campaign has ended) → hide the whole campaign section.
+    const section = offerList.closest("section");
+    if (section) section.hidden = !offers.length || !isCampaignActive();
     offerList.innerHTML = offers
       .map((it) => `
         <li class="offer">

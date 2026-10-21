@@ -158,9 +158,13 @@ async function send(env, { to, replyTo, subject, html, text, tag }) {
 
 // Everything the templates need about one booking, in the patient's language.
 function describe(booking) {
-  const treatment = allTreatments().find((t) => t.id === booking.treatmentId);
-  const person = DATA.team.find((p) => p.id === booking.practitionerId);
+  // A booking may refer to a treatment that has since been removed from data.js –
+  // then fall back to what the booking itself stored.
+  const treatment = allTreatments().find((t) => t.id === booking.treatmentId)
+    || { name: booking.treatmentId, duration: booking.duration || 30, price: null };
+  const person = DATA.team.find((p) => p.id === booking.practitionerId) || { name: booking.practitionerId };
   const lang = booking.lang === "es" ? "es" : "sv";
+  const duration = booking.duration || treatment.duration;
   return {
     ...booking,
     lang,
@@ -168,11 +172,11 @@ function describe(booking) {
     treatmentName: loc(treatment, "name", lang),
     treatmentNameSv: treatment.name,
     practitionerName: person.name,
-    duration: treatment.duration,
+    duration,
     dateLong: longDate(booking.date, lang),
     dateLongSv: longDate(booking.date, "sv"),
-    endTime: fromMin(booking.startMin + treatment.duration),
-    price: kr(priceOf(treatment), lang),
+    endTime: fromMin(booking.startMin + duration),
+    price: treatment.price == null ? "–" : kr(priceOf(treatment), lang),
   };
 }
 
