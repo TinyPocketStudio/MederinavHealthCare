@@ -41,14 +41,14 @@ Every placeholder shows its own file name and recommended size, so you can see w
 | `logo/logo.jpg` | Header and footer on every page (shown round, next to the name as text) | square, e.g. 1254×1254 |
 | `logo/favicon.png` | Browser tab icon: a round copy of logo.jpg with transparent corners (192×192). Make a new one if the logo changes | 192×192 |
 | `images/hero-clinic.jpg` | Home hero (arch) | 800×1000 (4:5) |
-| `images/treatment-medicinskt/injektioner/hudvard/fotvard.svg` | Treatment circles on home, icons on Behandlingar. Flat illustrations: medicinskt is the supplied doctor-and-patient picture (PNG inside the SVG), the other three were drawn to match it | square, transparent |
+| `images/treatment-medicinskt.svg`, `treatment-injektioner.svg`, `treatment-hudvard.jpg`, `treatment-fotvard.jpg` | Treatment circles on home, icons on Behandlingar. Medicinskt and injektioner are flat illustrations; hudvård and fotvård are photos cropped square around the subject. The file for each category is `image` in `data.js` (Behandlingar) and the `<img>` in `index.html` (home) | square, 600×600 |
 | `images/campaign-season.svg` | Campaign section, default picture (autumn botox & fillers illustration; keep the main motif in the middle, the image is cropped to a tall box on desktop). Staff can upload their own picture per campaign on the staff page | 900×700 |
 | `images/gallery-01…04-before/after.svg` | Old placeholders, no longer used. Before & after pictures are uploaded on the staff page | – |
 | `images/team-christian-navarro.jpg`, `team-lorena-munoz.svg` | Home and Om oss | 600×750 (4:5) |
 | `images/about-clinic.jpg` | Om oss | 1200×800 (3:2) |
 | `images/visit-clinic-street.jpg` | "Öppettider" | 600×900 (2:3) |
 
-**Easiest way to replace an image:** save your photo (`.jpg` / `.webp`) in `assets/images/` and update the file name in the HTML. To find every place an image is used, search the project for its file name (for example `hero-clinic`). The four treatment images are referenced by category id in `assets/js/main.js` (`treatment-${cat.id}.svg`), so if you switch to `.jpg`, change the extension there too.
+**Easiest way to replace an image:** save your photo (`.jpg` / `.webp`) in `assets/images/` and update the file name in the HTML. To find every place an image is used, search the project for its file name (for example `hero-clinic`). The four treatment images are set twice: `image` on each category in `assets/js/data.js` (Behandlingar page) and the `<img>` in `index.html` (home page).
 
 All images use `object-fit: cover`, so photos with slightly different proportions still fit.
 

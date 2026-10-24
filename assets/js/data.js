@@ -73,6 +73,7 @@ window.MEDERINAV = {
   categories: [
     {
       id: "medicinskt",
+      image: "assets/images/treatment-medicinskt.svg", // runda bilden på startsidan och Behandlingar
       name: "Läkarbesök & medicinskt",
       intro: "Läkarbesök, konsultationer och medicinska behandlingar hos legitimerad läkare.",
       es: { name: "Visitas médicas y tratamientos médicos", intro: "Visitas y consultas médicas, y tratamientos médicos realizados por un médico con licencia." },
@@ -137,6 +138,7 @@ window.MEDERINAV = {
     },
     {
       id: "injektioner",
+      image: "assets/images/treatment-injektioner.svg",
       name: "Injektioner",
       intro: "Botox och fillers för ett naturligt och utvilat uttryck – alltid utförda av läkare.",
       es: { name: "Inyecciones", intro: "Botox y rellenos para un aspecto natural y descansado, siempre aplicados por un médico." },
@@ -233,6 +235,7 @@ window.MEDERINAV = {
     },
     {
       id: "hudvard",
+      image: "assets/images/treatment-hudvard.jpg",
       name: "Hudvård",
       intro: "Behandlingar som förnyar och återfuktar huden – för en fräschare och jämnare hy.",
       es: { name: "Cuidado de la piel", intro: "Tratamientos que renuevan e hidratan la piel, para un cutis más fresco y uniforme." },
@@ -311,6 +314,7 @@ window.MEDERINAV = {
     },
     {
       id: "fotvard",
+      image: "assets/images/treatment-fotvard.jpg",
       name: "Fotvård",
       intro: "Medicinsk fotvård som lindrar, förebygger och ger friska, välmående fötter.",
       es: { name: "Podología", intro: "Podología médica que alivia, previene y mantiene los pies sanos y cuidados." },

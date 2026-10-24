@@ -296,7 +296,7 @@
         (cat) => `
       <section class="t-group" id="${cat.id}" aria-labelledby="h-${cat.id}">
         <div class="t-group-head">
-          <img src="assets/images/treatment-${cat.id}.svg" alt="" width="64" height="64" loading="lazy">
+          <img src="${escapeHtml(cat.image || `assets/images/treatment-${cat.id}.svg`)}" alt="" width="64" height="64" loading="lazy">
           <div>
             <h2 id="h-${cat.id}">${escapeHtml(loc(cat, "name"))}</h2>
             <p>${escapeHtml(loc(cat, "intro"))}</p>
