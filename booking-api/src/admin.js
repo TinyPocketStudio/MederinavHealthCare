@@ -9,6 +9,13 @@
  *   PUT    /admin/api/campaign                    campaign texts, dates and campaign prices
  *   PUT    /admin/api/campaign/image              upload the campaign picture (the image file is the body)
  *   DELETE /admin/api/campaign/image              go back to the default picture
+ *   GET    /admin/api/gallery                     before & after cases (unpublished too) + whether the section is on
+ *   PUT    /admin/api/gallery/settings            { visible } switches the whole section on or off
+ *   POST   /admin/api/gallery                     add a case (multipart form: texts + before/after files)
+ *   PUT    /admin/api/gallery/<id>                change a case (pictures only replaced when sent)
+ *   DELETE /admin/api/gallery/<id>                delete a case and its pictures
+ *   POST   /admin/api/gallery/<id>/move           { direction: -1 | 1 } earlier or later on the website
+ *   GET    /admin/api/gallery/<id>/<before|after> a picture, for the staff page's previews
  *   GET    /admin/api/bookings?from=…&to=…        bookings + blocked time, all details
  *   POST   /admin/api/bookings                    phone booking
  *   POST   /admin/api/bookings/MH-XXXXXX/cancel   cancel { notify: true } emails the patient
@@ -24,6 +31,11 @@ import {
   deleteCampaignImage, insertTreatment, loadCampaign, loadCatalog, loadTreatments, saveCampaign, saveCampaignImage,
   slugId, updateTreatment,
 } from "./catalog.js";
+import {
+  deleteCase, findCase, galleryCategories, galleryVisible, insertCase, loadCaseImage, loadCases, moveCase,
+  setGalleryVisible, updateCase,
+} from "./gallery.js";
+import { checkImage, imageResponse } from "./images.js";
 
 const MAX_LIST_DAYS = 62;
 const MAX_BLOCK_DAYS = 62;
@@ -115,9 +127,6 @@ async function createTreatment(request, env, user) {
 }
 
 /* ---------- Campaign ---------- */
-const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX_IMAGE_BYTES = 1500000; // the staff page shrinks pictures before upload; D1 rows can hold 2 MB
-
 async function changeCampaign(request, env, user) {
   const body = await readJson(request);
   if (!body) return json({ error: "invalid", fields: ["body"] }, 400);
@@ -160,18 +169,100 @@ async function changeCampaign(request, env, user) {
 
 async function uploadCampaignImage(request, env, user) {
   const type = (request.headers.get("Content-Type") || "").split(";")[0].trim().toLowerCase();
-  if (!IMAGE_TYPES.includes(type)) return json({ error: "image_type" }, 415);
   const bytes = new Uint8Array(await request.arrayBuffer());
-  if (!bytes.length) return json({ error: "image_empty" }, 400);
-  if (bytes.length > MAX_IMAGE_BYTES) return json({ error: "image_too_large", max: MAX_IMAGE_BYTES }, 413);
-  // Check the file really starts like the type it claims to be.
-  const startsWith = (...b) => b.every((v, i) => bytes[i] === v);
-  const real = type === "image/jpeg" ? startsWith(0xff, 0xd8, 0xff)
-    : type === "image/png" ? startsWith(0x89, 0x50, 0x4e, 0x47)
-    : startsWith(0x52, 0x49, 0x46, 0x46) && String.fromCharCode(...bytes.slice(8, 12)) === "WEBP";
-  if (!real) return json({ error: "image_type" }, 415);
+  const problem = checkImage(type, bytes);
+  if (problem) return json({ error: problem }, problem === "image_too_large" ? 413 : 415);
   const version = await saveCampaignImage(env, type, bytes, user.email);
   return json({ imageVersion: version }, 201);
+}
+
+/* ---------- Before & after gallery ---------- */
+async function listGallery(env) {
+  const [cases, visible] = await Promise.all([loadCases(env), galleryVisible(env)]);
+  return json({ visible, cases, categories: galleryCategories() });
+}
+
+// Reads the multipart form from the staff page: texts as fields, pictures as files "before" / "after".
+// Returns { gallery, images } or { fields } / { error, status }.
+async function readCaseForm(request, existing) {
+  let form;
+  try { form = await request.formData(); } catch { return { fields: ["body"] }; }
+  const field = (name, max) => str(form.get(name), max);
+  const c = {
+    category: field("category", 64),
+    title: field("title", 200), detail: field("detail", 300),
+    es: { title: field("titleEs", 200), detail: field("detailEs", 300) },
+    consent: form.get("consent") === "true",
+    visible: form.get("visible") === "true",
+  };
+  const images = {};
+  for (const side of ["before", "after"]) {
+    const file = form.get(side);
+    if (!file || typeof file === "string" || !file.size) continue;
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const type = (file.type || "").toLowerCase();
+    const problem = checkImage(type, bytes);
+    if (problem) return { error: problem, side, status: problem === "image_too_large" ? 413 : 415 };
+    images[side] = { type, bytes };
+  }
+  const fields = [];
+  if (c.title.length < 2 || c.title.length > 80) fields.push("title");
+  if (c.detail.length > 120) fields.push("detail");
+  if (!galleryCategories().some((g) => g.id === c.category)) fields.push("category");
+  // Spanish is required, as elsewhere on the staff page.
+  if (c.es.title.length < 2 || c.es.title.length > 80) fields.push("titleEs");
+  if (c.es.detail.length > 120 || (c.detail && !c.es.detail)) fields.push("detailEs");
+  // Publishing needs the patient's consent and both pictures.
+  if (c.visible && !c.consent) fields.push("consent");
+  if (c.visible && !images.before && !(existing && existing.beforeVersion)) fields.push("before");
+  if (c.visible && !images.after && !(existing && existing.afterVersion)) fields.push("after");
+  return fields.length ? { fields } : { gallery: c, images };
+}
+
+async function createCase(request, env, user) {
+  const read = await readCaseForm(request, null);
+  if (read.error) return json({ error: read.error, side: read.side }, read.status);
+  if (read.fields) return json({ error: "invalid", fields: read.fields }, 400);
+  const id = await insertCase(env, read.gallery, read.images, user.email);
+  return json({ case: await findCase(env, id) }, 201);
+}
+
+async function changeCase(request, env, user, id) {
+  const existing = await findCase(env, id);
+  if (!existing) return json({ error: "not_found" }, 404);
+  const read = await readCaseForm(request, existing);
+  if (read.error) return json({ error: read.error, side: read.side }, read.status);
+  if (read.fields) return json({ error: "invalid", fields: read.fields }, 400);
+  await updateCase(env, id, read.gallery, read.images, user.email);
+  return json({ case: await findCase(env, id) });
+}
+
+async function handleGallery(request, env, user, path, method) {
+  if (path === "/gallery" && method === "GET") return listGallery(env);
+  if (path === "/gallery" && method === "POST") return createCase(request, env, user);
+  if (path === "/gallery/settings" && method === "PUT") {
+    const body = await readJson(request);
+    if (!body || typeof body.visible !== "boolean") return json({ error: "invalid", fields: ["visible"] }, 400);
+    await setGalleryVisible(env, body.visible, user.email);
+    return json({ visible: body.visible });
+  }
+  const m = path.match(/^\/gallery\/(\d{1,9})(?:\/(before|after|move))?$/);
+  if (!m) return json({ error: "not_found" }, 404);
+  const id = Number(m[1]);
+  if (!m[2] && method === "PUT") return changeCase(request, env, user, id);
+  if (!m[2] && method === "DELETE") return (await deleteCase(env, id)) ? json({ deleted: id }) : json({ error: "not_found" }, 404);
+  if (m[2] === "move" && method === "POST") {
+    const body = await readJson(request);
+    const direction = body && (body.direction === -1 || body.direction === 1) ? body.direction : 0;
+    if (!direction) return json({ error: "invalid", fields: ["direction"] }, 400);
+    return (await moveCase(env, id, direction)) ? json({ moved: id }) : json({ error: "not_found" }, 404);
+  }
+  if ((m[2] === "before" || m[2] === "after") && method === "GET") {
+    const res = imageResponse(await loadCaseImage(env, id, m[2]));
+    res.headers.set("Cache-Control", "private, max-age=31536000, immutable"); // never in shared caches
+    return res;
+  }
+  return json({ error: "not_found" }, 404);
 }
 
 async function changeTreatment(request, env, user, id) {
@@ -337,6 +428,7 @@ export async function handleAdmin(request, env, ctx, url) {
   const treatment = path.match(/^\/treatments\/([a-z0-9-]{1,64})$/);
   if (treatment && method === "PUT") return changeTreatment(request, env, user, treatment[1]);
   if (path === "/campaign" && method === "PUT") return changeCampaign(request, env, user);
+  if (path === "/gallery" || path.startsWith("/gallery/")) return handleGallery(request, env, user, path, method);
   if (path === "/campaign/image" && method === "PUT") return uploadCampaignImage(request, env, user);
   if (path === "/campaign/image" && method === "DELETE") {
     await deleteCampaignImage(env, user.email);

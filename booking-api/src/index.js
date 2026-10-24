@@ -1,8 +1,9 @@
 /*
  * Mederinav booking API (Cloudflare Worker), served at https://api.mederinavhealthcare.se
  *
- *   GET  /treatments                                   treatments + campaign shown on the website (no personal data)
+ *   GET  /treatments                                   treatments, campaign and before & after gallery shown on the website
  *   GET  /campaign-image?v=…                           the campaign picture uploaded on the staff page
+ *   GET  /gallery-image?id=…&side=before|after&v=…     a before & after picture – only for published cases
  *   GET  /availability?from=YYYY-MM-DD&to=YYYY-MM-DD   taken times (no personal data)
  *   POST /bookings                                     create a booking (+ confirmation emails)
  *   /admin/                                            staff page (behind Cloudflare Access)
@@ -15,6 +16,8 @@ import { sendBookingEmails } from "./email.js";
 import { insertBooking } from "./store.js";
 import { handleAdmin } from "./admin.js";
 import { loadCampaign, loadCampaignImage, loadCatalog, loadTreatments } from "./catalog.js";
+import { loadCaseImage, publicGallery } from "./gallery.js";
+import { imageResponse } from "./images.js";
 
 const MAX_RANGE_DAYS = 14;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -83,23 +86,25 @@ function corsHeaders(request, env) {
 
 // The website shows these instead of the lists in data.js. Short cache: staff changes show within 30 s.
 async function treatments(env, cors) {
-  const [catalog, campaign] = await Promise.all([loadCatalog(env), loadCampaign(env)]);
+  const [catalog, campaign, gallery] = await Promise.all([loadCatalog(env), loadCampaign(env), publicGallery(env)]);
   const categories = catalog.map((cat) => ({
     id: cat.id,
     items: cat.items.map(({ category, hidden, ...t }) => t),
   }));
   const { imageVersion, ...publicCampaign } = campaign;
   publicCampaign.image = imageVersion ? `/campaign-image?v=${imageVersion}` : null;
-  return json({ categories, campaign: publicCampaign }, 200, cors, "public, max-age=30");
+  return json({ categories, campaign: publicCampaign, gallery }, 200, cors, "public, max-age=30");
 }
 
-// The address changes (?v=…) with every new upload, so browsers may keep it for a year.
-async function campaignImage(env) {
-  const image = await loadCampaignImage(env);
-  if (!image) return new Response("Not found", { status: 404 });
-  return new Response(image.bytes, {
-    headers: { "Content-Type": image.type, "Cache-Control": "public, max-age=31536000, immutable", "X-Content-Type-Options": "nosniff" },
-  });
+// Patient photos: served only while the case is published on the website (same check as /treatments),
+// so an unpublished or hidden case can never be fetched by guessing its address.
+async function galleryImage(url, env) {
+  const id = Number(url.searchParams.get("id"));
+  const side = url.searchParams.get("side");
+  if (!Number.isInteger(id) || (side !== "before" && side !== "after")) return new Response("Not found", { status: 404 });
+  const { cases } = await publicGallery(env);
+  if (!cases.some((c) => c.id === id)) return new Response("Not found", { status: 404, headers: { "Cache-Control": "no-store" } });
+  return imageResponse(await loadCaseImage(env, id, side));
 }
 
 async function availability(url, env, cors) {
@@ -199,7 +204,8 @@ export default {
       if (url.pathname === "/treatments") {
         return request.method === "GET" ? await treatments(env, cors) : json({ error: "method" }, 405, cors);
       }
-      if (url.pathname === "/campaign-image" && request.method === "GET") return await campaignImage(env);
+      if (url.pathname === "/campaign-image" && request.method === "GET") return imageResponse(await loadCampaignImage(env));
+      if (url.pathname === "/gallery-image" && request.method === "GET") return await galleryImage(url, env);
       if (url.pathname === "/availability") {
         return request.method === "GET" ? await availability(url, env, cors) : json({ error: "method" }, 405, cors);
       }

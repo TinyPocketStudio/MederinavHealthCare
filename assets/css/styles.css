@@ -516,6 +516,7 @@ button { cursor: pointer; touch-action: manipulation; }
 .campaign.is-ended .campaign-countdown { color: var(--ink-2); }
 
 /* ---------- Before / after gallery ---------- */
+.filter-bar[hidden] { display: none; }
 .filter-bar {
   display: flex;
   flex-wrap: wrap;

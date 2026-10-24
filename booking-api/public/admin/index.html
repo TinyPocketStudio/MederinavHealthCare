@@ -31,6 +31,7 @@
     <button type="button" data-view="bookings" aria-pressed="true" data-t="bookings">Bokningar</button>
     <button type="button" data-view="treatments" aria-pressed="false" data-t="treatments">Behandlingar</button>
     <button type="button" data-view="campaign" aria-pressed="false" data-t="campaign">Kampanj</button>
+    <button type="button" data-view="gallery" aria-pressed="false" data-t="gallery">Före &amp; efter</button>
   </nav>
 
   <main class="wrap" id="main">
@@ -122,7 +123,57 @@
       </div>
     </form>
    </div>
+
+   <!-- Före & efter: resultat med före- och efterbild (sparas i databasen, visas på startsidan) -->
+   <div id="view-gallery" hidden>
+    <div class="toolbar">
+      <h1 data-t="gallery">Före &amp; efter</h1>
+      <div class="filters">
+        <label class="check switch"><input type="checkbox" id="gallery-visible"> <span data-t="g.showSection">Visa Före &amp; efter på startsidan</span></label>
+        <button class="btn btn--primary" id="open-case" type="button" data-t="g.newCaseBtn">+ Nytt resultat</button>
+      </div>
+    </div>
+    <p class="hint" data-t="g.hint">Ett resultat visas på startsidan när det är publicerat, patienten har gett sitt samtycke och både före- och efterbild finns. Avsnittet visas bara när det är påslaget och minst ett resultat är publicerat.</p>
+    <p class="status" id="g-status" role="status" aria-live="polite"></p>
+    <div class="days" id="case-list"><p class="empty" data-t="loading">Hämtar…</p></div>
+   </div>
   </main>
+
+  <!-- Nytt / ändra före & efter-resultat -->
+  <dialog id="dlg-case" aria-labelledby="dlg-case-title">
+    <form id="form-case" novalidate>
+      <h2 id="dlg-case-title"></h2>
+      <div class="grid2">
+        <label><span data-t="g.before">Före</span>
+          <span class="pick"><img data-preview="before" alt=""><span class="pick-empty" data-t="g.noImage">Ingen bild</span></span>
+          <input class="input" type="file" name="before" accept="image/jpeg,image/png,image/webp">
+        </label>
+        <label><span data-t="g.after">Efter</span>
+          <span class="pick"><img data-preview="after" alt=""><span class="pick-empty" data-t="g.noImage">Ingen bild</span></span>
+          <input class="input" type="file" name="after" accept="image/jpeg,image/png,image/webp">
+        </label>
+      </div>
+      <p class="hint" data-t="g.imageHint">Använd bilder med samma utsnitt och format (helst liggande 4:3). Stora bilder förminskas automatiskt.</p>
+      <div class="grid2">
+        <label><span data-t="g.title">Rubrik</span> <input class="input" name="title" maxlength="80" required></label>
+        <label><span data-t="g.category">Filter</span> <select class="select" name="category" required></select></label>
+      </div>
+      <label><span><span data-t="g.detail">Beskrivning</span> <span class="opt" data-t="g.detailHint">(t.ex. Resultat 2 veckor efter behandling)</span></span> <input class="input" name="detail" maxlength="120"></label>
+      <fieldset class="spanish">
+        <legend data-t="f.spanish">Spanska texter</legend>
+        <label><span data-t="g.title">Rubrik</span> <input class="input" name="titleEs" maxlength="80" lang="es" required></label>
+        <label><span data-t="g.detail">Beskrivning</span> <input class="input" name="detailEs" maxlength="120" lang="es"></label>
+      </fieldset>
+      <label class="check"><input type="checkbox" name="consent"> <span data-t="g.consent">Patienten har gett skriftligt samtycke till att bilderna publiceras</span></label>
+      <label class="check"><input type="checkbox" name="visible"> <span data-t="g.visible">Publicera på webbplatsen</span></label>
+      <p class="form-error" role="alert"></p>
+      <div class="actions">
+        <button class="btn btn--danger-ghost actions-start" type="button" id="delete-case" data-t="g.delete">Ta bort</button>
+        <button class="btn btn--ghost" type="button" data-close data-t="cancel">Avbryt</button>
+        <button class="btn btn--primary" type="submit" data-t="g.save">Spara</button>
+      </div>
+    </form>
+  </dialog>
 
   <!-- Ny / ändra behandling -->
   <dialog id="dlg-treatment" aria-labelledby="dlg-treatment-title">

@@ -69,7 +69,7 @@
 
   // Treatments and the campaign are managed on the staff page and served by the booking API.
   // The versions in data.js are only used if the API can't be reached (within 3 seconds).
-  const needsTreatments = document.querySelector("[data-from], [data-render='treatments'], [data-campaign], #week-grid");
+  const needsTreatments = document.querySelector("[data-from], [data-render='treatments'], [data-campaign], [data-render='gallery'], #week-grid");
   const catalogReady = !needsTreatments || !apiBase || !DATA.categories
     ? Promise.resolve()
     : fetch(`${apiBase}/treatments`, { signal: AbortSignal.timeout(3000) })
@@ -80,6 +80,7 @@
         if (body.campaign) {
           DATA.campaign = { ...body.campaign, image: body.campaign.image ? apiBase + body.campaign.image : null };
         }
+        DATA.galleryContent = body.gallery || null;
       })
       .catch((err) => console.warn("Behandlingar kunde inte hämtas – visar listan i data.js.", err));
 
@@ -203,11 +204,10 @@
     document.querySelectorAll("[data-campaign-max]").forEach((el) => { el.textContent = `−${maxPct}%`; });
   }
 
-  /* ---------- Before / after comparison ---------- */
-  const baUpdaters = [];
-  document.querySelectorAll(".ba-frame").forEach((frame) => {
+  /* ---------- Before / after gallery (managed on the staff page, Före & efter tab) ---------- */
+  let baUpdaters = [];
+  function setupComparison(frame) {
     const range = frame.querySelector(".ba-range");
-    if (!range) return;
     const tagBefore = frame.querySelector(".ba-tag--before");
     const tagAfter = frame.querySelector(".ba-tag--after");
     const update = () => {
@@ -223,25 +223,63 @@
     };
     range.addEventListener("input", update);
     update();
-    baUpdaters.push(update);
-  });
+    return update;
+  }
   window.addEventListener("resize", () => baUpdaters.forEach((update) => update()), { passive: true });
 
+  const gallerySection = document.getElementById("galleri");
+  const baGrid = document.querySelector("[data-render='gallery']");
   const filterBar = document.querySelector("[data-gallery-filter]");
   const galleryStatus = document.getElementById("gallery-status");
+  let galleryFilter = "alla";
+
+  // DATA.galleryContent comes from the booking API: { visible, cases: [...] }. Without it the section stays hidden.
+  function renderGallery() {
+    if (!gallerySection || !baGrid) return;
+    const content = DATA.galleryContent;
+    const cases = (content && content.visible && content.cases) || [];
+    gallerySection.hidden = !cases.length;
+    if (!cases.length) return;
+    const categories = ((DATA.gallery && DATA.gallery.categories) || []).filter((c) => cases.some((x) => x.category === c.id));
+    if (!categories.some((c) => c.id === galleryFilter)) galleryFilter = "alla";
+    const chip = (id, label) =>
+      `<button class="chip" type="button" data-filter="${escapeHtml(id)}" aria-pressed="${id === galleryFilter}">${escapeHtml(label)}</button>`;
+    filterBar.innerHTML = chip("alla", t("gallery.all")) + categories.map((c) => chip(c.id, loc(c, "name"))).join("");
+    filterBar.hidden = categories.length < 2; // filtering one kind of result is pointless
+    baGrid.innerHTML = cases.map((c) => {
+      const title = loc(c, "title");
+      const detail = loc(c, "detail");
+      const category = categories.find((x) => x.id === c.category);
+      const caption = [category ? loc(category, "name") : "", detail].filter(Boolean).join(" · ");
+      return `
+        <figure class="ba" data-category="${escapeHtml(c.category)}"${galleryFilter === "alla" || galleryFilter === c.category ? "" : " hidden"}>
+          <div class="ba-frame">
+            <img class="ba-before" src="${escapeHtml(apiBase + c.before)}" alt="${escapeHtml(`${t("gallery.before")}: ${title}`)}" width="800" height="600" loading="lazy">
+            <img class="ba-after" src="${escapeHtml(apiBase + c.after)}" alt="${escapeHtml(`${t("gallery.after")}: ${title}`)}" width="800" height="600" loading="lazy">
+            <span class="ba-tag ba-tag--before" aria-hidden="true">${escapeHtml(t("gallery.before"))}</span>
+            <span class="ba-tag ba-tag--after" aria-hidden="true">${escapeHtml(t("gallery.after"))}</span>
+            <span class="ba-divider"><span class="ba-knob">${icon("chevrons-lr")}</span></span>
+            <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="${escapeHtml(t("gallery.compare", { name: title }))}">
+          </div>
+          <figcaption><strong>${escapeHtml(title)}</strong>${caption ? `<span>${escapeHtml(caption)}</span>` : ""}</figcaption>
+        </figure>`;
+    }).join("");
+    baUpdaters = [...baGrid.querySelectorAll(".ba-frame")].map(setupComparison);
+  }
+
   if (filterBar) {
-    const items = document.querySelectorAll(".ba[data-category]");
     filterBar.addEventListener("click", (e) => {
       const btn = e.target.closest("button[data-filter]");
       if (!btn) return;
+      galleryFilter = btn.dataset.filter;
       filterBar.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
-      const f = btn.dataset.filter;
       let shown = 0;
-      items.forEach((it) => {
-        const match = f === "alla" || it.dataset.category === f;
+      baGrid.querySelectorAll(".ba[data-category]").forEach((it) => {
+        const match = galleryFilter === "alla" || it.dataset.category === galleryFilter;
         it.hidden = !match;
         if (match) shown++;
       });
+      baUpdaters.forEach((update) => update()); // frames that were hidden had no width until now
       if (galleryStatus) galleryStatus.textContent = t("gallery.showing", { n: shown });
     });
   }
@@ -317,6 +355,7 @@
     renderFromPrices();
     renderCampaign();
     renderOffers();
+    renderGallery();
   });
   I18N.onChange(() => {
     renderHours();
@@ -324,7 +363,7 @@
     renderCampaign();
     renderOffers();
     renderTreatments();
-    baUpdaters.forEach((update) => update());
+    renderGallery();
     if (galleryStatus) galleryStatus.textContent = "";
   });
 

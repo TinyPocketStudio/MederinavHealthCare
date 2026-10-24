@@ -56,6 +56,17 @@ window.MEDERINAV = {
     es: { name: "Campaña de otoño", title: "luce fresca y natural con bótox y rellenos" },
   },
 
+  // Före & efter-galleriet hanteras på personalsidan (fliken Före & efter).
+  // Här finns bara filterknapparna som ett resultat kan höra till.
+  gallery: {
+    categories: [
+      { id: "fillers", name: "Fillers", es: { name: "Rellenos dérmicos" } },
+      { id: "botox", name: "Botox", es: { name: "Botox" } },
+      { id: "medicinskt", name: "Hud", es: { name: "Piel" } },
+      { id: "fotvard", name: "Fotvård", es: { name: "Podología" } },
+    ],
+  },
+
   // Behandlingar hanteras nu på personalsidan (fliken Behandlingar) och sparas i databasen.
   // Behandlingarna nedan används bara för att fylla databasen första gången, och som reserv
   // om bokningssystemet inte svarar. Kategoriernas namn och introtexter ändras fortfarande här.

@@ -159,7 +159,8 @@
     </section>
 
     <!-- ===== Before / after gallery =====
-         Dold tills vidare (hidden). Ta bort ordet "hidden" nedan för att visa galleriet igen. -->
+         Resultaten, bilderna och om avsnittet visas styrs på personalsidan (fliken Före & efter).
+         Dolt tills galleriet har hämtats; visas bara när det är påslaget och minst ett resultat är publicerat. -->
     <section class="section section--tight-top" id="galleri" aria-labelledby="galleri-title" hidden>
       <div class="container">
         <div class="section-head reveal">
@@ -168,64 +169,10 @@
           <p data-i18n="home.gallery.lead">Dra i reglaget för att jämföra. Alla bilder publiceras med patientens samtycke.</p>
         </div>
 
-        <div class="filter-bar" data-gallery-filter role="group" aria-label="Filtrera galleri" data-i18n-attr="aria-label:home.gallery.filterLabel">
-          <button class="chip" type="button" data-filter="alla" aria-pressed="true" data-i18n="home.gallery.all">Alla</button>
-          <button class="chip" type="button" data-filter="fillers" aria-pressed="false" data-i18n="cat.fillers">Fillers</button>
-          <button class="chip" type="button" data-filter="botox" aria-pressed="false" data-i18n="cat.botox">Botox</button>
-          <button class="chip" type="button" data-filter="medicinskt" aria-pressed="false" data-i18n="home.gallery.skin">Hud</button>
-          <button class="chip" type="button" data-filter="fotvard" aria-pressed="false" data-i18n="cat.fotvard">Fotvård</button>
-        </div>
+        <div class="filter-bar" data-gallery-filter role="group" aria-label="Filtrera galleri" data-i18n-attr="aria-label:home.gallery.filterLabel"></div>
         <p id="gallery-status" class="visually-hidden" aria-live="polite"></p>
 
-        <div class="ba-grid">
-          <figure class="ba reveal" data-category="fillers">
-            <div class="ba-frame">
-              <img class="ba-before" src="assets/images/gallery-01-before.svg" alt="Före: läppar innan behandling" data-i18n-attr="alt:home.ba1.before" width="800" height="600" loading="lazy">
-              <img class="ba-after" src="assets/images/gallery-01-after.svg" alt="Efter: läppar efter läppförstoring" data-i18n-attr="alt:home.ba1.after" width="800" height="600" loading="lazy">
-              <span class="ba-tag ba-tag--before" aria-hidden="true" data-i18n="home.gallery.before">Före</span>
-              <span class="ba-tag ba-tag--after" aria-hidden="true" data-i18n="home.gallery.after">Efter</span>
-              <span class="ba-divider"><span class="ba-knob"><svg class="icon" aria-hidden="true"><use href="#i-chevrons-lr"/></svg></span></span>
-              <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Jämför före och efter – läppförstoring" data-i18n-attr="aria-label:home.ba1.range">
-            </div>
-            <figcaption data-i18n="home.ba1.caption"><strong>Läppförstoring, 1 ml</strong><span>Fillers · Resultat 2 veckor efter behandling</span></figcaption>
-          </figure>
-
-          <figure class="ba reveal" data-category="botox">
-            <div class="ba-frame">
-              <img class="ba-before" src="assets/images/gallery-02-before.svg" alt="Före: panna och argrynka innan behandling" data-i18n-attr="alt:home.ba2.before" width="800" height="600" loading="lazy">
-              <img class="ba-after" src="assets/images/gallery-02-after.svg" alt="Efter: slätare panna efter botox" data-i18n-attr="alt:home.ba2.after" width="800" height="600" loading="lazy">
-              <span class="ba-tag ba-tag--before" aria-hidden="true" data-i18n="home.gallery.before">Före</span>
-              <span class="ba-tag ba-tag--after" aria-hidden="true" data-i18n="home.gallery.after">Efter</span>
-              <span class="ba-divider"><span class="ba-knob"><svg class="icon" aria-hidden="true"><use href="#i-chevrons-lr"/></svg></span></span>
-              <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Jämför före och efter – botox panna och argrynka" data-i18n-attr="aria-label:home.ba2.range">
-            </div>
-            <figcaption data-i18n="home.ba2.caption"><strong>Panna &amp; argrynka</strong><span>Botox · Resultat efter 14 dagar</span></figcaption>
-          </figure>
-
-          <figure class="ba reveal" data-category="medicinskt">
-            <div class="ba-frame">
-              <img class="ba-before" src="assets/images/gallery-03-before.svg" alt="Före: godartad hudförändring på kinden" data-i18n-attr="alt:home.ba3.before" width="800" height="600" loading="lazy">
-              <img class="ba-after" src="assets/images/gallery-03-after.svg" alt="Efter: läkt hud efter borttagning" data-i18n-attr="alt:home.ba3.after" width="800" height="600" loading="lazy">
-              <span class="ba-tag ba-tag--before" aria-hidden="true" data-i18n="home.gallery.before">Före</span>
-              <span class="ba-tag ba-tag--after" aria-hidden="true" data-i18n="home.gallery.after">Efter</span>
-              <span class="ba-divider"><span class="ba-knob"><svg class="icon" aria-hidden="true"><use href="#i-chevrons-lr"/></svg></span></span>
-              <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Jämför före och efter – borttagning av hudförändring" data-i18n-attr="aria-label:home.ba3.range">
-            </div>
-            <figcaption data-i18n="home.ba3.caption"><strong>Borttagning av hudförändring</strong><span>Medicinskt · Efter 6 veckors läkning</span></figcaption>
-          </figure>
-
-          <figure class="ba reveal" data-category="fotvard">
-            <div class="ba-frame">
-              <img class="ba-before" src="assets/images/gallery-04-before.svg" alt="Före: förhårdnader under foten" data-i18n-attr="alt:home.ba4.before" width="800" height="600" loading="lazy">
-              <img class="ba-after" src="assets/images/gallery-04-after.svg" alt="Efter: mjuk och behandlad fotsula" data-i18n-attr="alt:home.ba4.after" width="800" height="600" loading="lazy">
-              <span class="ba-tag ba-tag--before" aria-hidden="true" data-i18n="home.gallery.before">Före</span>
-              <span class="ba-tag ba-tag--after" aria-hidden="true" data-i18n="home.gallery.after">Efter</span>
-              <span class="ba-divider"><span class="ba-knob"><svg class="icon" aria-hidden="true"><use href="#i-chevrons-lr"/></svg></span></span>
-              <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Jämför före och efter – medicinsk fotvård" data-i18n-attr="aria-label:home.ba4.range">
-            </div>
-            <figcaption data-i18n="home.ba4.caption"><strong>Liktornar &amp; förhårdnader</strong><span>Fotvård · Efter en behandling</span></figcaption>
-          </figure>
-        </div>
+        <div class="ba-grid" data-render="gallery"></div>
         <p class="disclaimer" data-i18n="home.gallery.disclaimer">Resultat varierar från person till person. Vid konsultationen går vi igenom vad som är realistiskt för just dig.</p>
       </div>
     </section>

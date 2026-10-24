@@ -182,11 +182,37 @@ dialog label:not(.check) { display: grid; gap: 4px; font-weight: 600; font-size:
 .camp-row.is-bad { border-color: var(--danger); background: var(--danger-soft); }
 .camp-list { display: grid; gap: 6px; }
 .actions--page { justify-content: flex-start; padding-bottom: 48px; }
+
+/* Före & efter tab */
+#view-gallery .toolbar h1 { font-size: 1.25rem; }
+#view-gallery > .hint { margin-bottom: 8px; max-width: 70ch; }
+.cases { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.case {
+  display: grid; grid-template-columns: 200px 1fr auto; gap: 16px; align-items: center;
+  padding: 12px; border-radius: var(--r-sm); background: var(--bg); border: 1px solid var(--line);
+}
+.case-thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.case-thumbs span { aspect-ratio: 4 / 3; border-radius: 6px; overflow: hidden; background: var(--mint-soft); display: grid; place-items: center; font-size: 0.75rem; color: var(--ink-3); }
+.case-thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.case .body { display: grid; gap: 2px; min-width: 0; overflow-wrap: anywhere; }
+.case .body .line { color: var(--ink-2); font-size: 0.9375rem; }
+.case-buttons { display: flex; gap: 6px; align-items: center; }
+.case--off .case-thumbs, .case--off .body { opacity: 0.6; }
+.tag--ok { background: #dff3e4; color: #1d6b35; }
+.pick { display: block; aspect-ratio: 4 / 3; border-radius: var(--r-sm); overflow: hidden; background: var(--mint-soft); position: relative; }
+.pick img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pick img:not([src]), .pick img[src=""] { display: none; }
+.pick-empty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink-3); font-weight: 500; }
+.pick img[src]:not([src=""]) + .pick-empty { display: none; }
+input[type="file"].input { padding: 8px; min-height: 0; font-size: 0.875rem; }
+.actions-start { margin-right: auto; }
+.actions-start[hidden] { display: none; }
 .actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 4px; }
 
 @media (max-width: 560px) {
   .item, .item--treatment { grid-template-columns: 76px 1fr; }
   .camp-row { grid-template-columns: auto 1fr auto; }
+  .case { grid-template-columns: 1fr; }
   .camp-row .check { grid-column: 1 / -1; }
   .item > .btn { grid-column: 1 / -1; justify-self: start; }
   .week-nav h1 { width: 100%; margin: 4px 0 0; }

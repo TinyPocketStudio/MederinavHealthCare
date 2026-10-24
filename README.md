@@ -43,7 +43,7 @@ Every placeholder shows its own file name and recommended size, so you can see w
 | `images/hero-clinic.jpg` | Home hero (arch) | 800×1000 (4:5) |
 | `images/treatment-medicinskt/injektioner/hudvard/fotvard.svg` | Treatment circles on home, icons on Behandlingar. Flat illustrations: medicinskt is the supplied doctor-and-patient picture (PNG inside the SVG), the other three were drawn to match it | square, transparent |
 | `images/campaign-season.svg` | Campaign section, default picture (autumn botox & fillers illustration; keep the main motif in the middle, the image is cropped to a tall box on desktop). Staff can upload their own picture per campaign on the staff page | 900×700 |
-| `images/gallery-01…04-before/after.svg` | Before/after gallery | 800×600 (4:3); before and after must match |
+| `images/gallery-01…04-before/after.svg` | Old placeholders, no longer used. Before & after pictures are uploaded on the staff page | – |
 | `images/team-christian-navarro.jpg`, `team-lorena-munoz.svg` | Home and Om oss | 600×750 (4:5) |
 | `images/about-clinic.jpg` | Om oss | 1200×800 (3:2) |
 | `images/visit-clinic-street.jpg` | "Öppettider" | 600×900 (2:3) |
@@ -58,7 +58,7 @@ All images use `object-fit: cover`, so photos with slightly different proportion
 - **Categories** (names, intros, images): `categories` in `assets/js/data.js`.
 - **Seasonal campaign:** on the staff page, **Kampanj** tab: name, headline, description (Swedish and Spanish), start and end date, picture, and which treatments are included at what campaign price. The offer list, the "up to −X%" badge, the countdown and the campaign badges are all generated automatically. The campaign section on the home page only shows between the start and end date, and only if at least one treatment has a campaign price. `campaign` in `data.js` is only the first-time content and backup.
 - **Opening hours, staff working days, booking window:** `hours`, `team[].days`, `bookingWeeksAhead` and `minNoticeHours` in `data.js`.
-- **Before/after cases:** `index.html` → `#galleri`. Copy a `<figure class="ba">` block to add a case. `data-category` controls which filter it belongs to.
+- **Before/after cases:** on the staff page, **Före & efter** tab. The filter buttons a case can belong to are `gallery.categories` in `data.js`.
 - **Staff profiles (education, experience, etc.):** `om-oss.html`, with a shorter version in `index.html` → `#lakare`.
 
 > ⚠️ All bios, education entries, years, statistics ("30+ år", "3 000+ behandlingar"), prices and transport details are **placeholder text**. Replace them with real information before launch.
@@ -85,7 +85,7 @@ The backend checks everything again: the treatment, the staff member, their work
 npm run db:migrate:remote
 ```
 
-Until `0003_treatments.sql` and `0004_campaign.sql` have been run, the backend keeps using the treatments and campaign in `data.js`, so nothing breaks (the staff page can't save campaign changes until then). The first request after they have run fills the tables from `data.js`.
+Until `0003_treatments.sql`, `0004_campaign.sql` and `0005_gallery.sql` have been run, the backend keeps using the treatments and campaign in `data.js` and keeps the gallery hidden, so nothing breaks (the staff page can't save campaign or gallery changes until then). The first request after they have run fills the tables from `data.js`.
 
 **No secrets in the repo.** Keys are stored as encrypted secrets in Cloudflare. For local testing they go in `booking-api/.dev.vars`, which Git ignores. Patient data only lives in the D1 database, never in the repo.
 
@@ -128,6 +128,12 @@ Staff manage bookings at **https://api.mederinavhealthcare.se/admin/** (Swedish,
   - Start and end date: the campaign and its prices apply from the start date through the end date, so the next campaign can be prepared in advance.
   - Picture: choose a new one and it is saved right away (shrunk to at most 1600 px before upload; JPG, PNG or WebP). "Använd standardbilden" goes back to `campaign-season.svg`.
   - Treatments and campaign prices: tick a treatment and type its campaign price, which must be lower than the normal price. Saving replaces all campaign prices at once.
+- **Före & efter** (tab at the top): the before & after gallery on the home page.
+  - A switch shows or hides the whole section. It only appears on the website when it is on *and* at least one case is published.
+  - Each case has a before and an after picture (shrunk to at most 1600 px before upload), a title, a short description, a filter (Fillers, Botox, Hud, Fotvård) and Spanish texts (required as elsewhere).
+  - A case can only be published once staff tick that the patient has given written consent, and both pictures are added.
+  - Cases can be reordered with the arrows, hidden ("Publicera på webbplatsen" off) or deleted for good together with their pictures, for example if a patient withdraws consent.
+  - Privacy: the website can only fetch the pictures of published cases. Unpublished pictures are only reachable from the logged-in staff page.
 
 **Login** is Cloudflare Access (Zero Trust). Staff type their own email and get a one-time code; there are no passwords.
 - **Who may log in:** the email list in the Access application's policy (Cloudflare → Zero Trust → Access → Applications).

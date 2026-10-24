@@ -66,6 +66,27 @@
       missingPrice: (list) => `Skriv ett kampanjpris för: ${list}.`,
       imageSaving: "Sparar bilden…", imageSaved: "Bilden är sparad.", imageReset: "Standardbilden används igen.",
       imageError: "Bilden kunde inte sparas. Välj en JPG-, PNG- eller WebP-bild.", imageTooLarge: "Bilden är för stor. Välj en mindre bild.",
+      gallery: "Före & efter", "g.showSection": "Visa Före & efter på startsidan", "g.newCaseBtn": "+ Nytt resultat",
+      "g.hint": "Ett resultat visas på startsidan när det är publicerat, patienten har gett sitt samtycke och både före- och efterbild finns. Avsnittet visas bara när det är påslaget och minst ett resultat är publicerat.",
+      "g.before": "Före", "g.after": "Efter", "g.noImage": "Ingen bild",
+      "g.imageHint": "Använd bilder med samma utsnitt och format (helst liggande 4:3). Stora bilder förminskas automatiskt.",
+      "g.title": "Rubrik", "g.category": "Filter", "g.detail": "Beskrivning", "g.detailHint": "(t.ex. Resultat 2 veckor efter behandling)",
+      "g.consent": "Patienten har gett skriftligt samtycke till att bilderna publiceras", "g.visible": "Publicera på webbplatsen",
+      "g.delete": "Ta bort", "g.save": "Spara", "g.newCase": "Nytt resultat", "g.editCase": "Ändra resultat",
+      "g.empty": "Inga resultat ännu. Lägg till det första med ”+ Nytt resultat”.",
+      tagPublished: "Publicerad", tagNotPublished: "Inte publicerad", tagNoConsent: "Samtycke saknas", tagMissingImage: "Bild saknas",
+      moveUp: "Flytta upp", moveDown: "Flytta ned",
+      sectionOn: "Före & efter visas på startsidan (när minst ett resultat är publicerat).", sectionOff: "Före & efter är dolt på startsidan.",
+      sectionOnNoCases: "Påslaget, men inget resultat är publicerat ännu – avsnittet syns inte förrän ett är publicerat.",
+      caseSaved: (title) => `”${title}” är sparat.`, caseDeleted: (title) => `”${title}” är borttaget.`,
+      confirmDeleteCase: (title) => `Ta bort ”${title}” och båda bilderna för gott? Det går inte att ångra.`,
+      caseError: "Resultatet kunde inte sparas. Försök igen.", galleryError: "Det gick inte att spara. Försök igen.",
+      caseImageError: (side) => `${side === "before" ? "Före" : "Efter"}-bilden kunde inte användas. Välj en JPG-, PNG- eller WebP-bild.`,
+      caseLabels: {
+        title: "rubrik (2–80 tecken)", detail: "beskrivning (högst 120 tecken)", category: "filter",
+        titleEs: "spansk rubrik", detailEs: "spansk beskrivning (krävs när den svenska är ifylld)",
+        consent: "samtycke (krävs för att publicera)", before: "före-bild (krävs för att publicera)", after: "efter-bild (krävs för att publicera)",
+      },
       campaignLabels: {
         name: "namn (2–60 tecken)", title: "rubrik (högst 120 tecken)", description: "beskrivning (högst 500 tecken)",
         nameEs: "spanskt namn", titleEs: "spansk rubrik (krävs när den svenska är ifylld)", descriptionEs: "spansk beskrivning (krävs när den svenska är ifylld)",
@@ -138,6 +159,27 @@
       missingPrice: (list) => `Escribe un precio de campaña para: ${list}.`,
       imageSaving: "Guardando la imagen…", imageSaved: "Imagen guardada.", imageReset: "Se vuelve a usar la imagen predeterminada.",
       imageError: "No se pudo guardar la imagen. Elige una imagen JPG, PNG o WebP.", imageTooLarge: "La imagen es demasiado grande. Elige una más pequeña.",
+      gallery: "Antes y después", "g.showSection": "Mostrar Antes y después en la página de inicio", "g.newCaseBtn": "+ Nuevo resultado",
+      "g.hint": "Un resultado aparece en la página de inicio cuando está publicado, el paciente ha dado su consentimiento y hay imagen de antes y de después. La sección solo se muestra cuando está activada y hay al menos un resultado publicado.",
+      "g.before": "Antes", "g.after": "Después", "g.noImage": "Sin imagen",
+      "g.imageHint": "Usa imágenes con el mismo encuadre y formato (mejor horizontales 4:3). Las imágenes grandes se reducen automáticamente.",
+      "g.title": "Título", "g.category": "Filtro", "g.detail": "Descripción", "g.detailHint": "(p. ej. Resultado 2 semanas después del tratamiento)",
+      "g.consent": "El paciente ha dado su consentimiento por escrito para publicar las imágenes", "g.visible": "Publicar en la web",
+      "g.delete": "Eliminar", "g.save": "Guardar", "g.newCase": "Nuevo resultado", "g.editCase": "Editar resultado",
+      "g.empty": "Todavía no hay resultados. Añade el primero con «+ Nuevo resultado».",
+      tagPublished: "Publicado", tagNotPublished: "No publicado", tagNoConsent: "Falta consentimiento", tagMissingImage: "Falta imagen",
+      moveUp: "Subir", moveDown: "Bajar",
+      sectionOn: "Antes y después se muestra en la página de inicio (cuando hay al menos un resultado publicado).", sectionOff: "Antes y después está oculto en la página de inicio.",
+      sectionOnNoCases: "Activado, pero todavía no hay ningún resultado publicado: la sección no aparece hasta que se publique uno.",
+      caseSaved: (title) => `«${title}» se ha guardado.`, caseDeleted: (title) => `«${title}» se ha eliminado.`,
+      confirmDeleteCase: (title) => `¿Eliminar «${title}» y sus dos imágenes definitivamente? No se puede deshacer.`,
+      caseError: "No se pudo guardar el resultado. Inténtalo de nuevo.", galleryError: "No se pudo guardar. Inténtalo de nuevo.",
+      caseImageError: (side) => `No se pudo usar la imagen de ${side === "before" ? "antes" : "después"}. Elige una imagen JPG, PNG o WebP.`,
+      caseLabels: {
+        title: "título (2–80 caracteres)", detail: "descripción (máx. 120 caracteres)", category: "filtro",
+        titleEs: "título en español", detailEs: "descripción en español (obligatoria si hay texto sueco)",
+        consent: "consentimiento (necesario para publicar)", before: "imagen de antes (necesaria para publicar)", after: "imagen de después (necesaria para publicar)",
+      },
       campaignLabels: {
         name: "nombre (2–60 caracteres)", title: "título (máx. 120 caracteres)", description: "descripción (máx. 500 caracteres)",
         nameEs: "nombre en español", titleEs: "título en español (obligatorio si hay texto sueco)", descriptionEs: "descripción en español (obligatoria si hay texto sueco)",
@@ -204,9 +246,11 @@
 
   /* ---------- API ---------- */
   async function api(path, options = {}) {
+    // FormData (pictures) sets its own Content-Type; everything else is JSON unless told otherwise.
+    const isForm = options.body instanceof FormData;
     const res = await fetch(API + path, {
       ...options,
-      headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+      headers: { ...(isForm ? {} : { "Content-Type": "application/json" }), ...(options.headers || {}) },
       credentials: "same-origin",
     });
     const body = await res.json().catch(() => ({}));
@@ -813,15 +857,181 @@
     }
   });
 
-  /* ---------- Views: Bokningar | Behandlingar | Kampanj ---------- */
+  /* ---------- Before & after gallery ---------- */
+  const fg = $("form-case");
+  let gallery = null; // { visible, cases, categories } from /gallery, loaded when the tab is first opened
+  let editingCase = null;
+  const picked = { before: null, after: null }; // shrunk pictures waiting to be saved
+  const caseThumb = (c, side) => (c[`${side}Version`] ? `${API}/gallery/${c.id}/${side}?v=${encodeURIComponent(c[`${side}Version`])}` : "");
+  const galleryCategoryName = (id) => { const g = gallery.categories.find((x) => x.id === id); return g ? loc(g) : id; };
+  const locText = (c, field) => (lang !== "sv" && c.es && c.es[field]) || c[field];
+
+  async function loadGallery() {
+    try {
+      gallery = await api("/gallery");
+      renderGallery();
+    } catch (err) {
+      if (err.status === 401) return showAuthError();
+      $("case-list").innerHTML = `<div class="day"><p class="empty">${esc(t("pageError"))}</p></div>`;
+    }
+  }
+
+  function renderGalleryState() {
+    const published = gallery.cases.some((c) => c.visible && c.consent && c.beforeVersion && c.afterVersion);
+    $("gallery-visible").checked = gallery.visible;
+    setStatus(!gallery.visible ? t("sectionOff") : published ? t("sectionOn") : t("sectionOnNoCases"), false, "g-status");
+  }
+
+  function renderGallery() {
+    renderGalleryState();
+    if (!gallery.cases.length) {
+      $("case-list").innerHTML = `<div class="day"><p class="empty">${esc(t("g.empty"))}</p></div>`;
+      return;
+    }
+    $("case-list").innerHTML = `<div class="day"><ul class="cases">${gallery.cases.map((c, i) => {
+      const missing = !c.beforeVersion || !c.afterVersion;
+      const live = c.visible && c.consent && !missing;
+      const tags = [
+        live ? `<span class="tag tag--ok">${esc(t("tagPublished"))}</span>` : `<span class="tag tag--cancelled">${esc(t("tagNotPublished"))}</span>`,
+        !c.consent ? `<span class="tag tag--cancelled">${esc(t("tagNoConsent"))}</span>` : "",
+        missing ? `<span class="tag tag--cancelled">${esc(t("tagMissingImage"))}</span>` : "",
+      ].join("");
+      const thumb = (side) => (caseThumb(c, side) ? `<span><img src="${esc(caseThumb(c, side))}" alt="${esc(t(`g.${side}`))}" loading="lazy"></span>` : `<span>${esc(t("g.noImage"))}</span>`);
+      return `<li class="case${live ? "" : " case--off"}">
+        <div class="case-thumbs">${thumb("before")}${thumb("after")}</div>
+        <div class="body">
+          <span><strong>${esc(locText(c, "title"))}</strong>${tags}</span>
+          <span class="line">${esc(galleryCategoryName(c.category))}${c.detail ? ` · ${esc(locText(c, "detail"))}` : ""}</span>
+        </div>
+        <div class="case-buttons">
+          <button class="btn btn--small btn--icon" type="button" data-move-case="${c.id}" data-dir="-1" aria-label="${esc(t("moveUp"))}"${i === 0 ? " disabled" : ""}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg></button>
+          <button class="btn btn--small btn--icon" type="button" data-move-case="${c.id}" data-dir="1" aria-label="${esc(t("moveDown"))}"${i === gallery.cases.length - 1 ? " disabled" : ""}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <button class="btn btn--small" type="button" data-edit-case="${c.id}">${esc(t("edit"))}</button>
+        </div>
+      </li>`;
+    }).join("")}</ul></div>`;
+  }
+
+  function setPreview(side, src) {
+    fg.querySelector(`[data-preview="${side}"]`).src = src || "";
+  }
+
+  function openCase(c) {
+    editingCase = c;
+    picked.before = null;
+    picked.after = null;
+    fg.reset();
+    $("dlg-case-title").textContent = t(c ? "g.editCase" : "g.newCase");
+    fg.category.innerHTML = gallery.categories.map((g) => `<option value="${esc(g.id)}">${esc(loc(g))}</option>`).join("");
+    $("delete-case").hidden = !c;
+    if (c) {
+      fg.title.value = c.title;
+      fg.category.value = c.category;
+      fg.detail.value = c.detail || "";
+      fg.titleEs.value = (c.es && c.es.title) || "";
+      fg.detailEs.value = (c.es && c.es.detail) || "";
+      fg.consent.checked = c.consent;
+      fg.visible.checked = c.visible;
+    }
+    setPreview("before", c ? caseThumb(c, "before") : "");
+    setPreview("after", c ? caseThumb(c, "after") : "");
+    openDialog($("dlg-case"));
+  }
+
+  ["before", "after"].forEach((side) => {
+    fg[side].addEventListener("change", async () => {
+      const file = fg[side].files[0];
+      if (!file) return;
+      fg.querySelector(".form-error").textContent = "";
+      try {
+        picked[side] = await shrinkImage(file);
+        setPreview(side, URL.createObjectURL(picked[side]));
+      } catch (e) {
+        picked[side] = null;
+        fg.querySelector(".form-error").textContent = t("caseImageError", side);
+      }
+    });
+  });
+
+  $("open-case").addEventListener("click", () => openCase(null));
+  $("case-list").addEventListener("click", async (e) => {
+    const edit = e.target.closest("[data-edit-case]");
+    if (edit) return openCase(gallery.cases.find((c) => c.id === Number(edit.dataset.editCase)));
+    const move = e.target.closest("[data-move-case]");
+    if (!move) return;
+    move.disabled = true;
+    try {
+      await api(`/gallery/${move.dataset.moveCase}/move`, { method: "POST", body: JSON.stringify({ direction: Number(move.dataset.dir) }) });
+      await loadGallery();
+    } catch (ex) {
+      if (ex.status === 401) return showAuthError();
+      setStatus(t("galleryError"), true, "g-status");
+    }
+  });
+
+  $("gallery-visible").addEventListener("change", async (e) => {
+    const visible = e.target.checked;
+    try {
+      await api("/gallery/settings", { method: "PUT", body: JSON.stringify({ visible }) });
+      gallery.visible = visible;
+      renderGalleryState();
+    } catch (ex) {
+      e.target.checked = !visible;
+      if (ex.status === 401) return showAuthError();
+      setStatus(t("galleryError"), true, "g-status");
+    }
+  });
+
+  fg.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const err = fg.querySelector(".form-error");
+    err.textContent = "";
+    const form = new FormData();
+    ["title", "category", "detail", "titleEs", "detailEs"].forEach((name) => form.append(name, fg[name].value));
+    form.append("consent", String(fg.consent.checked));
+    form.append("visible", String(fg.visible.checked));
+    ["before", "after"].forEach((side) => { if (picked[side]) form.append(side, picked[side], `${side}.${picked[side].type.split("/")[1]}`); });
+    const btn = fg.querySelector("[type=submit]");
+    btn.disabled = true;
+    try {
+      const res = editingCase
+        ? await api(`/gallery/${editingCase.id}`, { method: "PUT", body: form })
+        : await api("/gallery", { method: "POST", body: form });
+      $("dlg-case").close();
+      await loadGallery();
+      setStatus(t("caseSaved", res.case.title), false, "g-status");
+    } catch (ex) {
+      if (ex.status === 401) { $("dlg-case").close(); return showAuthError(); }
+      err.textContent = ex.body && ex.body.side ? t("caseImageError", ex.body.side) : errorText(ex, t("caseError"), L().caseLabels);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  $("delete-case").addEventListener("click", async () => {
+    if (!editingCase || !confirm(t("confirmDeleteCase", editingCase.title))) return;
+    try {
+      await api(`/gallery/${editingCase.id}`, { method: "DELETE" });
+      $("dlg-case").close();
+      await loadGallery();
+      setStatus(t("caseDeleted", editingCase.title), false, "g-status");
+    } catch (ex) {
+      if (ex.status === 401) { $("dlg-case").close(); return showAuthError(); }
+      fg.querySelector(".form-error").textContent = t("galleryError");
+    }
+  });
+
+  /* ---------- Views: Bokningar | Behandlingar | Kampanj | Före & efter ---------- */
   const viewKey = "mederinav-staff-view";
   function showView(view) {
     $("view-bookings").hidden = view !== "bookings";
     $("view-treatments").hidden = view !== "treatments";
     $("view-campaign").hidden = view !== "campaign";
+    $("view-gallery").hidden = view !== "gallery";
     document.querySelectorAll("[data-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === view)));
     if (view === "treatments" && config) renderTreatments();
     if (view === "campaign" && config && !campaignFilled) fillCampaign();
+    if (view === "gallery" && !gallery) loadGallery();
     try { localStorage.setItem(viewKey, view); } catch (e) { /* ignore */ }
   }
   document.querySelectorAll("[data-view]").forEach((btn) => btn.addEventListener("click", () => showView(btn.dataset.view)));
@@ -847,6 +1057,7 @@
     if (loaded) render();
     if (!$("view-treatments").hidden) renderTreatments();
     if (campaignFilled) { renderCampaignTreatments(); renderCampaignState(); }
+    if (gallery) renderGallery();
     if ($("dlg-booking").open) { fillTreatments(); fillTimes(); }
     if ($("dlg-block").open) fillBlockPractitioners();
   }));
@@ -860,7 +1071,7 @@
       $("who").textContent = me.email;
       fillFilter();
       try { const saved = localStorage.getItem(filterKey); if (saved && config.team.some((p) => p.id === saved)) $("filter").value = saved; } catch (e) { /* ignore */ }
-      try { const v = localStorage.getItem(viewKey); if (v === "treatments" || v === "campaign") showView(v); } catch (e) { /* ignore */ }
+      try { const v = localStorage.getItem(viewKey); if (v === "treatments" || v === "campaign" || v === "gallery") showView(v); } catch (e) { /* ignore */ }
       await loadWeek();
     } catch (err) {
       if (err.status === 401) return showAuthError();
