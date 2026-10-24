@@ -11,6 +11,8 @@
       days: ["söndag", "måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag"],
       months: ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"],
       dayMonth: (d, m) => `${d} ${m}`,
+      // Week label: "19–25 oktober 2026", or "28 september – 4 oktober 2026" across two months.
+      weekRange: (d1, m1, d2, m2, y) => (m1 === m2 ? `${d1}–${d2} ${m2} ${y}` : `${d1} ${m1} – ${d2} ${m2} ${y}`),
       lang: "Språk", logout: "Logga ut", prevWeek: "Föregående vecka", nextWeek: "Nästa vecka", thisWeek: "Denna vecka",
       bookings: "Bokningar", showPractitioner: "Visa behandlare", allPractitioners: "Alla behandlare", showCancelled: "Visa avbokade",
       newBookingBtn: "+ Ny bokning", blockTime: "Blockera tid", loading: "Hämtar bokningar…", newBooking: "Ny bokning",
@@ -82,6 +84,7 @@
       days: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
       months: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
       dayMonth: (d, m) => `${d} de ${m}`,
+      weekRange: (d1, m1, d2, m2, y) => (m1 === m2 ? `${d1}–${d2} de ${m2} de ${y}` : `${d1} de ${m1} – ${d2} de ${m2} de ${y}`),
       lang: "Idioma", logout: "Cerrar sesión", prevWeek: "Semana anterior", nextWeek: "Semana siguiente", thisWeek: "Esta semana",
       bookings: "Reservas", showPractitioner: "Mostrar profesional", allPractitioners: "Todos los profesionales", showCancelled: "Mostrar canceladas",
       newBookingBtn: "+ Nueva reserva", blockTime: "Bloquear horario", loading: "Cargando reservas…", newBooking: "Nueva reserva",
@@ -227,7 +230,8 @@
   /* ---------- Week view ---------- */
   function renderWeekLabel() {
     const end = addDays(week, 6);
-    $("week-label").innerHTML = `${esc(t("week"))} ${isoWeek(week)}<small>${esc(dayMonth(week))} – ${esc(dayMonth(end))} ${end.getFullYear()}</small>`;
+    const range = t("weekRange", week.getDate(), L().months[week.getMonth()], end.getDate(), L().months[end.getMonth()], end.getFullYear());
+    $("week-label").innerHTML = `${esc(t("week"))} ${isoWeek(week)}<small>${esc(range)}</small>`;
   }
 
   async function loadWeek() {
