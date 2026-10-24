@@ -20,7 +20,7 @@ window.MEDERINAV = {
   // Behandlare. `days` = veckodagar de arbetar (1 = måndag … 6 = lördag, 0 = söndag).
   team: [
     { id: "christian", name: "Christian Navarro", role: "Läkare", es: { role: "Médico" }, days: [1, 2, 3, 4, 5] },
-    { id: "lorena", name: "Lorena Munoz", role: "Medicinsk fotterapeut & hudterapeut", es: { role: "Podóloga clínica y terapeuta de la piel" }, days: [2, 3, 4, 5, 6] },
+    { id: "lorena", name: "Lorena Munoz", role: "Medicinsk fotterapeut & sjuksköterska", es: { role: "Podóloga clínica y enfermera" }, days: [2, 3, 4, 5, 6] },
   ],
 
   // Öppettider per veckodag: [öppnar, stänger] eller null = stängt.
