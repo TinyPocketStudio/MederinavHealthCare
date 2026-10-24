@@ -100,14 +100,107 @@ export async function insertTreatment(env, t, user) {
   await env.DB.prepare(insertSql("INSERT")).bind(...itemToValues(t, max + 1), nowIso(), user).run();
 }
 
-/** Updates every field except id and sort. Returns false if the id doesn't exist. */
+/**
+ * Updates every field except id, sort and the campaign price (set on the Kampanj tab).
+ * A campaign price that is no longer below the new price is removed.
+ * Returns false if the id doesn't exist.
+ */
 export async function updateTreatment(env, t, user) {
   const v = itemToValues(t, 0);
   const result = await env.DB.prepare(
     `UPDATE treatments SET category_id = ?2, name = ?3, name_es = ?4, duration = ?5, price = ?6,
-            campaign_price = ?7, practitioners = ?8, description = ?9, description_es = ?10,
-            suitable = ?11, suitable_es = ?12, hidden = ?13, updated_at = ?14, updated_by = ?15
+            campaign_price = CASE WHEN campaign_price < ?6 THEN campaign_price END,
+            practitioners = ?7, description = ?8, description_es = ?9,
+            suitable = ?10, suitable_es = ?11, hidden = ?12, updated_at = ?13, updated_by = ?14
       WHERE id = ?1`
-  ).bind(v[0], v[1], v[3], v[4], v[5], v[6], v[7], v[8], v[9], v[10], v[11], v[12], v[13], nowIso(), user).run();
+  ).bind(v[0], v[1], v[3], v[4], v[5], v[6], v[8], v[9], v[10], v[11], v[12], v[13], nowIso(), user).run();
   return result.meta.changes > 0;
+}
+
+/* ---------- Campaign (one row) ---------- */
+const CAMPAIGN_COLUMNS = `name, name_es, title, title_es, description, description_es, start_date, end_date, image_version`;
+
+// Same shape as `campaign` in data.js, plus imageVersion (null = the default picture).
+function rowToCampaign(r) {
+  const es = {};
+  if (r.name_es) es.name = r.name_es;
+  if (r.title_es) es.title = r.title_es;
+  if (r.description_es) es.description = r.description_es;
+  return {
+    name: r.name, title: r.title, description: r.description,
+    startDate: r.start_date, endDate: r.end_date, imageVersion: r.image_version || null, es,
+  };
+}
+
+const dataJsCampaign = () => ({
+  title: "", description: "", startDate: "", ...DATA.campaign, imageVersion: null, es: { ...(DATA.campaign.es || {}) },
+});
+
+/** The campaign. Filled from data.js the first time; data.js is used if the database can't be read. */
+export async function loadCampaign(env) {
+  try {
+    const select = env.DB.prepare(`SELECT ${CAMPAIGN_COLUMNS} FROM campaign WHERE id = 1`);
+    let row = await select.first();
+    if (!row) {
+      const c = dataJsCampaign();
+      await env.DB.prepare(
+        `INSERT OR IGNORE INTO campaign (id, name, name_es, title, title_es, description, description_es, start_date, end_date, updated_at)
+         VALUES (1, ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)`
+      ).bind(c.name, c.es.name || "", c.title, c.es.title || "", c.description, c.es.description || "",
+        c.startDate, c.endDate, nowIso()).run();
+      row = await select.first();
+    }
+    return rowToCampaign(row);
+  } catch (err) {
+    console.error("The campaign could not be read from the database – using data.js:", err.message);
+    return dataJsCampaign();
+  }
+}
+
+/** True on the campaign's days (dates as YYYY-MM-DD in the clinic's time zone). */
+export const campaignActive = (c, today) => !!c && !!c.endDate && (!c.startDate || c.startDate <= today) && today <= c.endDate;
+
+/**
+ * Saves the campaign texts and dates, and the campaign prices: `prices` is { treatmentId: price },
+ * every treatment not in it loses its campaign price. One batch, so it all saves or nothing does.
+ */
+export async function saveCampaign(env, c, prices, user) {
+  await loadCampaign(env); // makes sure the row exists
+  const now = nowIso();
+  await env.DB.batch([
+    env.DB.prepare(
+      `UPDATE campaign SET name = ?1, name_es = ?2, title = ?3, title_es = ?4, description = ?5, description_es = ?6,
+              start_date = ?7, end_date = ?8, updated_at = ?9, updated_by = ?10 WHERE id = 1`
+    ).bind(c.name, c.es.name, c.title, c.es.title, c.description, c.es.description, c.startDate, c.endDate, now, user),
+    env.DB.prepare(`UPDATE treatments SET campaign_price = NULL WHERE campaign_price IS NOT NULL`),
+    ...Object.entries(prices).map(([id, price]) =>
+      env.DB.prepare(`UPDATE treatments SET campaign_price = ?2, updated_at = ?3, updated_by = ?4 WHERE id = ?1`)
+        .bind(id, price, now, user)),
+  ]);
+}
+
+/** Stores an uploaded campaign picture (bytes already checked by the caller). Returns its new version. */
+export async function saveCampaignImage(env, type, bytes, user) {
+  await loadCampaign(env);
+  const version = Date.now().toString(36);
+  await env.DB.batch([
+    env.DB.prepare(`INSERT OR REPLACE INTO campaign_image (id, type, data) VALUES (1, ?1, ?2)`).bind(type, bytes),
+    env.DB.prepare(`UPDATE campaign SET image_version = ?1, updated_at = ?2, updated_by = ?3 WHERE id = 1`).bind(version, nowIso(), user),
+  ]);
+  return version;
+}
+
+/** Goes back to the default picture. */
+export async function deleteCampaignImage(env, user) {
+  await env.DB.batch([
+    env.DB.prepare(`DELETE FROM campaign_image WHERE id = 1`),
+    env.DB.prepare(`UPDATE campaign SET image_version = NULL, updated_at = ?1, updated_by = ?2 WHERE id = 1`).bind(nowIso(), user),
+  ]);
+}
+
+/** The uploaded picture as { type, bytes }, or null. */
+export async function loadCampaignImage(env) {
+  const row = await env.DB.prepare(`SELECT type, data FROM campaign_image WHERE id = 1`).first();
+  // D1 returns a BLOB as an ArrayBuffer or an array of numbers depending on the version – both work here.
+  return row ? { type: row.type, bytes: new Uint8Array(row.data) } : null;
 }

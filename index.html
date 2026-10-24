@@ -128,13 +128,15 @@
     </section>
 
     <!-- ===== Seasonal campaign =====
-         Kampanjens slutdatum styrs i assets/js/data.js, kampanjpriserna på personalsidan (Behandlingar) -->
-    <section class="section" id="kampanj" aria-labelledby="kampanj-title">
+         Namn, rubrik, beskrivning, datum, bild och kampanjpriser ändras på personalsidan (fliken Kampanj).
+         Dold tills kampanjen har hämtats; visas bara när kampanjen pågår och har kampanjpriser. -->
+    <section class="section" id="kampanj" aria-labelledby="kampanj-title" hidden>
       <div class="container">
         <div class="campaign reveal" data-campaign>
           <div class="campaign-body">
             <span class="eyebrow" data-i18n="home.campaign.eyebrow">Säsongskampanj</span>
-            <h2 id="kampanj-title" data-i18n="home.campaign.title">Höstkampanj – <span class="serif">naturligt fräsch med botox &amp; fillers</span></h2>
+            <h2 id="kampanj-title" data-campaign-title></h2>
+            <p class="campaign-lead" data-campaign-desc hidden></p>
             <p class="campaign-meta">
               <svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>
               <span data-i18n="home.campaign.validUntil">Gäller t.o.m.</span> <span data-campaign-end>30 november</span> ·
@@ -149,7 +151,7 @@
             </div>
           </div>
           <div class="campaign-media">
-            <img src="assets/images/campaign-season.svg" alt="" width="900" height="700" loading="lazy">
+            <img src="assets/images/campaign-season.svg" alt="" width="900" height="700" loading="lazy" data-campaign-img>
             <div class="campaign-stamp" aria-hidden="true"><div><span data-i18n="home.campaign.upTo">Upp till</span><strong data-campaign-max>−20%</strong></div></div>
           </div>
         </div>

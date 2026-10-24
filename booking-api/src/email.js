@@ -1,7 +1,7 @@
 // Booking emails, sent through Brevo (EU) after a booking is saved.
 // Without BREVO_API_KEY (local testing) emails are printed to the console instead of sent.
 import { DATA } from "./site-data.js";
-import { findTreatment } from "./catalog.js";
+import { campaignActive, findTreatment, loadCampaign } from "./catalog.js";
 import { clinicNow, fromMin, parseDate } from "./schedule.js";
 
 const BREVO_URL = "https://api.brevo.com/v3/smtp/email";
@@ -14,11 +14,9 @@ const longDate = (date, lang) =>
   new Intl.DateTimeFormat(lang === "es" ? "es-ES" : "sv-SE", { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" })
     .format(parseDate(date));
 
-// Same rule as the website: campaign price applies until the campaign's end date.
-function priceOf(treatment) {
-  const end = DATA.campaign && DATA.campaign.endDate;
-  const active = end && clinicNow().date <= end;
-  return active && treatment.campaignPrice ? treatment.campaignPrice : treatment.price;
+// Same rule as the website: the campaign price applies from the campaign's start date to its end date.
+function priceOf(treatment, campaign) {
+  return campaignActive(campaign, clinicNow().date) && treatment.campaignPrice ? treatment.campaignPrice : treatment.price;
 }
 
 const TEXT = {
@@ -162,6 +160,7 @@ async function describe(env, booking) {
   // Hidden treatments are found too. If the id is unknown, fall back to what the booking itself stored.
   const treatment = (await findTreatment(env, booking.treatmentId))
     || { name: booking.treatmentId, duration: booking.duration || 30, price: null };
+  const campaign = await loadCampaign(env);
   const person = DATA.team.find((p) => p.id === booking.practitionerId) || { name: booking.practitionerId };
   const lang = booking.lang === "es" ? "es" : "sv";
   const duration = booking.duration || treatment.duration;
@@ -176,7 +175,7 @@ async function describe(env, booking) {
     dateLong: longDate(booking.date, lang),
     dateLongSv: longDate(booking.date, "sv"),
     endTime: fromMin(booking.startMin + duration),
-    price: treatment.price == null ? "–" : kr(priceOf(treatment), lang),
+    price: treatment.price == null ? "–" : kr(priceOf(treatment, campaign), lang),
   };
 }
 

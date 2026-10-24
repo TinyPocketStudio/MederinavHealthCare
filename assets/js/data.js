@@ -44,11 +44,16 @@ window.MEDERINAV = {
   // Nyckeln är offentlig och får ligga här – den hemliga nyckeln finns bara i Cloudflare.
   booking: { apiBase: "https://api.mederinavhealthcare.se", turnstileSiteKey: "0x4AAAAAAFfLN3KU1XMYM3HH" },
 
-  // Säsongskampanj – rabatterade behandlingar visas med kampanjpris.
+  // Säsongskampanj – hanteras nu på personalsidan (fliken Kampanj) och sparas i databasen.
+  // Det här används bara för att fylla databasen första gången, och som reserv om
+  // bokningssystemet inte svarar. Kampanjpriserna är campaignPrice på behandlingarna nedan.
   campaign: {
     name: "Höstkampanj",
-    es: { name: "Campaña de otoño" },
+    title: "naturligt fräsch med botox & fillers",
+    description: "",
+    startDate: "",
     endDate: "2026-11-30",
+    es: { name: "Campaña de otoño", title: "luce fresca y natural con bótox y rellenos" },
   },
 
   // Behandlingar hanteras nu på personalsidan (fliken Behandlingar) och sparas i databasen.

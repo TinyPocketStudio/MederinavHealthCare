@@ -6,6 +6,9 @@
  *   GET    /admin/api/config                      treatments (hidden too), staff and opening hours
  *   POST   /admin/api/treatments                  add a treatment
  *   PUT    /admin/api/treatments/<id>             change a treatment (hidden: true hides it on the website)
+ *   PUT    /admin/api/campaign                    campaign texts, dates and campaign prices
+ *   PUT    /admin/api/campaign/image              upload the campaign picture (the image file is the body)
+ *   DELETE /admin/api/campaign/image              go back to the default picture
  *   GET    /admin/api/bookings?from=…&to=…        bookings + blocked time, all details
  *   POST   /admin/api/bookings                    phone booking
  *   POST   /admin/api/bookings/MH-XXXXXX/cancel   cancel { notify: true } emails the patient
@@ -17,7 +20,10 @@ import { DATA } from "./site-data.js";
 import { fromMin, parseDate, toMin, validateSlot } from "./schedule.js";
 import { insertBooking } from "./store.js";
 import { sendBookingEmails, sendCancellationEmail } from "./email.js";
-import { insertTreatment, loadCatalog, loadTreatments, slugId, updateTreatment } from "./catalog.js";
+import {
+  deleteCampaignImage, insertTreatment, loadCampaign, loadCatalog, loadTreatments, saveCampaign, saveCampaignImage,
+  slugId, updateTreatment,
+} from "./catalog.js";
 
 const MAX_LIST_DAYS = 62;
 const MAX_BLOCK_DAYS = 62;
@@ -50,7 +56,7 @@ function dateRange(url, maxDays) {
 }
 
 async function config(env) {
-  const categories = await loadCatalog(env, { includeHidden: true });
+  const [categories, campaign] = await Promise.all([loadCatalog(env, { includeHidden: true }), loadCampaign(env)]);
   return {
     clinic: { name: DATA.clinic.name, phoneDisplay: DATA.clinic.phoneDisplay },
     team: DATA.team.map((p) => ({ id: p.id, name: p.name, days: p.days })),
@@ -60,6 +66,7 @@ async function config(env) {
     })),
     hours: DATA.hours,
     slotMinutes: DATA.slotMinutes,
+    campaign,
   };
 }
 
@@ -75,7 +82,6 @@ function readTreatment(body) {
     name: str(body.name, 200),
     duration: wholeNumber(body.duration),
     price: wholeNumber(body.price),
-    campaignPrice: body.campaignPrice == null || body.campaignPrice === "" ? null : wholeNumber(body.campaignPrice),
     practitioners: Array.isArray(body.practitioners) ? [...new Set(body.practitioners.map((p) => str(p, 64)))] : [],
     description: str(body.description, TEXT_MAX + 1),
     suitable: str(body.suitable, TEXT_MAX + 1),
@@ -87,9 +93,6 @@ function readTreatment(body) {
   if (!DATA.categories.some((c) => c.id === t.category)) fields.push("category");
   if (!Number.isInteger(t.duration) || t.duration < 5 || t.duration > 480) fields.push("duration");
   if (!Number.isInteger(t.price) || t.price < 0 || t.price > 100000) fields.push("price");
-  if (t.campaignPrice != null && (!Number.isInteger(t.campaignPrice) || t.campaignPrice < 0 || t.campaignPrice >= t.price)) {
-    fields.push("campaignPrice");
-  }
   if (!t.practitioners.length || !t.practitioners.every((id) => DATA.team.some((p) => p.id === id))) fields.push("practitioners");
   if (t.description.length > TEXT_MAX) fields.push("description");
   if (t.suitable.length > TEXT_MAX) fields.push("suitable");
@@ -109,6 +112,66 @@ async function createTreatment(request, env, user) {
   treatment.id = slugId(treatment.name, taken);
   await insertTreatment(env, treatment, user.email);
   return json({ treatment }, 201);
+}
+
+/* ---------- Campaign ---------- */
+const IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const MAX_IMAGE_BYTES = 1500000; // the staff page shrinks pictures before upload; D1 rows can hold 2 MB
+
+async function changeCampaign(request, env, user) {
+  const body = await readJson(request);
+  if (!body) return json({ error: "invalid", fields: ["body"] }, 400);
+  const es = body.es && typeof body.es === "object" ? body.es : {};
+  const c = {
+    name: str(body.name, 100), title: str(body.title, 200), description: str(body.description, 600),
+    startDate: str(body.startDate, 10), endDate: str(body.endDate, 10),
+    es: { name: str(es.name, 100), title: str(es.title, 200), description: str(es.description, 600) },
+  };
+  const fields = [];
+  if (c.name.length < 2 || c.name.length > 60) fields.push("name");
+  if (c.title.length > 120) fields.push("title");
+  if (c.description.length > 500) fields.push("description");
+  // Spanish is required, as for treatments: always a name, and a translation of every Swedish text that is filled in.
+  if (c.es.name.length < 2 || c.es.name.length > 60) fields.push("nameEs");
+  if (c.es.title.length > 120 || (c.title && !c.es.title)) fields.push("titleEs");
+  if (c.es.description.length > 500 || (c.description && !c.es.description)) fields.push("descriptionEs");
+  const start = parseDate(c.startDate);
+  const end = parseDate(c.endDate);
+  if (!start) fields.push("startDate");
+  if (!end || (start && end < start)) fields.push("endDate");
+
+  // { treatmentId: campaign price } – only treatments that exist, each cheaper than its normal price.
+  const all = await loadTreatments(env, { includeHidden: true });
+  const prices = {};
+  const raw = body.prices && typeof body.prices === "object" ? body.prices : {};
+  const badPrices = [];
+  for (const [id, value] of Object.entries(raw)) {
+    const t = all.find((x) => x.id === id);
+    const price = wholeNumber(value);
+    if (!t || !Number.isInteger(price) || price < 0 || price >= t.price) badPrices.push(id);
+    else prices[id] = price;
+  }
+  if (badPrices.length) fields.push("prices");
+  if (fields.length) return json({ error: "invalid", fields, badPrices }, 400);
+
+  await saveCampaign(env, c, prices, user.email);
+  return json({ campaign: await loadCampaign(env) });
+}
+
+async function uploadCampaignImage(request, env, user) {
+  const type = (request.headers.get("Content-Type") || "").split(";")[0].trim().toLowerCase();
+  if (!IMAGE_TYPES.includes(type)) return json({ error: "image_type" }, 415);
+  const bytes = new Uint8Array(await request.arrayBuffer());
+  if (!bytes.length) return json({ error: "image_empty" }, 400);
+  if (bytes.length > MAX_IMAGE_BYTES) return json({ error: "image_too_large", max: MAX_IMAGE_BYTES }, 413);
+  // Check the file really starts like the type it claims to be.
+  const startsWith = (...b) => b.every((v, i) => bytes[i] === v);
+  const real = type === "image/jpeg" ? startsWith(0xff, 0xd8, 0xff)
+    : type === "image/png" ? startsWith(0x89, 0x50, 0x4e, 0x47)
+    : startsWith(0x52, 0x49, 0x46, 0x46) && String.fromCharCode(...bytes.slice(8, 12)) === "WEBP";
+  if (!real) return json({ error: "image_type" }, 415);
+  const version = await saveCampaignImage(env, type, bytes, user.email);
+  return json({ imageVersion: version }, 201);
 }
 
 async function changeTreatment(request, env, user, id) {
@@ -273,6 +336,12 @@ export async function handleAdmin(request, env, ctx, url) {
   if (path === "/treatments" && method === "POST") return createTreatment(request, env, user);
   const treatment = path.match(/^\/treatments\/([a-z0-9-]{1,64})$/);
   if (treatment && method === "PUT") return changeTreatment(request, env, user, treatment[1]);
+  if (path === "/campaign" && method === "PUT") return changeCampaign(request, env, user);
+  if (path === "/campaign/image" && method === "PUT") return uploadCampaignImage(request, env, user);
+  if (path === "/campaign/image" && method === "DELETE") {
+    await deleteCampaignImage(env, user.email);
+    return json({ imageVersion: null });
+  }
   if (path === "/bookings" && method === "GET") return listBookings(url, env);
   if (path === "/bookings" && method === "POST") return createPhoneBooking(request, env, ctx, user);
   const cancel = path.match(/^\/bookings\/(MH-[A-Z0-9]{6})\/cancel$/);

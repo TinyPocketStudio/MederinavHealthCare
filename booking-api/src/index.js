@@ -1,7 +1,8 @@
 /*
  * Mederinav booking API (Cloudflare Worker), served at https://api.mederinavhealthcare.se
  *
- *   GET  /treatments                                   treatments shown on the website (no personal data)
+ *   GET  /treatments                                   treatments + campaign shown on the website (no personal data)
+ *   GET  /campaign-image?v=…                           the campaign picture uploaded on the staff page
  *   GET  /availability?from=YYYY-MM-DD&to=YYYY-MM-DD   taken times (no personal data)
  *   POST /bookings                                     create a booking (+ confirmation emails)
  *   /admin/                                            staff page (behind Cloudflare Access)
@@ -13,7 +14,7 @@ import { clinicNow, parseDate, validateSlot } from "./schedule.js";
 import { sendBookingEmails } from "./email.js";
 import { insertBooking } from "./store.js";
 import { handleAdmin } from "./admin.js";
-import { loadCatalog, loadTreatments } from "./catalog.js";
+import { loadCampaign, loadCampaignImage, loadCatalog, loadTreatments } from "./catalog.js";
 
 const MAX_RANGE_DAYS = 14;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -80,13 +81,25 @@ function corsHeaders(request, env) {
   return headers;
 }
 
-// The website shows these instead of the list in data.js. Short cache: staff changes show within 30 s.
+// The website shows these instead of the lists in data.js. Short cache: staff changes show within 30 s.
 async function treatments(env, cors) {
-  const categories = (await loadCatalog(env)).map((cat) => ({
+  const [catalog, campaign] = await Promise.all([loadCatalog(env), loadCampaign(env)]);
+  const categories = catalog.map((cat) => ({
     id: cat.id,
     items: cat.items.map(({ category, hidden, ...t }) => t),
   }));
-  return json({ categories }, 200, cors, "public, max-age=30");
+  const { imageVersion, ...publicCampaign } = campaign;
+  publicCampaign.image = imageVersion ? `/campaign-image?v=${imageVersion}` : null;
+  return json({ categories, campaign: publicCampaign }, 200, cors, "public, max-age=30");
+}
+
+// The address changes (?v=…) with every new upload, so browsers may keep it for a year.
+async function campaignImage(env) {
+  const image = await loadCampaignImage(env);
+  if (!image) return new Response("Not found", { status: 404 });
+  return new Response(image.bytes, {
+    headers: { "Content-Type": image.type, "Cache-Control": "public, max-age=31536000, immutable", "X-Content-Type-Options": "nosniff" },
+  });
 }
 
 async function availability(url, env, cors) {
@@ -186,6 +199,7 @@ export default {
       if (url.pathname === "/treatments") {
         return request.method === "GET" ? await treatments(env, cors) : json({ error: "method" }, 405, cors);
       }
+      if (url.pathname === "/campaign-image" && request.method === "GET") return await campaignImage(env);
       if (url.pathname === "/availability") {
         return request.method === "GET" ? await availability(url, env, cors) : json({ error: "method" }, 405, cors);
       }

@@ -47,15 +47,33 @@
       pageError: "Sidan kunde inte laddas. Kontrollera internetanslutningen och ladda om.",
       view: "Vy", treatments: "Behandlingar", newTreatmentBtn: "+ Ny behandling", newTreatment: "Ny behandling", editTreatment: "Ändra behandling",
       treatmentsHint: "Ändringar syns på webbplatsen inom en minut. Dolda behandlingar syns inte och kan inte bokas, men gamla bokningar finns kvar.",
-      "f.tName": "Namn", "f.category": "Kategori", "f.duration": "Längd (minuter)", "f.price": "Pris (kr)", "f.campaignPrice": "Kampanjpris (kr)",
+      "f.tName": "Namn", "f.category": "Kategori", "f.duration": "Längd (minuter)", "f.price": "Pris (kr)",
       "f.performedBy": "Utförs av", "f.description": "Beskrivning", "f.suitable": "Passar dig som",
       "f.spanish": "Spanska texter", spanishHint: "Visas på den spanska webbplatsen. Fyll i en översättning av varje svensk text.",
       "f.hidden": "Dölj på webbplatsen", saveTreatment: "Spara behandling", edit: "Ändra",
+      campaignPriceHint: "Kampanjpriset sätts på fliken Kampanj.",
+      campaign: "Kampanj", "c.texts": "Texter och datum", "c.name": "Namn", "c.nameHint": "(t.ex. Höstkampanj – visas även som etikett på behandlingarna)",
+      "c.title": "Rubrik", "c.titleHint": "(visas i kursiv stil efter namnet)", "c.startDate": "Startdatum", "c.endDate": "Slutdatum (sista dagen)",
+      campaignHint: "Kampanjen visas på startsidan från startdatum till och med slutdatum. Behandlingar med kampanjpris visas med kampanjpriset på hela webbplatsen under den tiden.",
+      "c.image": "Bild", "c.imageHint": "Liggande bild fungerar bäst. Den beskärs till bildytan på startsidan, så håll det viktigaste i mitten. Bilden sparas direkt när du väljer den.",
+      "c.chooseImage": "Välj ny bild", "c.resetImage": "Använd standardbilden",
+      "c.prices": "Behandlingar och kampanjpriser", "c.pricesHint": "Bocka i behandlingarna som ingår och skriv kampanjpriset. Det måste vara lägre än ordinarie pris.",
+      "c.save": "Spara kampanj", campaignPricePlaceholder: "kr",campaignPriceFor: (name) => `Kampanjpris för ${name}`,
+      stateNow: (end) => `pågår till och med ${end}`, stateSoon: (start) => `startar ${start}`, stateEnded: "avslutad",
+      campaignSaved: "Kampanjen är sparad. Ändringarna syns på startsidan inom en minut.", campaignError: "Kampanjen kunde inte sparas. Försök igen.",
+      missingPrice: (list) => `Skriv ett kampanjpris för: ${list}.`,
+      imageSaving: "Sparar bilden…", imageSaved: "Bilden är sparad.", imageReset: "Standardbilden används igen.",
+      imageError: "Bilden kunde inte sparas. Välj en JPG-, PNG- eller WebP-bild.", imageTooLarge: "Bilden är för stor. Välj en mindre bild.",
+      campaignLabels: {
+        name: "namn (2–60 tecken)", title: "rubrik (högst 120 tecken)", description: "beskrivning (högst 500 tecken)",
+        nameEs: "spanskt namn", titleEs: "spansk rubrik (krävs när den svenska är ifylld)", descriptionEs: "spansk beskrivning (krävs när den svenska är ifylld)",
+        startDate: "startdatum", endDate: "slutdatum (samma dag som startdatum eller senare)", prices: "kampanjpriser (lägre än ordinarie pris)",
+      },
       tagHidden: "Dold", tagCampaign: (price) => `Kampanj ${price}`, nTreatments: (n) => `${n} ${n === 1 ? "behandling" : "behandlingar"}`,
       treatmentSaved: (name) => `”${name}” är sparad.`, treatmentError: "Behandlingen kunde inte sparas. Försök igen.",
       treatmentLabels: {
         name: "namn (2–80 tecken)", category: "kategori", duration: "längd (5–480 minuter)", price: "pris",
-        campaignPrice: "kampanjpris (lägre än priset)", practitioners: "utförs av (minst en)", description: "beskrivning",
+        practitioners: "utförs av (minst en)", description: "beskrivning",
         suitable: "passar dig som", nameEs: "spanskt namn", descriptionEs: "spansk beskrivning (krävs när den svenska är ifylld)",
         suitableEs: "spanskt ”passar dig som” (krävs när det svenska är ifyllt)",
       },
@@ -100,15 +118,33 @@
       pageError: "No se pudo cargar la página. Comprueba la conexión a internet y recarga.",
       view: "Vista", treatments: "Tratamientos", newTreatmentBtn: "+ Nuevo tratamiento", newTreatment: "Nuevo tratamiento", editTreatment: "Editar tratamiento",
       treatmentsHint: "Los cambios aparecen en la web en un minuto. Los tratamientos ocultos no se muestran ni se pueden reservar, pero las reservas antiguas se conservan.",
-      "f.tName": "Nombre", "f.category": "Categoría", "f.duration": "Duración (minutos)", "f.price": "Precio (kr)", "f.campaignPrice": "Precio de campaña (kr)",
+      "f.tName": "Nombre", "f.category": "Categoría", "f.duration": "Duración (minutos)", "f.price": "Precio (kr)",
       "f.performedBy": "Lo realiza", "f.description": "Descripción", "f.suitable": "Indicado para",
       "f.spanish": "Textos en español", spanishHint: "Se muestran en la web en español. Traduce cada texto sueco.",
       "f.hidden": "Ocultar en la web", saveTreatment: "Guardar tratamiento", edit: "Editar",
+      campaignPriceHint: "El precio de campaña se fija en la pestaña Campaña.",
+      campaign: "Campaña", "c.texts": "Textos y fechas", "c.name": "Nombre", "c.nameHint": "(p. ej. Campaña de otoño; también aparece como etiqueta en los tratamientos)",
+      "c.title": "Título", "c.titleHint": "(se muestra en cursiva después del nombre)", "c.startDate": "Fecha de inicio", "c.endDate": "Fecha final (último día)",
+      campaignHint: "La campaña se muestra en la página de inicio desde la fecha de inicio hasta la fecha final incluida. Durante ese tiempo, los tratamientos con precio de campaña muestran ese precio en toda la web.",
+      "c.image": "Imagen", "c.imageHint": "Una imagen horizontal funciona mejor. Se recorta al espacio de la página de inicio, así que deja lo más importante en el centro. La imagen se guarda en cuanto la eliges.",
+      "c.chooseImage": "Elegir nueva imagen", "c.resetImage": "Usar la imagen predeterminada",
+      "c.prices": "Tratamientos y precios de campaña", "c.pricesHint": "Marca los tratamientos incluidos y escribe el precio de campaña. Debe ser menor que el precio normal.",
+      "c.save": "Guardar campaña", campaignPricePlaceholder: "kr",campaignPriceFor: (name) => `Precio de campaña de ${name}`,
+      stateNow: (end) => `en curso hasta el ${end}`, stateSoon: (start) => `empieza el ${start}`, stateEnded: "finalizada",
+      campaignSaved: "Campaña guardada. Los cambios aparecen en la página de inicio en un minuto.", campaignError: "No se pudo guardar la campaña. Inténtalo de nuevo.",
+      missingPrice: (list) => `Escribe un precio de campaña para: ${list}.`,
+      imageSaving: "Guardando la imagen…", imageSaved: "Imagen guardada.", imageReset: "Se vuelve a usar la imagen predeterminada.",
+      imageError: "No se pudo guardar la imagen. Elige una imagen JPG, PNG o WebP.", imageTooLarge: "La imagen es demasiado grande. Elige una más pequeña.",
+      campaignLabels: {
+        name: "nombre (2–60 caracteres)", title: "título (máx. 120 caracteres)", description: "descripción (máx. 500 caracteres)",
+        nameEs: "nombre en español", titleEs: "título en español (obligatorio si hay texto sueco)", descriptionEs: "descripción en español (obligatoria si hay texto sueco)",
+        startDate: "fecha de inicio", endDate: "fecha final (el mismo día que el inicio o después)", prices: "precios de campaña (menores que el precio normal)",
+      },
       tagHidden: "Oculto", tagCampaign: (price) => `Campaña ${price}`, nTreatments: (n) => `${n} ${n === 1 ? "tratamiento" : "tratamientos"}`,
       treatmentSaved: (name) => `«${name}» se ha guardado.`, treatmentError: "No se pudo guardar el tratamiento. Inténtalo de nuevo.",
       treatmentLabels: {
         name: "nombre (2–80 caracteres)", category: "categoría", duration: "duración (5–480 minutos)", price: "precio",
-        campaignPrice: "precio de campaña (menor que el precio)", practitioners: "lo realiza (al menos uno)", description: "descripción",
+        practitioners: "lo realiza (al menos uno)", description: "descripción",
         suitable: "indicado para", nameEs: "nombre en español", descriptionEs: "descripción en español (obligatoria si hay texto sueco)",
         suitableEs: "«indicado para» en español (obligatorio si hay texto sueco)",
       },
@@ -551,7 +587,6 @@
       ft.category.value = x.category;
       ft.duration.value = x.duration;
       ft.price.value = x.price;
-      ft.campaignPrice.value = x.campaignPrice != null ? x.campaignPrice : "";
       ft.querySelectorAll("[name=practitioners]").forEach((cb) => { cb.checked = x.practitioners.includes(cb.value); });
       ft.description.value = x.description || "";
       ft.suitable.value = x.suitable || "";
@@ -580,7 +615,6 @@
     try {
       const body = {
         name: ft.name.value, category: ft.category.value, duration: ft.duration.value, price: ft.price.value,
-        campaignPrice: ft.campaignPrice.value,
         practitioners: [...ft.querySelectorAll("[name=practitioners]:checked")].map((cb) => cb.value),
         description: ft.description.value, suitable: ft.suitable.value,
         es: { name: ft.nameEs.value, description: ft.descriptionEs.value, suitable: ft.suitableEs.value },
@@ -592,6 +626,7 @@
       $("dlg-treatment").close();
       config = await api("/config");
       renderTreatments();
+      if (campaignFilled) renderCampaignTreatments();
       setStatus(t("treatmentSaved", res.treatment.name), false, "t-status");
     } catch (ex) {
       if (ex.status === 401) { $("dlg-treatment").close(); return showAuthError(); }
@@ -601,13 +636,188 @@
     }
   });
 
-  /* ---------- Views: Bokningar | Behandlingar ---------- */
+  /* ---------- Campaign (texts, dates, picture, campaign prices) ---------- */
+  const fc2 = $("form-campaign");
+  let campaignFilled = false; // filled once, so switching tabs never throws away unsaved changes
+  // The default picture lives on the website, not on this staff page.
+  const SITE = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? "http://localhost:5173" : "https://www.mederinavhealthcare.se";
+  const shortDate = (s) => (s ? dayMonth(parse(s)) : "");
+
+  function renderCampaignState() {
+    const c = config.campaign;
+    const today = ymd(new Date());
+    const el = $("campaign-state");
+    const ended = c.endDate && today > c.endDate;
+    const soon = c.startDate && today < c.startDate;
+    el.textContent = ended ? t("stateEnded") : soon ? t("stateSoon", shortDate(c.startDate)) : c.endDate ? t("stateNow", shortDate(c.endDate)) : "";
+    el.classList.toggle("is-off", !!(ended || soon));
+  }
+
+  function renderCampaignImage() {
+    const v = config.campaign.imageVersion;
+    $("campaign-preview").src = v ? `/campaign-image?v=${encodeURIComponent(v)}` : `${SITE}/assets/images/campaign-season.svg`;
+    $("campaign-image-reset").hidden = !v;
+  }
+
+  // Rows of treatments with a tick box and a campaign price. Keeps what is typed when redrawn (language switch).
+  function renderCampaignTreatments() {
+    const typed = {};
+    fc2.querySelectorAll("[data-camp-price]").forEach((input) => {
+      typed[input.dataset.campPrice] = { on: fc2.querySelector(`[data-camp-check="${input.dataset.campPrice}"]`).checked, price: input.value };
+    });
+    const fresh = !Object.keys(typed).length;
+    $("campaign-treatments").innerHTML = config.categories.filter((c) => c.items.length).map((c) => `
+      <p class="camp-group">${esc(loc(c))}</p>
+      <div class="camp-list">${c.items.map((x) => {
+        const state = fresh ? { on: x.campaignPrice != null, price: x.campaignPrice != null ? x.campaignPrice : "" } : typed[x.id] || { on: false, price: "" };
+        return `<div class="camp-row" data-row="${esc(x.id)}">
+          <label class="check"><input type="checkbox" data-camp-check="${esc(x.id)}"${state.on ? " checked" : ""}> ${esc(loc(x))}${x.hidden ? `<span class="tag tag--cancelled">${esc(t("tagHidden"))}</span>` : ""}</label>
+          <span class="was">${esc(kr(x.price))}</span>
+          <input class="input" type="number" min="0" step="1" inputmode="numeric" data-camp-price="${esc(x.id)}" value="${esc(state.price)}"
+            placeholder="${esc(t("campaignPricePlaceholder"))}" aria-label="${esc(t("campaignPriceFor", loc(x)))}"${state.on ? "" : " disabled"}>
+          <span class="pct" data-pct="${esc(x.id)}"></span>
+        </div>`;
+      }).join("")}</div>`).join("");
+    treatments().forEach((x) => updatePct(x.id));
+  }
+
+  function updatePct(id) {
+    const x = treatmentById(id);
+    const input = fc2.querySelector(`[data-camp-price="${id}"]`);
+    const out = fc2.querySelector(`[data-pct="${id}"]`);
+    if (!x || !input || !out) return;
+    const p = Number(input.value);
+    out.textContent = !input.disabled && input.value !== "" && p >= 0 && p < x.price ? `−${Math.round((1 - p / x.price) * 100)}%` : "";
+  }
+
+  function fillCampaign() {
+    const c = config.campaign;
+    const es = c.es || {};
+    fc2.name.value = c.name || "";
+    fc2.title.value = c.title || "";
+    fc2.description.value = c.description || "";
+    fc2.nameEs.value = es.name || "";
+    fc2.titleEs.value = es.title || "";
+    fc2.descriptionEs.value = es.description || "";
+    fc2.startDate.value = c.startDate || "";
+    fc2.endDate.value = c.endDate || "";
+    $("campaign-treatments").innerHTML = "";
+    renderCampaignTreatments();
+    renderCampaignImage();
+    renderCampaignState();
+    campaignFilled = true;
+  }
+
+  $("campaign-treatments").addEventListener("change", (e) => {
+    const id = e.target.dataset.campCheck;
+    if (!id) return;
+    const input = fc2.querySelector(`[data-camp-price="${id}"]`);
+    input.disabled = !e.target.checked;
+    if (e.target.checked) input.focus();
+    updatePct(id);
+  });
+  $("campaign-treatments").addEventListener("input", (e) => {
+    if (e.target.dataset.campPrice) {
+      e.target.closest(".camp-row").classList.remove("is-bad");
+      updatePct(e.target.dataset.campPrice);
+    }
+  });
+
+  fc2.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const err = fc2.querySelector(".form-error");
+    err.textContent = "";
+    setStatus("", false, "c-status");
+    fc2.querySelectorAll(".camp-row.is-bad").forEach((r) => r.classList.remove("is-bad"));
+    const prices = {};
+    const missing = [];
+    fc2.querySelectorAll("[data-camp-check]:checked").forEach((cb) => {
+      const value = fc2.querySelector(`[data-camp-price="${cb.dataset.campCheck}"]`).value.trim();
+      if (value === "") {
+        missing.push(loc(treatmentById(cb.dataset.campCheck)));
+        cb.closest(".camp-row").classList.add("is-bad");
+      } else prices[cb.dataset.campCheck] = value;
+    });
+    if (missing.length) { err.textContent = t("missingPrice", missing.join(", ")); return; }
+    const btn = fc2.querySelector("[type=submit]");
+    btn.disabled = true;
+    try {
+      await api("/campaign", {
+        method: "PUT",
+        body: JSON.stringify({
+          name: fc2.name.value, title: fc2.title.value, description: fc2.description.value,
+          es: { name: fc2.nameEs.value, title: fc2.titleEs.value, description: fc2.descriptionEs.value },
+          startDate: fc2.startDate.value, endDate: fc2.endDate.value, prices,
+        }),
+      });
+      config = await api("/config");
+      fillCampaign();
+      setStatus(t("campaignSaved"), false, "c-status");
+    } catch (ex) {
+      if (ex.status === 401) return showAuthError();
+      ((ex.body && ex.body.badPrices) || []).forEach((id) => {
+        const row = fc2.querySelector(`[data-row="${id}"]`);
+        if (row) row.classList.add("is-bad");
+      });
+      err.textContent = errorText(ex, t("campaignError"), L().campaignLabels);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  // Photos from phones are large: shrink to at most 1600 px and save as WebP (or JPEG) before uploading.
+  async function shrinkImage(file) {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const toBlob = (type, quality) => new Promise((resolve) => canvas.toBlob(resolve, type, quality));
+    let blob = await toBlob("image/webp", 0.85);
+    if (!blob || blob.type !== "image/webp") blob = await toBlob("image/jpeg", 0.85);
+    if (blob && blob.size > 1400000) blob = await toBlob("image/jpeg", 0.7);
+    return blob;
+  }
+
+  $("campaign-file").addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    e.target.value = "";
+    if (!file) return;
+    setStatus(t("imageSaving"), false, "image-status");
+    try {
+      const blob = await shrinkImage(file);
+      const res = await api("/campaign/image", { method: "PUT", body: blob, headers: { "Content-Type": blob.type } });
+      config.campaign.imageVersion = res.imageVersion;
+      renderCampaignImage();
+      setStatus(t("imageSaved"), false, "image-status");
+    } catch (ex) {
+      if (ex.status === 401) return showAuthError();
+      setStatus(t(ex.status === 413 ? "imageTooLarge" : "imageError"), true, "image-status");
+    }
+  });
+
+  $("campaign-image-reset").addEventListener("click", async () => {
+    try {
+      await api("/campaign/image", { method: "DELETE" });
+      config.campaign.imageVersion = null;
+      renderCampaignImage();
+      setStatus(t("imageReset"), false, "image-status");
+    } catch (ex) {
+      if (ex.status === 401) return showAuthError();
+      setStatus(t("imageError"), true, "image-status");
+    }
+  });
+
+  /* ---------- Views: Bokningar | Behandlingar | Kampanj ---------- */
   const viewKey = "mederinav-staff-view";
   function showView(view) {
     $("view-bookings").hidden = view !== "bookings";
     $("view-treatments").hidden = view !== "treatments";
+    $("view-campaign").hidden = view !== "campaign";
     document.querySelectorAll("[data-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === view)));
     if (view === "treatments" && config) renderTreatments();
+    if (view === "campaign" && config && !campaignFilled) fillCampaign();
     try { localStorage.setItem(viewKey, view); } catch (e) { /* ignore */ }
   }
   document.querySelectorAll("[data-view]").forEach((btn) => btn.addEventListener("click", () => showView(btn.dataset.view)));
@@ -632,6 +842,7 @@
     renderWeekLabel();
     if (loaded) render();
     if (!$("view-treatments").hidden) renderTreatments();
+    if (campaignFilled) { renderCampaignTreatments(); renderCampaignState(); }
     if ($("dlg-booking").open) { fillTreatments(); fillTimes(); }
     if ($("dlg-block").open) fillBlockPractitioners();
   }));
@@ -645,7 +856,7 @@
       $("who").textContent = me.email;
       fillFilter();
       try { const saved = localStorage.getItem(filterKey); if (saved && config.team.some((p) => p.id === saved)) $("filter").value = saved; } catch (e) { /* ignore */ }
-      try { if (localStorage.getItem(viewKey) === "treatments") showView("treatments"); } catch (e) { /* ignore */ }
+      try { const v = localStorage.getItem(viewKey); if (v === "treatments" || v === "campaign") showView(v); } catch (e) { /* ignore */ }
       await loadWeek();
     } catch (err) {
       if (err.status === 401) return showAuthError();

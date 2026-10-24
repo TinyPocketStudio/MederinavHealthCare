@@ -30,6 +30,7 @@
   <nav class="wrap tabs" aria-label="Vy" data-t-attr="aria-label:view">
     <button type="button" data-view="bookings" aria-pressed="true" data-t="bookings">Bokningar</button>
     <button type="button" data-view="treatments" aria-pressed="false" data-t="treatments">Behandlingar</button>
+    <button type="button" data-view="campaign" aria-pressed="false" data-t="campaign">Kampanj</button>
   </nav>
 
   <main class="wrap" id="main">
@@ -70,6 +71,57 @@
     <p class="status" id="t-status" role="status" aria-live="polite"></p>
     <div class="days" id="treatment-list"></div>
    </div>
+
+   <!-- Kampanj: texter, datum, bild och kampanjpriser (sparas i databasen, syns direkt på startsidan) -->
+   <div id="view-campaign" hidden>
+    <form id="form-campaign" novalidate>
+      <div class="toolbar">
+        <h1><span data-t="campaign">Kampanj</span> <small id="campaign-state"></small></h1>
+      </div>
+      <p class="hint" data-t="campaignHint">Kampanjen visas på startsidan från startdatum till och med slutdatum. Behandlingar med kampanjpris visas med kampanjpriset på hela webbplatsen under den tiden.</p>
+      <div class="days">
+        <section class="day panel" aria-labelledby="c-texts">
+          <h2 id="c-texts" data-t="c.texts">Texter och datum</h2>
+          <label><span><span data-t="c.name">Namn</span> <span class="opt" data-t="c.nameHint">(t.ex. Höstkampanj – visas även som etikett på behandlingarna)</span></span> <input class="input" name="name" maxlength="60" required></label>
+          <label><span><span data-t="c.title">Rubrik</span> <span class="opt" data-t="c.titleHint">(visas i kursiv stil efter namnet)</span></span> <input class="input" name="title" maxlength="120"></label>
+          <label><span><span data-t="f.description">Beskrivning</span> <span class="opt" data-t="optional">(valfritt)</span></span> <textarea class="input" name="description" rows="3" maxlength="500"></textarea></label>
+          <fieldset class="spanish">
+            <legend data-t="f.spanish">Spanska texter</legend>
+            <p class="hint" data-t="spanishHint">Visas på den spanska webbplatsen. Fyll i en översättning av varje svensk text.</p>
+            <label><span data-t="c.name">Namn</span> <input class="input" name="nameEs" maxlength="60" lang="es" required></label>
+            <label><span data-t="c.title">Rubrik</span> <input class="input" name="titleEs" maxlength="120" lang="es"></label>
+            <label><span data-t="f.description">Beskrivning</span> <textarea class="input" name="descriptionEs" rows="3" maxlength="500" lang="es"></textarea></label>
+          </fieldset>
+          <div class="grid2">
+            <label><span data-t="c.startDate">Startdatum</span> <input class="input" type="date" name="startDate" required></label>
+            <label><span data-t="c.endDate">Slutdatum (sista dagen)</span> <input class="input" type="date" name="endDate" required></label>
+          </div>
+        </section>
+
+        <section class="day panel" aria-labelledby="c-image">
+          <h2 id="c-image" data-t="c.image">Bild</h2>
+          <div class="campaign-image"><img id="campaign-preview" alt="" width="900" height="700"></div>
+          <p class="hint" data-t="c.imageHint">Liggande bild fungerar bäst. Den beskärs till bildytan på startsidan, så håll det viktigaste i mitten. Bilden sparas direkt när du väljer den.</p>
+          <div class="row">
+            <label class="btn file-btn"><span data-t="c.chooseImage">Välj ny bild</span> <input type="file" id="campaign-file" accept="image/jpeg,image/png,image/webp"></label>
+            <button class="btn btn--ghost" type="button" id="campaign-image-reset" data-t="c.resetImage">Använd standardbilden</button>
+          </div>
+          <p class="status" id="image-status" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="day panel" aria-labelledby="c-prices">
+          <h2 id="c-prices" data-t="c.prices">Behandlingar och kampanjpriser</h2>
+          <p class="hint" data-t="c.pricesHint">Bocka i behandlingarna som ingår och skriv kampanjpriset. Det måste vara lägre än ordinarie pris.</p>
+          <div id="campaign-treatments"></div>
+        </section>
+      </div>
+      <p class="form-error" role="alert"></p>
+      <p class="status" id="c-status" role="status" aria-live="polite"></p>
+      <div class="actions actions--page">
+        <button class="btn btn--primary" type="submit" data-t="c.save">Spara kampanj</button>
+      </div>
+    </form>
+   </div>
   </main>
 
   <!-- Ny / ändra behandling -->
@@ -81,8 +133,8 @@
         <label><span data-t="f.category">Kategori</span> <select class="select" name="category" required></select></label>
         <label><span data-t="f.duration">Längd (minuter)</span> <input class="input" name="duration" type="number" min="5" max="480" step="5" inputmode="numeric" required></label>
         <label><span data-t="f.price">Pris (kr)</span> <input class="input" name="price" type="number" min="0" max="100000" step="1" inputmode="numeric" required></label>
-        <label><span><span data-t="f.campaignPrice">Kampanjpris (kr)</span> <span class="opt" data-t="optional">(valfritt)</span></span> <input class="input" name="campaignPrice" type="number" min="0" step="1" inputmode="numeric"></label>
       </div>
+      <p class="hint" data-t="campaignPriceHint">Kampanjpriset sätts på fliken Kampanj.</p>
       <fieldset class="checks">
         <legend data-t="f.performedBy">Utförs av</legend>
         <div id="treatment-practitioners"></div>

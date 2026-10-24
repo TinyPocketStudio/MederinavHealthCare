@@ -8,7 +8,7 @@ behandlingar.html   Treatments with descriptions (accordion)
 om-oss.html         About: clinic and full staff profiles (education, experience, specialties)
 boka.html           Online booking with a week-by-week calendar
 assets/css/styles.css
-assets/js/data.js   ← treatments, prices, staff, opening hours, campaign end date
+assets/js/data.js   ← staff, opening hours, categories (+ backup copies of treatments and the campaign)
 assets/js/translations.js ← Spanish text (and Swedish text built by JS)
 assets/js/i18n.js   Language switching (SV | ES)
 assets/js/main.js   Shared behaviour (menu, gallery slider, rendering of treatments)
@@ -42,7 +42,7 @@ Every placeholder shows its own file name and recommended size, so you can see w
 | `logo/favicon.png` | Browser tab icon: a round copy of logo.jpg with transparent corners (192×192). Make a new one if the logo changes | 192×192 |
 | `images/hero-clinic.jpg` | Home hero (arch) | 800×1000 (4:5) |
 | `images/treatment-medicinskt/injektioner/hudvard/fotvard.svg` | Treatment circles on home, icons on Behandlingar. Flat illustrations: medicinskt is the supplied doctor-and-patient picture (PNG inside the SVG), the other three were drawn to match it | square, transparent |
-| `images/campaign-season.svg` | Campaign section (autumn botox & fillers illustration; keep the main motif in the middle, the image is cropped to a tall box on desktop) | 900×700 |
+| `images/campaign-season.svg` | Campaign section, default picture (autumn botox & fillers illustration; keep the main motif in the middle, the image is cropped to a tall box on desktop). Staff can upload their own picture per campaign on the staff page | 900×700 |
 | `images/gallery-01…04-before/after.svg` | Before/after gallery | 800×600 (4:3); before and after must match |
 | `images/team-christian-navarro.jpg`, `team-lorena-munoz.svg` | Home and Om oss | 600×750 (4:5) |
 | `images/about-clinic.jpg` | Om oss | 1200×800 (3:2) |
@@ -56,7 +56,7 @@ All images use `object-fit: cover`, so photos with slightly different proportion
 
 - **Treatments, descriptions, prices, durations, who performs them:** on the staff page, **Behandlingar** tab (see "Staff page"). They are stored in the booking database. The Behandlingar and Boka tid pages, plus the "Från X kr" prices and campaign offers on the home page, load them from the booking API. The treatment list in `data.js` is only used to fill the database the first time, and as a backup if the API doesn't answer within 3 seconds.
 - **Categories** (names, intros, images): `categories` in `assets/js/data.js`.
-- **Seasonal campaign:** to put a treatment on offer, give it a campaign price on the staff page. Set the campaign's end date in `campaign.endDate` in `data.js`. The offer list, the "up to −X%" badge, the countdown and the campaign badges are all generated automatically. The headline text lives in `index.html` (`#kampanj`), with the Spanish version under `home.campaign.title` in `translations.js`.
+- **Seasonal campaign:** on the staff page, **Kampanj** tab: name, headline, description (Swedish and Spanish), start and end date, picture, and which treatments are included at what campaign price. The offer list, the "up to −X%" badge, the countdown and the campaign badges are all generated automatically. The campaign section on the home page only shows between the start and end date, and only if at least one treatment has a campaign price. `campaign` in `data.js` is only the first-time content and backup.
 - **Opening hours, staff working days, booking window:** `hours`, `team[].days`, `bookingWeeksAhead` and `minNoticeHours` in `data.js`.
 - **Before/after cases:** `index.html` → `#galleri`. Copy a `<figure class="ba">` block to add a case. `data-category` controls which filter it belongs to.
 - **Staff profiles (education, experience, etc.):** `om-oss.html`, with a shorter version in `index.html` → `#lakare`.
@@ -85,7 +85,7 @@ The backend checks everything again: the treatment, the staff member, their work
 npm run db:migrate:remote
 ```
 
-Until `0003_treatments.sql` has been run, the backend keeps using the treatments in `data.js`, so nothing breaks. The first request after it has run fills the table from `data.js`.
+Until `0003_treatments.sql` and `0004_campaign.sql` have been run, the backend keeps using the treatments and campaign in `data.js`, so nothing breaks (the staff page can't save campaign changes until then). The first request after they have run fills the tables from `data.js`.
 
 **No secrets in the repo.** Keys are stored as encrypted secrets in Cloudflare. For local testing they go in `booking-api/.dev.vars`, which Git ignores. Patient data only lives in the D1 database, never in the repo.
 
@@ -118,11 +118,16 @@ Staff manage bookings at **https://api.mederinavhealthcare.se/admin/** (Swedish,
 - **Blockera tid:** block time for one person or the whole clinic, for one or several days, as a whole day or a time range (vacation, sick days, lunch).
   - Blocked time can't be booked online.
   - Existing bookings in that time are *not* cancelled automatically; the page lists them so staff can contact the patients.
-- **Behandlingar** (tab at the top): add or change treatments, including name, category, duration, price, campaign price, who performs it, and the texts.
+- **Behandlingar** (tab at the top): add or change treatments, including name, category, duration, price, who performs it, and the texts.
   - Spanish is required: a Spanish name always, and a Spanish version of the description and "Passar dig som" whenever the Swedish one is filled in.
   - Changes show on the website within a minute.
   - Treatments can't be deleted, only hidden ("Dölj på webbplatsen"). A hidden treatment can't be booked, but old bookings for it keep their name and price.
   - The web address of a new treatment (`/boka?behandling=…`) is made from its Swedish name when it is created and never changes.
+- **Kampanj** (tab at the top): the seasonal campaign on the home page.
+  - Name (also the badge on the treatments), headline and description, in Swedish and Spanish (Spanish required as for treatments).
+  - Start and end date: the campaign and its prices apply from the start date through the end date, so the next campaign can be prepared in advance.
+  - Picture: choose a new one and it is saved right away (shrunk to at most 1600 px before upload; JPG, PNG or WebP). "Använd standardbilden" goes back to `campaign-season.svg`.
+  - Treatments and campaign prices: tick a treatment and type its campaign price, which must be lower than the normal price. Saving replaces all campaign prices at once.
 
 **Login** is Cloudflare Access (Zero Trust). Staff type their own email and get a one-time code; there are no passwords.
 - **Who may log in:** the email list in the Access application's policy (Cloudflare → Zero Trust → Access → Applications).

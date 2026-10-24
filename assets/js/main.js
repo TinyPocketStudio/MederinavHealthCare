@@ -49,10 +49,12 @@
 
   /* ---------- Helpers shared with booking.js ---------- */
   const kr = (n) => `${new Intl.NumberFormat(I18N.locale).format(n)} kr`;
+  // The campaign runs from its start date (if any) to the end of its end date.
   const isCampaignActive = () => {
     const c = DATA.campaign;
     if (!c || !c.endDate) return false;
-    return new Date() <= new Date(`${c.endDate}T23:59:59`);
+    const now = new Date();
+    return (!c.startDate || now >= new Date(`${c.startDate}T00:00:00`)) && now <= new Date(`${c.endDate}T23:59:59`);
   };
   const allTreatments = () =>
     (DATA.categories || []).flatMap((cat) => cat.items.map((item) => ({ ...item, category: cat })));
@@ -65,9 +67,9 @@
   const isLocal = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   const apiBase = (isLocal ? "http://localhost:8787" : (DATA.booking || {}).apiBase || "").replace(/\/$/, "");
 
-  // Treatments are managed on the staff page and served by the booking API. The list in
-  // data.js is only used if the API can't be reached (within 3 seconds).
-  const needsTreatments = document.querySelector("[data-from], [data-render='treatments'], [data-render='campaign-offers'], #week-grid");
+  // Treatments and the campaign are managed on the staff page and served by the booking API.
+  // The versions in data.js are only used if the API can't be reached (within 3 seconds).
+  const needsTreatments = document.querySelector("[data-from], [data-render='treatments'], [data-campaign], #week-grid");
   const catalogReady = !needsTreatments || !apiBase || !DATA.categories
     ? Promise.resolve()
     : fetch(`${apiBase}/treatments`, { signal: AbortSignal.timeout(3000) })
@@ -75,6 +77,9 @@
       .then((body) => {
         const byId = Object.fromEntries((body.categories || []).map((c) => [c.id, c.items || []]));
         DATA.categories.forEach((cat) => { cat.items = byId[cat.id] || []; });
+        if (body.campaign) {
+          DATA.campaign = { ...body.campaign, image: body.campaign.image ? apiBase + body.campaign.image : null };
+        }
       })
       .catch((err) => console.warn("Behandlingar kunde inte hämtas – visar listan i data.js.", err));
 
@@ -143,10 +148,25 @@
 
   /* ---------- Campaign countdown ---------- */
   function renderCampaign() {
+    const c = DATA.campaign;
     document.querySelectorAll("[data-campaign]").forEach((box) => {
+      // Name, headline, description and picture are set on the staff page (Kampanj tab).
+      const titleEl = box.querySelector("[data-campaign-title]");
+      if (titleEl) {
+        const title = loc(c, "title");
+        titleEl.innerHTML = escapeHtml(loc(c, "name")) + (title ? ` – <span class="serif">${escapeHtml(title)}</span>` : "");
+      }
+      const desc = box.querySelector("[data-campaign-desc]");
+      if (desc) {
+        desc.textContent = loc(c, "description") || "";
+        desc.hidden = !desc.textContent;
+      }
+      const img = box.querySelector("[data-campaign-img]");
+      if (img && c.image && img.getAttribute("src") !== c.image) img.src = c.image;
+
       const out = box.querySelector(".campaign-countdown");
       const endLabel = box.querySelector("[data-campaign-end]");
-      const end = new Date(`${DATA.campaign.endDate}T23:59:59`);
+      const end = new Date(`${c.endDate}T23:59:59`);
       if (endLabel) {
         endLabel.textContent = end.toLocaleDateString(I18N.locale, { day: "numeric", month: "long" });
       }
@@ -293,9 +313,9 @@
 
   /* ---------- Everything above that depends on the language ---------- */
   renderHours();
-  renderCampaign();
   catalogReady.then(() => {
     renderFromPrices();
+    renderCampaign();
     renderOffers();
   });
   I18N.onChange(() => {
