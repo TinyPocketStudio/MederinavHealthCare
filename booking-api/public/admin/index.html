@@ -89,13 +89,13 @@
       </fieldset>
       <label><span data-t="f.description">Beskrivning</span> <textarea class="input" name="description" rows="3" maxlength="1000"></textarea></label>
       <label><span data-t="f.suitable">Passar dig som</span> <textarea class="input" name="suitable" rows="2" maxlength="1000"></textarea></label>
-      <details class="more">
-        <summary data-t="f.spanish">Spanska texter (valfritt)</summary>
-        <p class="hint" data-t="spanishHint">Tomt fält = den svenska texten visas på den spanska sidan.</p>
-        <label><span data-t="f.tName">Namn</span> <input class="input" name="nameEs" maxlength="80" lang="es"></label>
+      <fieldset class="spanish">
+        <legend data-t="f.spanish">Spanska texter</legend>
+        <p class="hint" data-t="spanishHint">Visas på den spanska webbplatsen. Fyll i en översättning av varje svensk text.</p>
+        <label><span data-t="f.tName">Namn</span> <input class="input" name="nameEs" maxlength="80" lang="es" required></label>
         <label><span data-t="f.description">Beskrivning</span> <textarea class="input" name="descriptionEs" rows="3" maxlength="1000" lang="es"></textarea></label>
         <label><span data-t="f.suitable">Passar dig som</span> <textarea class="input" name="suitableEs" rows="2" maxlength="1000" lang="es"></textarea></label>
-      </details>
+      </fieldset>
       <label class="check" data-edit-only><input type="checkbox" name="hidden"> <span data-t="f.hidden">Dölj på webbplatsen</span></label>
       <p class="form-error" role="alert"></p>
       <div class="actions">

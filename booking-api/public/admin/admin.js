@@ -49,14 +49,15 @@
       treatmentsHint: "Ändringar syns på webbplatsen inom en minut. Dolda behandlingar syns inte och kan inte bokas, men gamla bokningar finns kvar.",
       "f.tName": "Namn", "f.category": "Kategori", "f.duration": "Längd (minuter)", "f.price": "Pris (kr)", "f.campaignPrice": "Kampanjpris (kr)",
       "f.performedBy": "Utförs av", "f.description": "Beskrivning", "f.suitable": "Passar dig som",
-      "f.spanish": "Spanska texter (valfritt)", spanishHint: "Tomt fält = den svenska texten visas på den spanska sidan.",
+      "f.spanish": "Spanska texter", spanishHint: "Visas på den spanska webbplatsen. Fyll i en översättning av varje svensk text.",
       "f.hidden": "Dölj på webbplatsen", saveTreatment: "Spara behandling", edit: "Ändra",
       tagHidden: "Dold", tagCampaign: (price) => `Kampanj ${price}`, nTreatments: (n) => `${n} ${n === 1 ? "behandling" : "behandlingar"}`,
       treatmentSaved: (name) => `”${name}” är sparad.`, treatmentError: "Behandlingen kunde inte sparas. Försök igen.",
       treatmentLabels: {
         name: "namn (2–80 tecken)", category: "kategori", duration: "längd (5–480 minuter)", price: "pris",
         campaignPrice: "kampanjpris (lägre än priset)", practitioners: "utförs av (minst en)", description: "beskrivning",
-        suitable: "passar dig som", nameEs: "spanskt namn", descriptionEs: "spansk beskrivning", suitableEs: "spanskt ”passar dig som”",
+        suitable: "passar dig som", nameEs: "spanskt namn", descriptionEs: "spansk beskrivning (krävs när den svenska är ifylld)",
+        suitableEs: "spanskt ”passar dig som” (krävs när det svenska är ifyllt)",
       },
     },
     es: {
@@ -101,14 +102,15 @@
       treatmentsHint: "Los cambios aparecen en la web en un minuto. Los tratamientos ocultos no se muestran ni se pueden reservar, pero las reservas antiguas se conservan.",
       "f.tName": "Nombre", "f.category": "Categoría", "f.duration": "Duración (minutos)", "f.price": "Precio (kr)", "f.campaignPrice": "Precio de campaña (kr)",
       "f.performedBy": "Lo realiza", "f.description": "Descripción", "f.suitable": "Indicado para",
-      "f.spanish": "Textos en español (opcional)", spanishHint: "Campo vacío = en la página en español se muestra el texto sueco.",
+      "f.spanish": "Textos en español", spanishHint: "Se muestran en la web en español. Traduce cada texto sueco.",
       "f.hidden": "Ocultar en la web", saveTreatment: "Guardar tratamiento", edit: "Editar",
       tagHidden: "Oculto", tagCampaign: (price) => `Campaña ${price}`, nTreatments: (n) => `${n} ${n === 1 ? "tratamiento" : "tratamientos"}`,
       treatmentSaved: (name) => `«${name}» se ha guardado.`, treatmentError: "No se pudo guardar el tratamiento. Inténtalo de nuevo.",
       treatmentLabels: {
         name: "nombre (2–80 caracteres)", category: "categoría", duration: "duración (5–480 minutos)", price: "precio",
         campaignPrice: "precio de campaña (menor que el precio)", practitioners: "lo realiza (al menos uno)", description: "descripción",
-        suitable: "indicado para", nameEs: "nombre en español", descriptionEs: "descripción en español", suitableEs: "«indicado para» en español",
+        suitable: "indicado para", nameEs: "nombre en español", descriptionEs: "descripción en español (obligatoria si hay texto sueco)",
+        suitableEs: "«indicado para» en español (obligatorio si hay texto sueco)",
       },
     },
   };
@@ -543,7 +545,6 @@
     $("treatment-practitioners").innerHTML = config.team.map((p) =>
       `<label class="check"><input type="checkbox" name="practitioners" value="${esc(p.id)}"> ${esc(p.name)}</label>`).join("");
     ft.querySelector("[data-edit-only]").hidden = !x;
-    ft.querySelector("details").open = false;
     if (x) {
       const es = x.es || {};
       ft.name.value = x.name;
@@ -558,7 +559,6 @@
       ft.descriptionEs.value = es.description || "";
       ft.suitableEs.value = es.suitable || "";
       ft.hidden.checked = !!x.hidden;
-      ft.querySelector("details").open = !!(es.name || es.description || es.suitable);
     } else {
       ft.duration.value = 30;
       if (config.team.length === 1) ft.querySelector("[name=practitioners]").checked = true;

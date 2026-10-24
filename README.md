@@ -118,7 +118,8 @@ Staff manage bookings at **https://api.mederinavhealthcare.se/admin/** (Swedish,
 - **Blockera tid:** block time for one person or the whole clinic, for one or several days, as a whole day or a time range (vacation, sick days, lunch).
   - Blocked time can't be booked online.
   - Existing bookings in that time are *not* cancelled automatically; the page lists them so staff can contact the patients.
-- **Behandlingar** (tab at the top): add or change treatments, including name, category, duration, price, campaign price, who performs it, the texts and optional Spanish texts.
+- **Behandlingar** (tab at the top): add or change treatments, including name, category, duration, price, campaign price, who performs it, and the texts.
+  - Spanish is required: a Spanish name always, and a Spanish version of the description and "Passar dig som" whenever the Swedish one is filled in.
   - Changes show on the website within a minute.
   - Treatments can't be deleted, only hidden ("Dölj på webbplatsen"). A hidden treatment can't be booked, but old bookings for it keep their name and price.
   - The web address of a new treatment (`/boka?behandling=…`) is made from its Swedish name when it is created and never changes.

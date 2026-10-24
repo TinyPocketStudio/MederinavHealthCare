@@ -67,7 +67,7 @@ async function config(env) {
 const TEXT_MAX = 1000;
 const wholeNumber = (v) => (typeof v === "number" ? v : typeof v === "string" && v.trim() !== "" ? Number(v) : NaN);
 
-// Checks the treatment form. Returns { treatment } or { fields } naming what is wrong.
+// Checks the treatment form (new and edited treatments). Returns { treatment } or { fields } naming what is wrong.
 function readTreatment(body) {
   const es = body.es && typeof body.es === "object" ? body.es : {};
   const t = {
@@ -93,9 +93,10 @@ function readTreatment(body) {
   if (!t.practitioners.length || !t.practitioners.every((id) => DATA.team.some((p) => p.id === id))) fields.push("practitioners");
   if (t.description.length > TEXT_MAX) fields.push("description");
   if (t.suitable.length > TEXT_MAX) fields.push("suitable");
-  if (t.es.name.length > 80) fields.push("nameEs");
-  if (t.es.description.length > TEXT_MAX) fields.push("descriptionEs");
-  if (t.es.suitable.length > TEXT_MAX) fields.push("suitableEs");
+  // Spanish is required: always a name, and a translation of every Swedish text that is filled in.
+  if (t.es.name.length < 2 || t.es.name.length > 80) fields.push("nameEs");
+  if (t.es.description.length > TEXT_MAX || (t.description && !t.es.description)) fields.push("descriptionEs");
+  if (t.es.suitable.length > TEXT_MAX || (t.suitable && !t.es.suitable)) fields.push("suitableEs");
   return fields.length ? { fields } : { treatment: t };
 }
 
