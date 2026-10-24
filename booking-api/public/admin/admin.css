@@ -54,6 +54,17 @@ button { cursor: pointer; touch-action: manipulation; }
 .lang button:hover { background: var(--mint-soft); color: var(--ink); }
 .lang button[aria-pressed="true"] { background: var(--ink); color: #fff; cursor: default; }
 
+/* Tabs: Bokningar | Behandlingar */
+.tabs { display: flex; gap: 4px; padding-top: 16px; border-bottom: 1px solid var(--line); }
+.tabs button {
+  min-height: 44px; padding: 0 16px; border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px;
+  background: transparent; color: var(--ink-3); font-weight: 700;
+}
+.tabs button:hover { color: var(--ink); }
+.tabs button[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+#view-treatments .toolbar h1 { font-size: 1.25rem; }
+#view-treatments .hint { margin-bottom: 8px; max-width: 70ch; }
+
 /* Toolbar */
 .toolbar { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; padding: 24px 0 12px; }
 .week-nav, .filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
@@ -118,6 +129,8 @@ textarea.input { min-height: 0; resize: vertical; }
 .item--cancelled .name { text-decoration: line-through; }
 .tag { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: var(--r-pill); font-size: 0.75rem; font-weight: 700; vertical-align: 2px; background: var(--mint); color: var(--accent); }
 .tag--cancelled { background: var(--danger-soft); color: var(--danger); }
+.item--treatment { grid-template-columns: 96px 1fr auto; }
+.item--hidden .body, .item--hidden .time { opacity: 0.6; }
 
 /* Dialogs */
 dialog {
@@ -135,10 +148,16 @@ dialog label:not(.check) { display: grid; gap: 4px; font-weight: 600; font-size:
 .grid2[hidden] { display: none; }
 .form-error { color: var(--danger); font-weight: 600; }
 .form-error:empty { display: none; }
+.checks { margin: 0; padding: 0; border: 0; }
+.checks legend { padding: 0; font-weight: 600; font-size: 0.9375rem; }
+.checks > div { display: flex; flex-wrap: wrap; gap: 0 20px; }
+.more { display: grid; gap: 14px; }
+.more summary { cursor: pointer; font-weight: 600; min-height: 32px; }
+.check[hidden] { display: none; }
 .actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 4px; }
 
 @media (max-width: 560px) {
-  .item { grid-template-columns: 64px 1fr; }
+  .item, .item--treatment { grid-template-columns: 76px 1fr; }
   .item > .btn { grid-column: 1 / -1; justify-self: start; }
   .week-nav h1 { width: 100%; margin: 4px 0 0; }
 }

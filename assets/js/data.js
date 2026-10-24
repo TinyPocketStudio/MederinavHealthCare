@@ -51,6 +51,9 @@ window.MEDERINAV = {
     endDate: "2026-11-30",
   },
 
+  // Behandlingar hanteras nu på personalsidan (fliken Behandlingar) och sparas i databasen.
+  // Behandlingarna nedan används bara för att fylla databasen första gången, och som reserv
+  // om bokningssystemet inte svarar. Kategoriernas namn och introtexter ändras fortfarande här.
   categories: [
     {
       id: "medicinskt",

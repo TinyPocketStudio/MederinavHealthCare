@@ -1,6 +1,7 @@
 // Booking emails, sent through Brevo (EU) after a booking is saved.
 // Without BREVO_API_KEY (local testing) emails are printed to the console instead of sent.
-import { DATA, allTreatments } from "./site-data.js";
+import { DATA } from "./site-data.js";
+import { findTreatment } from "./catalog.js";
 import { clinicNow, fromMin, parseDate } from "./schedule.js";
 
 const BREVO_URL = "https://api.brevo.com/v3/smtp/email";
@@ -157,10 +158,9 @@ async function send(env, { to, replyTo, subject, html, text, tag }) {
 }
 
 // Everything the templates need about one booking, in the patient's language.
-function describe(booking) {
-  // A booking may refer to a treatment that has since been removed from data.js –
-  // then fall back to what the booking itself stored.
-  const treatment = allTreatments().find((t) => t.id === booking.treatmentId)
+async function describe(env, booking) {
+  // Hidden treatments are found too. If the id is unknown, fall back to what the booking itself stored.
+  const treatment = (await findTreatment(env, booking.treatmentId))
     || { name: booking.treatmentId, duration: booking.duration || 30, price: null };
   const person = DATA.team.find((p) => p.id === booking.practitionerId) || { name: booking.practitionerId };
   const lang = booking.lang === "es" ? "es" : "sv";
@@ -187,7 +187,7 @@ const patientReplyTo = (env) => ({ email: env.MAIL_REPLY_TO || DATA.clinic.email
  * by staff) the clinic notification. Errors are logged, never thrown to the patient.
  */
 export async function sendBookingEmails(env, booking, { clinic = true } = {}) {
-  const b = describe(booking);
+  const b = await describe(env, booking);
 
   const jobs = [];
   const patient = patientEmail(b);
@@ -219,8 +219,8 @@ export async function sendBookingEmails(env, booking, { clinic = true } = {}) {
 
 /** Tells the patient their booking was cancelled (sent when staff tick "send email" when cancelling). */
 export async function sendCancellationEmail(env, booking) {
-  const b = describe(booking);
   try {
+    const b = await describe(env, booking);
     await send(env, { to: [{ email: b.email, name: b.name }], replyTo: patientReplyTo(env), ...cancellationEmail(b), tag: "booking-cancelled" });
   } catch (err) {
     console.error("Cancellation email failed:", err.message);

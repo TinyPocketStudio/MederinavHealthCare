@@ -1,6 +1,6 @@
 // Server-side checks that a requested time is really bookable.
 // Mirrors daySlots() in assets/js/booking.js, but in the clinic's time zone.
-import { DATA, allTreatments } from "./site-data.js";
+import { DATA } from "./site-data.js";
 
 const TIME_ZONE = "Europe/Stockholm";
 const DAY_MS = 86400000;
@@ -34,11 +34,12 @@ export function clinicNow(now = new Date()) {
  * Returns { start, end } in minutes if the slot can be booked, otherwise { error }.
  * error: treatment | practitioner | date | time | closed | past | too_soon | too_far
  *
+ * treatments: the bookable treatments (loadTreatments() in catalog.js – hidden ones left out).
  * staff = true (phone bookings from the staff page): no minimum notice and no booking
  * window, but still within opening hours and never in the past.
  */
-export function validateSlot({ treatmentId, practitionerId, date, time }, { staff = false, now = new Date() } = {}) {
-  const treatment = allTreatments().find((t) => t.id === treatmentId);
+export function validateSlot({ treatmentId, practitionerId, date, time }, { treatments, staff = false, now = new Date() }) {
+  const treatment = treatments.find((t) => t.id === treatmentId);
   if (!treatment) return { error: "treatment" };
   const person = DATA.team.find((p) => p.id === practitionerId);
   if (!person || !treatment.practitioners.includes(practitionerId)) return { error: "practitioner" };

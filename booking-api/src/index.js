@@ -1,6 +1,7 @@
 /*
  * Mederinav booking API (Cloudflare Worker), served at https://api.mederinavhealthcare.se
  *
+ *   GET  /treatments                                   treatments shown on the website (no personal data)
  *   GET  /availability?from=YYYY-MM-DD&to=YYYY-MM-DD   taken times (no personal data)
  *   POST /bookings                                     create a booking (+ confirmation emails)
  *   /admin/                                            staff page (behind Cloudflare Access)
@@ -12,6 +13,7 @@ import { clinicNow, parseDate, validateSlot } from "./schedule.js";
 import { sendBookingEmails } from "./email.js";
 import { insertBooking } from "./store.js";
 import { handleAdmin } from "./admin.js";
+import { loadCatalog, loadTreatments } from "./catalog.js";
 
 const MAX_RANGE_DAYS = 14;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -55,10 +57,10 @@ async function upcomingBookingsFor(env, email, phone) {
   return results.filter((b) => (e && normEmail(b.email) === e) || (p && normPhone(b.phone) === p)).length;
 }
 
-function json(body, status, cors) {
+function json(body, status, cors, cache = "no-store") {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", ...cors },
+    headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": cache, ...cors },
   });
 }
 
@@ -76,6 +78,15 @@ function corsHeaders(request, env) {
     });
   }
   return headers;
+}
+
+// The website shows these instead of the list in data.js. Short cache: staff changes show within 30 s.
+async function treatments(env, cors) {
+  const categories = (await loadCatalog(env)).map((cat) => ({
+    id: cat.id,
+    items: cat.items.map(({ category, hidden, ...t }) => t),
+  }));
+  return json({ categories }, 200, cors, "public, max-age=30");
 }
 
 async function availability(url, env, cors) {
@@ -127,7 +138,10 @@ async function createBooking(request, env, ctx, cors) {
     return json({ error: "bot_check" }, 403, cors);
   }
 
-  const slot = validateSlot({ treatmentId: input.treatment, practitionerId: input.practitioner, date: input.date, time: input.time });
+  const slot = validateSlot(
+    { treatmentId: input.treatment, practitionerId: input.practitioner, date: input.date, time: input.time },
+    { treatments: await loadTreatments(env) }
+  );
   if (slot.error) return json({ error: "invalid_slot", reason: slot.error }, 400, cors);
 
   if (await upcomingBookingsFor(env, input.email, input.phone) >= MAX_UPCOMING_PER_PERSON) {
@@ -169,6 +183,9 @@ export default {
       // Staff page API (the page itself, /admin/, is a static file in public/admin/).
       if (url.pathname.startsWith("/admin/api/")) return await handleAdmin(request, env, ctx, url);
 
+      if (url.pathname === "/treatments") {
+        return request.method === "GET" ? await treatments(env, cors) : json({ error: "method" }, 405, cors);
+      }
       if (url.pathname === "/availability") {
         return request.method === "GET" ? await availability(url, env, cors) : json({ error: "method" }, 405, cors);
       }

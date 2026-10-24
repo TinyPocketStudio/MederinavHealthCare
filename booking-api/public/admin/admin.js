@@ -45,6 +45,19 @@
       cancelledDone: (name, emailed) => `${name}s tid är avbokad.${emailed ? " Avbokningsmejl skickas." : ""} Tiden är bokningsbar igen.`,
       alreadyCancelled: "Bokningen är redan avbokad.", cancelError: "Det gick inte att avboka. Försök igen.",
       pageError: "Sidan kunde inte laddas. Kontrollera internetanslutningen och ladda om.",
+      view: "Vy", treatments: "Behandlingar", newTreatmentBtn: "+ Ny behandling", newTreatment: "Ny behandling", editTreatment: "Ändra behandling",
+      treatmentsHint: "Ändringar syns på webbplatsen inom en minut. Dolda behandlingar syns inte och kan inte bokas, men gamla bokningar finns kvar.",
+      "f.tName": "Namn", "f.category": "Kategori", "f.duration": "Längd (minuter)", "f.price": "Pris (kr)", "f.campaignPrice": "Kampanjpris (kr)",
+      "f.performedBy": "Utförs av", "f.description": "Beskrivning", "f.suitable": "Passar dig som",
+      "f.spanish": "Spanska texter (valfritt)", spanishHint: "Tomt fält = den svenska texten visas på den spanska sidan.",
+      "f.hidden": "Dölj på webbplatsen", saveTreatment: "Spara behandling", edit: "Ändra",
+      tagHidden: "Dold", tagCampaign: (price) => `Kampanj ${price}`, nTreatments: (n) => `${n} ${n === 1 ? "behandling" : "behandlingar"}`,
+      treatmentSaved: (name) => `”${name}” är sparad.`, treatmentError: "Behandlingen kunde inte sparas. Försök igen.",
+      treatmentLabels: {
+        name: "namn (2–80 tecken)", category: "kategori", duration: "längd (5–480 minuter)", price: "pris",
+        campaignPrice: "kampanjpris (lägre än priset)", practitioners: "utförs av (minst en)", description: "beskrivning",
+        suitable: "passar dig som", nameEs: "spanskt namn", descriptionEs: "spansk beskrivning", suitableEs: "spanskt ”passar dig som”",
+      },
     },
     es: {
       days: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
@@ -84,6 +97,19 @@
       cancelledDone: (name, emailed) => `La cita de ${name} está cancelada.${emailed ? " Se enviará un correo de cancelación." : ""} El horario vuelve a estar disponible.`,
       alreadyCancelled: "La reserva ya está cancelada.", cancelError: "No se pudo cancelar. Inténtalo de nuevo.",
       pageError: "No se pudo cargar la página. Comprueba la conexión a internet y recarga.",
+      view: "Vista", treatments: "Tratamientos", newTreatmentBtn: "+ Nuevo tratamiento", newTreatment: "Nuevo tratamiento", editTreatment: "Editar tratamiento",
+      treatmentsHint: "Los cambios aparecen en la web en un minuto. Los tratamientos ocultos no se muestran ni se pueden reservar, pero las reservas antiguas se conservan.",
+      "f.tName": "Nombre", "f.category": "Categoría", "f.duration": "Duración (minutos)", "f.price": "Precio (kr)", "f.campaignPrice": "Precio de campaña (kr)",
+      "f.performedBy": "Lo realiza", "f.description": "Descripción", "f.suitable": "Indicado para",
+      "f.spanish": "Textos en español (opcional)", spanishHint: "Campo vacío = en la página en español se muestra el texto sueco.",
+      "f.hidden": "Ocultar en la web", saveTreatment: "Guardar tratamiento", edit: "Editar",
+      tagHidden: "Oculto", tagCampaign: (price) => `Campaña ${price}`, nTreatments: (n) => `${n} ${n === 1 ? "tratamiento" : "tratamientos"}`,
+      treatmentSaved: (name) => `«${name}» se ha guardado.`, treatmentError: "No se pudo guardar el tratamiento. Inténtalo de nuevo.",
+      treatmentLabels: {
+        name: "nombre (2–80 caracteres)", category: "categoría", duration: "duración (5–480 minutos)", price: "precio",
+        campaignPrice: "precio de campaña (menor que el precio)", practitioners: "lo realiza (al menos uno)", description: "descripción",
+        suitable: "indicado para", nameEs: "nombre en español", descriptionEs: "descripción en español", suitableEs: "«indicado para» en español",
+      },
     },
   };
   const langKey = "mederinav-staff-lang";
@@ -148,8 +174,8 @@
     return body;
   }
 
-  function setStatus(text, isError) {
-    const el = $("status");
+  function setStatus(text, isError, id = "status") {
+    const el = $(id);
     el.textContent = text || "";
     el.classList.toggle("is-error", !!isError);
   }
@@ -261,8 +287,7 @@
       if (e.target.closest("[data-close]") || e.target === dlg) dlg.close();
     });
   });
-  const errorText = (err, fallback) => {
-    const labels = L().labels;
+  const errorText = (err, fallback, labels = L().labels) => {
     if (err.body && err.body.error === "slot_taken") return t("slotTaken");
     if (err.body && err.body.error === "invalid_slot") {
       const r = err.body.reason;
@@ -278,8 +303,11 @@
 
   function fillTreatments() {
     const keep = fb.treatment.value;
-    fb.treatment.innerHTML = config.categories.map((c) =>
-      `<optgroup label="${esc(loc(c))}">${c.items.map((x) => `<option value="${x.id}">${esc(loc(x))} (${x.duration} min)</option>`).join("")}</optgroup>`).join("");
+    // Hidden treatments can't be booked.
+    fb.treatment.innerHTML = config.categories.map((c) => {
+      const items = c.items.filter((x) => !x.hidden);
+      return items.length ? `<optgroup label="${esc(loc(c))}">${items.map((x) => `<option value="${x.id}">${esc(loc(x))} (${x.duration} min)</option>`).join("")}</optgroup>` : "";
+    }).join("");
     if (keep) fb.treatment.value = keep;
   }
   function fillPractitioners() {
@@ -483,6 +511,107 @@
     }
   });
 
+  /* ---------- Treatments (add / edit / hide) ---------- */
+  const ft = $("form-treatment");
+  let editing = null; // id of the treatment being edited, null = new
+  const kr = (n) => `${new Intl.NumberFormat(lang === "es" ? "es-ES" : "sv-SE").format(n)} kr`;
+
+  function renderTreatments() {
+    $("treatment-list").innerHTML = config.categories.map((c) => `
+      <section class="day" aria-labelledby="c-${esc(c.id)}">
+        <h2 id="c-${esc(c.id)}">${esc(loc(c))} <span class="count">${esc(t("nTreatments", c.items.length))}</span></h2>
+        ${c.items.length ? `<ul class="items">${c.items.map(treatmentItem).join("")}</ul>` : ""}
+      </section>`).join("");
+  }
+
+  function treatmentItem(x) {
+    return `<li class="item item--treatment${x.hidden ? " item--hidden" : ""}">
+      <div class="time">${esc(kr(x.price))}<small>${x.duration} min</small></div>
+      <div class="body">
+        <span><strong class="name">${esc(loc(x))}</strong>${x.hidden ? `<span class="tag tag--cancelled">${esc(t("tagHidden"))}</span>` : ""}${x.campaignPrice != null ? `<span class="tag">${esc(t("tagCampaign", kr(x.campaignPrice)))}</span>` : ""}</span>
+        <span class="line">${esc(x.practitioners.map(personName).join(", "))}</span>
+      </div>
+      <button class="btn btn--small" type="button" data-edit-treatment="${esc(x.id)}">${esc(t("edit"))}</button>
+    </li>`;
+  }
+
+  function openTreatment(x) {
+    editing = x ? x.id : null;
+    ft.reset();
+    $("dlg-treatment-title").textContent = t(x ? "editTreatment" : "newTreatment");
+    ft.category.innerHTML = config.categories.map((c) => `<option value="${esc(c.id)}">${esc(loc(c))}</option>`).join("");
+    $("treatment-practitioners").innerHTML = config.team.map((p) =>
+      `<label class="check"><input type="checkbox" name="practitioners" value="${esc(p.id)}"> ${esc(p.name)}</label>`).join("");
+    ft.querySelector("[data-edit-only]").hidden = !x;
+    ft.querySelector("details").open = false;
+    if (x) {
+      const es = x.es || {};
+      ft.name.value = x.name;
+      ft.category.value = x.category;
+      ft.duration.value = x.duration;
+      ft.price.value = x.price;
+      ft.campaignPrice.value = x.campaignPrice != null ? x.campaignPrice : "";
+      ft.querySelectorAll("[name=practitioners]").forEach((cb) => { cb.checked = x.practitioners.includes(cb.value); });
+      ft.description.value = x.description || "";
+      ft.suitable.value = x.suitable || "";
+      ft.nameEs.value = es.name || "";
+      ft.descriptionEs.value = es.description || "";
+      ft.suitableEs.value = es.suitable || "";
+      ft.hidden.checked = !!x.hidden;
+      ft.querySelector("details").open = !!(es.name || es.description || es.suitable);
+    } else {
+      ft.duration.value = 30;
+      if (config.team.length === 1) ft.querySelector("[name=practitioners]").checked = true;
+    }
+    openDialog($("dlg-treatment"));
+  }
+
+  $("open-treatment").addEventListener("click", () => openTreatment(null));
+  $("treatment-list").addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-edit-treatment]");
+    if (btn) openTreatment(treatmentById(btn.dataset.editTreatment));
+  });
+
+  ft.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    ft.querySelector(".form-error").textContent = "";
+    const btn = ft.querySelector("[type=submit]");
+    btn.disabled = true;
+    try {
+      const body = {
+        name: ft.name.value, category: ft.category.value, duration: ft.duration.value, price: ft.price.value,
+        campaignPrice: ft.campaignPrice.value,
+        practitioners: [...ft.querySelectorAll("[name=practitioners]:checked")].map((cb) => cb.value),
+        description: ft.description.value, suitable: ft.suitable.value,
+        es: { name: ft.nameEs.value, description: ft.descriptionEs.value, suitable: ft.suitableEs.value },
+        hidden: editing ? ft.hidden.checked : false,
+      };
+      const res = editing
+        ? await api(`/treatments/${encodeURIComponent(editing)}`, { method: "PUT", body: JSON.stringify(body) })
+        : await api("/treatments", { method: "POST", body: JSON.stringify(body) });
+      $("dlg-treatment").close();
+      config = await api("/config");
+      renderTreatments();
+      setStatus(t("treatmentSaved", res.treatment.name), false, "t-status");
+    } catch (ex) {
+      if (ex.status === 401) { $("dlg-treatment").close(); return showAuthError(); }
+      ft.querySelector(".form-error").textContent = errorText(ex, t("treatmentError"), L().treatmentLabels);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  /* ---------- Views: Bokningar | Behandlingar ---------- */
+  const viewKey = "mederinav-staff-view";
+  function showView(view) {
+    $("view-bookings").hidden = view !== "bookings";
+    $("view-treatments").hidden = view !== "treatments";
+    document.querySelectorAll("[data-view]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === view)));
+    if (view === "treatments" && config) renderTreatments();
+    try { localStorage.setItem(viewKey, view); } catch (e) { /* ignore */ }
+  }
+  document.querySelectorAll("[data-view]").forEach((btn) => btn.addEventListener("click", () => showView(btn.dataset.view)));
+
   /* ---------- Toolbar ---------- */
   $("prev").addEventListener("click", () => { week = addDays(week, -7); setStatus(""); loadWeek(); });
   $("next").addEventListener("click", () => { week = addDays(week, 7); setStatus(""); loadWeek(); });
@@ -497,10 +626,12 @@
     try { localStorage.setItem(langKey, lang); } catch (e) { /* ignore */ }
     applyStaticText();
     setStatus("");
+    setStatus("", false, "t-status");
     if (!config) return;
     fillFilter();
     renderWeekLabel();
     if (loaded) render();
+    if (!$("view-treatments").hidden) renderTreatments();
     if ($("dlg-booking").open) { fillTreatments(); fillTimes(); }
     if ($("dlg-block").open) fillBlockPractitioners();
   }));
@@ -514,6 +645,7 @@
       $("who").textContent = me.email;
       fillFilter();
       try { const saved = localStorage.getItem(filterKey); if (saved && config.team.some((p) => p.id === saved)) $("filter").value = saved; } catch (e) { /* ignore */ }
+      try { if (localStorage.getItem(viewKey) === "treatments") showView("treatments"); } catch (e) { /* ignore */ }
       await loadWeek();
     } catch (err) {
       if (err.status === 401) return showAuthError();

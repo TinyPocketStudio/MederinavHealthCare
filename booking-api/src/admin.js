@@ -3,7 +3,9 @@
  * Every request must come from a logged-in staff member (see auth.js).
  *
  *   GET    /admin/api/me                          who is logged in
- *   GET    /admin/api/config                      treatments, staff and opening hours (from data.js)
+ *   GET    /admin/api/config                      treatments (hidden too), staff and opening hours
+ *   POST   /admin/api/treatments                  add a treatment
+ *   PUT    /admin/api/treatments/<id>             change a treatment (hidden: true hides it on the website)
  *   GET    /admin/api/bookings?from=…&to=…        bookings + blocked time, all details
  *   POST   /admin/api/bookings                    phone booking
  *   POST   /admin/api/bookings/MH-XXXXXX/cancel   cancel { notify: true } emails the patient
@@ -15,6 +17,7 @@ import { DATA } from "./site-data.js";
 import { fromMin, parseDate, toMin, validateSlot } from "./schedule.js";
 import { insertBooking } from "./store.js";
 import { sendBookingEmails, sendCancellationEmail } from "./email.js";
+import { insertTreatment, loadCatalog, loadTreatments, slugId, updateTreatment } from "./catalog.js";
 
 const MAX_LIST_DAYS = 62;
 const MAX_BLOCK_DAYS = 62;
@@ -46,19 +49,74 @@ function dateRange(url, maxDays) {
   return { from, to };
 }
 
-function config() {
+async function config(env) {
+  const categories = await loadCatalog(env, { includeHidden: true });
   return {
     clinic: { name: DATA.clinic.name, phoneDisplay: DATA.clinic.phoneDisplay },
     team: DATA.team.map((p) => ({ id: p.id, name: p.name, days: p.days })),
-    categories: DATA.categories.map((c) => ({
+    categories: categories.map((c) => ({
       id: c.id, name: c.name, es: { name: (c.es && c.es.name) || c.name },
-      items: c.items.map((t) => ({
-        id: t.id, name: t.name, es: { name: (t.es && t.es.name) || t.name }, duration: t.duration, practitioners: t.practitioners,
-      })),
+      items: c.items,
     })),
     hours: DATA.hours,
     slotMinutes: DATA.slotMinutes,
   };
+}
+
+/* ---------- Treatments ---------- */
+const TEXT_MAX = 1000;
+const wholeNumber = (v) => (typeof v === "number" ? v : typeof v === "string" && v.trim() !== "" ? Number(v) : NaN);
+
+// Checks the treatment form. Returns { treatment } or { fields } naming what is wrong.
+function readTreatment(body) {
+  const es = body.es && typeof body.es === "object" ? body.es : {};
+  const t = {
+    category: str(body.category, 64),
+    name: str(body.name, 200),
+    duration: wholeNumber(body.duration),
+    price: wholeNumber(body.price),
+    campaignPrice: body.campaignPrice == null || body.campaignPrice === "" ? null : wholeNumber(body.campaignPrice),
+    practitioners: Array.isArray(body.practitioners) ? [...new Set(body.practitioners.map((p) => str(p, 64)))] : [],
+    description: str(body.description, TEXT_MAX + 1),
+    suitable: str(body.suitable, TEXT_MAX + 1),
+    es: { name: str(es.name, 200), description: str(es.description, TEXT_MAX + 1), suitable: str(es.suitable, TEXT_MAX + 1) },
+    hidden: body.hidden === true,
+  };
+  const fields = [];
+  if (t.name.length < 2 || t.name.length > 80) fields.push("name");
+  if (!DATA.categories.some((c) => c.id === t.category)) fields.push("category");
+  if (!Number.isInteger(t.duration) || t.duration < 5 || t.duration > 480) fields.push("duration");
+  if (!Number.isInteger(t.price) || t.price < 0 || t.price > 100000) fields.push("price");
+  if (t.campaignPrice != null && (!Number.isInteger(t.campaignPrice) || t.campaignPrice < 0 || t.campaignPrice >= t.price)) {
+    fields.push("campaignPrice");
+  }
+  if (!t.practitioners.length || !t.practitioners.every((id) => DATA.team.some((p) => p.id === id))) fields.push("practitioners");
+  if (t.description.length > TEXT_MAX) fields.push("description");
+  if (t.suitable.length > TEXT_MAX) fields.push("suitable");
+  if (t.es.name.length > 80) fields.push("nameEs");
+  if (t.es.description.length > TEXT_MAX) fields.push("descriptionEs");
+  if (t.es.suitable.length > TEXT_MAX) fields.push("suitableEs");
+  return fields.length ? { fields } : { treatment: t };
+}
+
+async function createTreatment(request, env, user) {
+  const body = await readJson(request);
+  if (!body) return json({ error: "invalid", fields: ["body"] }, 400);
+  const { treatment, fields } = readTreatment(body);
+  if (fields) return json({ error: "invalid", fields }, 400);
+  const taken = (await loadTreatments(env, { includeHidden: true })).map((t) => t.id);
+  treatment.id = slugId(treatment.name, taken);
+  await insertTreatment(env, treatment, user.email);
+  return json({ treatment }, 201);
+}
+
+async function changeTreatment(request, env, user, id) {
+  const body = await readJson(request);
+  if (!body) return json({ error: "invalid", fields: ["body"] }, 400);
+  const { treatment, fields } = readTreatment(body);
+  if (fields) return json({ error: "invalid", fields }, 400);
+  treatment.id = id;
+  return (await updateTreatment(env, treatment, user.email)) ? json({ treatment }) : json({ error: "not_found" }, 404);
 }
 
 async function listBookings(url, env) {
@@ -103,7 +161,7 @@ async function createPhoneBooking(request, env, ctx, user) {
 
   const slot = validateSlot(
     { treatmentId: input.treatment, practitionerId: input.practitioner, date: input.date, time: input.time },
-    { staff: true }
+    { treatments: await loadTreatments(env), staff: true }
   );
   if (slot.error) return json({ error: "invalid_slot", reason: slot.error }, 400);
 
@@ -210,7 +268,10 @@ export async function handleAdmin(request, env, ctx, url) {
   const method = request.method;
 
   if (path === "/me" && method === "GET") return json({ email: user.email });
-  if (path === "/config" && method === "GET") return json(config());
+  if (path === "/config" && method === "GET") return json(await config(env));
+  if (path === "/treatments" && method === "POST") return createTreatment(request, env, user);
+  const treatment = path.match(/^\/treatments\/([a-z0-9-]{1,64})$/);
+  if (treatment && method === "PUT") return changeTreatment(request, env, user, treatment[1]);
   if (path === "/bookings" && method === "GET") return listBookings(url, env);
   if (path === "/bookings" && method === "POST") return createPhoneBooking(request, env, ctx, user);
   const cancel = path.match(/^\/bookings\/(MH-[A-Z0-9]{6})\/cancel$/);

@@ -49,6 +49,7 @@ window.MEDERINAV_I18N = {
     "treat.book": ({ name }) => `Boka ${name.toLowerCase()}`,
 
     "book.chooseTreatment": "Välj behandling…",
+    "book.loadingTreatments": "Hämtar behandlingar…",
     "book.firstAvailable": "Första lediga",
     "book.week": "Vecka {n}",
     "book.weekShort": "v. {n}",
@@ -304,6 +305,7 @@ window.MEDERINAV_I18N = {
     "treat.book": ({ name }) => `Reservar: ${name}`,
 
     "book.chooseTreatment": "Elige un tratamiento…",
+    "book.loadingTreatments": "Cargando tratamientos…",
     "book.firstAvailable": "Primer profesional disponible",
     "book.week": "Semana {n}",
     "book.weekShort": "sem. {n}",

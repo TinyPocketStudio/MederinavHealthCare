@@ -27,7 +27,13 @@
     </div>
   </header>
 
+  <nav class="wrap tabs" aria-label="Vy" data-t-attr="aria-label:view">
+    <button type="button" data-view="bookings" aria-pressed="true" data-t="bookings">Bokningar</button>
+    <button type="button" data-view="treatments" aria-pressed="false" data-t="treatments">Behandlingar</button>
+  </nav>
+
   <main class="wrap" id="main">
+   <div id="view-bookings">
     <div class="toolbar">
       <div class="week-nav">
         <button class="btn btn--icon" id="prev" type="button" aria-label="Föregående vecka" data-t-attr="aria-label:prevWeek">
@@ -50,7 +56,54 @@
 
     <p class="status" id="status" role="status" aria-live="polite"></p>
     <div class="days" id="days"><p class="empty" data-t="loading">Hämtar bokningar…</p></div>
+   </div>
+
+   <!-- Behandlingar: lägg till, ändra och dölj (sparas i databasen, syns direkt på webbplatsen) -->
+   <div id="view-treatments" hidden>
+    <div class="toolbar">
+      <h1 data-t="treatments">Behandlingar</h1>
+      <div class="filters">
+        <button class="btn btn--primary" id="open-treatment" type="button" data-t="newTreatmentBtn">+ Ny behandling</button>
+      </div>
+    </div>
+    <p class="hint" data-t="treatmentsHint">Ändringar syns på webbplatsen inom en minut. Dolda behandlingar syns inte och kan inte bokas, men gamla bokningar finns kvar.</p>
+    <p class="status" id="t-status" role="status" aria-live="polite"></p>
+    <div class="days" id="treatment-list"></div>
+   </div>
   </main>
+
+  <!-- Ny / ändra behandling -->
+  <dialog id="dlg-treatment" aria-labelledby="dlg-treatment-title">
+    <form id="form-treatment" novalidate>
+      <h2 id="dlg-treatment-title"></h2>
+      <label><span data-t="f.tName">Namn</span> <input class="input" name="name" maxlength="80" required></label>
+      <div class="grid2">
+        <label><span data-t="f.category">Kategori</span> <select class="select" name="category" required></select></label>
+        <label><span data-t="f.duration">Längd (minuter)</span> <input class="input" name="duration" type="number" min="5" max="480" step="5" inputmode="numeric" required></label>
+        <label><span data-t="f.price">Pris (kr)</span> <input class="input" name="price" type="number" min="0" max="100000" step="1" inputmode="numeric" required></label>
+        <label><span><span data-t="f.campaignPrice">Kampanjpris (kr)</span> <span class="opt" data-t="optional">(valfritt)</span></span> <input class="input" name="campaignPrice" type="number" min="0" step="1" inputmode="numeric"></label>
+      </div>
+      <fieldset class="checks">
+        <legend data-t="f.performedBy">Utförs av</legend>
+        <div id="treatment-practitioners"></div>
+      </fieldset>
+      <label><span data-t="f.description">Beskrivning</span> <textarea class="input" name="description" rows="3" maxlength="1000"></textarea></label>
+      <label><span data-t="f.suitable">Passar dig som</span> <textarea class="input" name="suitable" rows="2" maxlength="1000"></textarea></label>
+      <details class="more">
+        <summary data-t="f.spanish">Spanska texter (valfritt)</summary>
+        <p class="hint" data-t="spanishHint">Tomt fält = den svenska texten visas på den spanska sidan.</p>
+        <label><span data-t="f.tName">Namn</span> <input class="input" name="nameEs" maxlength="80" lang="es"></label>
+        <label><span data-t="f.description">Beskrivning</span> <textarea class="input" name="descriptionEs" rows="3" maxlength="1000" lang="es"></textarea></label>
+        <label><span data-t="f.suitable">Passar dig som</span> <textarea class="input" name="suitableEs" rows="2" maxlength="1000" lang="es"></textarea></label>
+      </details>
+      <label class="check" data-edit-only><input type="checkbox" name="hidden"> <span data-t="f.hidden">Dölj på webbplatsen</span></label>
+      <p class="form-error" role="alert"></p>
+      <div class="actions">
+        <button class="btn btn--ghost" type="button" data-close data-t="cancel">Avbryt</button>
+        <button class="btn btn--primary" type="submit" data-t="saveTreatment">Spara behandling</button>
+      </div>
+    </form>
+  </dialog>
 
   <!-- Ny telefonbokning -->
   <dialog id="dlg-booking" aria-labelledby="dlg-booking-title">

@@ -36,9 +36,9 @@
   const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
   /* ---------- Booking API (booking-api/) ---------- */
-  // When the site is opened from this computer (localhost), talk to the local test backend.
+  // Locally (localhost) main.js points this at the test backend.
   const isLocal = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-  const API = (isLocal ? "http://localhost:8787" : (D.booking || {}).apiBase || "").replace(/\/$/, "");
+  const API = UI.apiBase;
 
   /* ---------- Bot check (Cloudflare Turnstile) ---------- */
   // Invisible for most visitors; only suspicious ones get a checkbox. The site key is public (data.js);
@@ -113,7 +113,7 @@
   }
 
   /* ---------- State ---------- */
-  const treatments = UI.allTreatments();
+  let treatments = []; // filled once the list has arrived from the booking API (see init below)
   const today = new Date();
   const firstWeek = startOfWeek(today);
   const lastWeek = addDays(firstWeek, 7 * (D.bookingWeeksAhead - 1));
@@ -557,18 +557,25 @@
   });
 
   /* ---------- Init (supports ?behandling=… and ?behandlare=…) ---------- */
-  const params = new URLSearchParams(location.search);
-  const wantT = params.get("behandling");
-  const wantP = params.get("behandlare");
-  if (wantT && treatments.some((t) => t.id === wantT)) state.treatment = wantT;
-  else if (wantP) {
-    const firstForP = treatments.find((t) => t.practitioners.includes(wantP));
-    if (firstForP) state.treatment = firstForP.id;
-  }
-  if (wantP && D.team.some((p) => p.id === wantP)) state.practitioner = wantP;
-  fillTreatmentSelect();
-  fillPractitionerSelect();
   els.submit.textContent = tr("book.submit");
   $("confirm-title").textContent = tr("book.thanks");
-  refresh();
+  els.treatment.innerHTML = `<option value="">${tr("book.loadingTreatments")}</option>`;
+  els.treatment.disabled = true;
+
+  UI.catalogReady.then(() => {
+    treatments = UI.allTreatments();
+    const params = new URLSearchParams(location.search);
+    const wantT = params.get("behandling");
+    const wantP = params.get("behandlare");
+    if (wantT && treatments.some((t) => t.id === wantT)) state.treatment = wantT;
+    else if (wantP) {
+      const firstForP = treatments.find((t) => t.practitioners.includes(wantP));
+      if (firstForP) state.treatment = firstForP.id;
+    }
+    if (wantP && D.team.some((p) => p.id === wantP)) state.practitioner = wantP;
+    els.treatment.disabled = false;
+    fillTreatmentSelect();
+    fillPractitionerSelect();
+    refresh();
+  });
 })();

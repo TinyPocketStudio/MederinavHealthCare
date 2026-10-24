@@ -54,8 +54,9 @@ All images use `object-fit: cover`, so photos with slightly different proportion
 
 ## Editing content
 
-- **Treatments, descriptions, prices, durations:** `assets/js/data.js`. The Behandlingar and Boka tid pages, plus the "Från X kr" prices on the home page, all update from this file.
-- **Seasonal campaign:** to put a treatment on offer, give it a `campaignPrice` in `data.js`. Set the campaign's end date in `campaign.endDate`. The offer list, the "up to −X%" badge, the countdown and the campaign badges are all generated automatically. The headline text lives in `index.html` (`#kampanj`), with the Spanish version under `home.campaign.title` in `translations.js`.
+- **Treatments, descriptions, prices, durations, who performs them:** on the staff page, **Behandlingar** tab (see "Staff page"). They are stored in the booking database. The Behandlingar and Boka tid pages, plus the "Från X kr" prices and campaign offers on the home page, load them from the booking API. The treatment list in `data.js` is only used to fill the database the first time, and as a backup if the API doesn't answer within 3 seconds.
+- **Categories** (names, intros, images): `categories` in `assets/js/data.js`.
+- **Seasonal campaign:** to put a treatment on offer, give it a campaign price on the staff page. Set the campaign's end date in `campaign.endDate` in `data.js`. The offer list, the "up to −X%" badge, the countdown and the campaign badges are all generated automatically. The headline text lives in `index.html` (`#kampanj`), with the Spanish version under `home.campaign.title` in `translations.js`.
 - **Opening hours, staff working days, booking window:** `hours`, `team[].days`, `bookingWeeksAhead` and `minNoticeHours` in `data.js`.
 - **Before/after cases:** `index.html` → `#galleri`. Copy a `<figure class="ba">` block to add a case. `data-category` controls which filter it belongs to.
 - **Staff profiles (education, experience, etc.):** `om-oss.html`, with a shorter version in `index.html` → `#lakare`.
@@ -66,6 +67,7 @@ All images use `object-fit: cover`, so photos with slightly different proportion
 
 Bookings are stored by a small backend in `booking-api/`: a Cloudflare Worker with a D1 database, served at `https://api.mederinavhealthcare.se`.
 
+- `GET /treatments` returns the treatments shown on the website (hidden ones left out).
 - `GET /availability?from=…&to=…` returns which times are taken (max 14 days). It contains no names or contact details.
 - `POST /bookings` saves a booking and returns a booking number such as `MH-7KQ2XD`.
 
@@ -75,7 +77,15 @@ The backend checks everything again: the treatment, the staff member, their work
 
 **Bot check (Cloudflare Turnstile).** The booking form gets a short-lived token from Cloudflare that proves a real browser filled it in; the backend checks it with Cloudflare before saving. It is invisible for most visitors. The public site key is `booking.turnstileSiteKey` in `assets/js/data.js`; the secret key is the Cloudflare secret `TURNSTILE_SECRET`. Without that secret the check is switched off (the Worker log says so). Locally, Cloudflare's official test keys are used automatically.
 
-**One source of truth.** The backend reads treatments, durations, staff days and opening hours straight from `assets/js/data.js`. After editing that file, push to GitHub: both the website and the backend update, the backend through the Cloudflare ↔ GitHub connection.
+**One source of truth.** Treatments live in the D1 database (table `treatments`, code in `booking-api/src/catalog.js`); the website and the backend both read them from there. Categories, staff days and opening hours still come straight from `assets/js/data.js`. After editing that file, push to GitHub: both the website and the backend update, the backend through the Cloudflare ↔ GitHub connection.
+
+**New database tables.** When a new file appears in `booking-api/migrations/`, run it once against the real database from `booking-api/`:
+
+```bash
+npm run db:migrate:remote
+```
+
+Until `0003_treatments.sql` has been run, the backend keeps using the treatments in `data.js`, so nothing breaks. The first request after it has run fills the table from `data.js`.
 
 **No secrets in the repo.** Keys are stored as encrypted secrets in Cloudflare. For local testing they go in `booking-api/.dev.vars`, which Git ignores. Patient data only lives in the D1 database, never in the repo.
 
@@ -108,12 +118,16 @@ Staff manage bookings at **https://api.mederinavhealthcare.se/admin/** (Swedish,
 - **Blockera tid:** block time for one person or the whole clinic, for one or several days, as a whole day or a time range (vacation, sick days, lunch).
   - Blocked time can't be booked online.
   - Existing bookings in that time are *not* cancelled automatically; the page lists them so staff can contact the patients.
+- **Behandlingar** (tab at the top): add or change treatments, including name, category, duration, price, campaign price, who performs it, the texts and optional Spanish texts.
+  - Changes show on the website within a minute.
+  - Treatments can't be deleted, only hidden ("Dölj på webbplatsen"). A hidden treatment can't be booked, but old bookings for it keep their name and price.
+  - The web address of a new treatment (`/boka?behandling=…`) is made from its Swedish name when it is created and never changes.
 
 **Login** is Cloudflare Access (Zero Trust). Staff type their own email and get a one-time code; there are no passwords.
 - **Who may log in:** the email list in the Access application's policy (Cloudflare → Zero Trust → Access → Applications).
 - **Second check:** the backend also verifies the Access login itself (`booking-api/src/auth.js`, using the Cloudflare secrets `ACCESS_TEAM_DOMAIN` and `ACCESS_AUD`). If those are empty, it refuses everyone.
 
-The page itself is in `booking-api/public/admin/` and its API in `booking-api/src/admin.js`. Every phone booking, cancellation and block records which staff email did it.
+The page itself is in `booking-api/public/admin/` and its API in `booking-api/src/admin.js`. Every phone booking, cancellation, block and treatment change records which staff email did it.
 
 For local testing, `ADMIN_DEV_EMAIL` in `booking-api/.dev.vars` logs you in as that address. It only works on `localhost`.
 

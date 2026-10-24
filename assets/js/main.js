@@ -60,7 +60,25 @@
   const effectivePrice = (item) => (isCampaignActive() && item.campaignPrice ? item.campaignPrice : item.price);
   const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  window.MederinavUI = { icon, kr, isCampaignActive, allTreatments, teamName, effectivePrice, escapeHtml };
+  /* ---------- Booking API + treatments ---------- */
+  // When the site is opened from this computer (localhost), talk to the local test backend.
+  const isLocal = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  const apiBase = (isLocal ? "http://localhost:8787" : (DATA.booking || {}).apiBase || "").replace(/\/$/, "");
+
+  // Treatments are managed on the staff page and served by the booking API. The list in
+  // data.js is only used if the API can't be reached (within 3 seconds).
+  const needsTreatments = document.querySelector("[data-from], [data-render='treatments'], [data-render='campaign-offers'], #week-grid");
+  const catalogReady = !needsTreatments || !apiBase || !DATA.categories
+    ? Promise.resolve()
+    : fetch(`${apiBase}/treatments`, { signal: AbortSignal.timeout(3000) })
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`))))
+      .then((body) => {
+        const byId = Object.fromEntries((body.categories || []).map((c) => [c.id, c.items || []]));
+        DATA.categories.forEach((cat) => { cat.items = byId[cat.id] || []; });
+      })
+      .catch((err) => console.warn("Behandlingar kunde inte hämtas – visar listan i data.js.", err));
+
+  window.MederinavUI = { icon, kr, isCampaignActive, allTreatments, teamName, effectivePrice, escapeHtml, apiBase, catalogReady };
 
   /* ---------- Header: scroll state + mobile menu ---------- */
   const header = document.querySelector(".site-header");
@@ -117,7 +135,7 @@
   function renderFromPrices() {
     document.querySelectorAll("[data-from]").forEach((el) => {
       const cat = (DATA.categories || []).find((c) => c.id === el.dataset.from);
-      if (!cat) return;
+      if (!cat || !cat.items.length) return;
       const min = Math.min(...cat.items.map(effectivePrice));
       el.textContent = t("price.from", { price: kr(min) });
     });
@@ -215,6 +233,7 @@
     const campaign = isCampaignActive();
     const openIds = [...tRoot.querySelectorAll("details[open]")].map((d) => d.id);
     tRoot.innerHTML = DATA.categories
+      .filter((cat) => cat.items.length)
       .map(
         (cat) => `
       <section class="t-group" id="${cat.id}" aria-labelledby="h-${cat.id}">
@@ -262,16 +281,23 @@
       const el = id && document.getElementById(id);
       if (el && el.tagName === "DETAILS") el.open = true;
     };
-    renderTreatments();
-    openFromHash();
+    catalogReady.then(() => {
+      renderTreatments();
+      openFromHash();
+      // The browser couldn't jump to #treatment-id before the list existed.
+      const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (target) target.scrollIntoView();
+    });
     window.addEventListener("hashchange", openFromHash);
   }
 
   /* ---------- Everything above that depends on the language ---------- */
   renderHours();
-  renderFromPrices();
   renderCampaign();
-  renderOffers();
+  catalogReady.then(() => {
+    renderFromPrices();
+    renderOffers();
+  });
   I18N.onChange(() => {
     renderHours();
     renderFromPrices();
