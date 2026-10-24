@@ -25,12 +25,12 @@ window.MEDERINAV = {
 
   // Öppettider per veckodag: [öppnar, stänger] eller null = stängt.
   hours: {
-    1: ["09:00", "16:00"],
-    2: ["09:00", "16:00"],
-    3: ["09:00", "16:00"],
-    4: ["09:00", "16:00"],
-    5: ["09:00", "16:00"],
-    6: null,
+    1: ["10:00", "17:00"],
+    2: ["10:00", "18:00"],
+    3: ["10:00", "18:00"],
+    4: ["10:00", "18:00"],
+    5: ["10:00", "18:30"],
+    6: ["11:00", "14:00"],
     0: null,
   },
   slotMinutes: 30,       // Intervall mellan bokningsbara starttider
