@@ -223,6 +223,16 @@
     };
     range.addEventListener("input", update);
     update();
+    // Give the frame the before picture's own shape (within 3:4 to 5:2), so pictures aren't zoomed in to fill a 4:3 box.
+    const img = frame.querySelector(".ba-before");
+    const fit = () => {
+      if (!img.naturalWidth || !img.naturalHeight) return;
+      const ratio = Math.min(2.5, Math.max(0.75, img.naturalWidth / img.naturalHeight));
+      frame.style.aspectRatio = String(ratio);
+      update();
+    };
+    img.addEventListener("load", fit); // lazy pictures load later, when scrolled near
+    fit(); // already loaded (e.g. from the cache)
     return update;
   }
   window.addEventListener("resize", () => baUpdaters.forEach((update) => update()), { passive: true });
