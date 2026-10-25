@@ -536,12 +536,12 @@ button { cursor: pointer; touch-action: manipulation; }
 .chip:hover { border-color: var(--ink); }
 .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
 
+/* Columns, not a grid: pictures keep their own shape, so cards differ in height and stack without gaps. */
 .ba-grid {
-  display: grid;
-  gap: var(--s-6) var(--s-5);
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+  column-width: 420px;
+  column-gap: var(--s-5);
 }
-.ba { margin: 0; }
+.ba { margin: 0 0 var(--s-6); break-inside: avoid; }
 .ba[hidden] { display: none; }
 .ba-frame {
   --pos: 50%;
