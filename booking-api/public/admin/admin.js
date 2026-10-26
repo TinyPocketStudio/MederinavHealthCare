@@ -104,8 +104,10 @@
     es: {
       days: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
       months: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+      // Short months in the week heading, otherwise the Spanish toolbar does not fit on one row.
+      rangeMonths: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sept", "oct", "nov", "dic"],
       dayMonth: (d, m) => `${d} de ${m}`,
-      weekRange: (d1, m1, d2, m2, y) => (m1 === m2 ? `${d1}–${d2} de ${m2} de ${y}` : `${d1} de ${m1} – ${d2} de ${m2} de ${y}`),
+      weekRange: (d1, m1, d2, m2, y) => (m1 === m2 ? `${d1}–${d2} ${m2} ${y}` : `${d1} ${m1} – ${d2} ${m2} ${y}`),
       lang: "Idioma", logout: "Cerrar sesión", prevWeek: "Semana anterior", nextWeek: "Semana siguiente", thisWeek: "Esta semana",
       bookings: "Reservas", showPractitioner: "Mostrar profesional", allPractitioners: "Todos los profesionales", showCancelled: "Mostrar canceladas",
       newBookingBtn: "+ Nueva reserva", blockTime: "Bloquear horario", loading: "Cargando reservas…", newBooking: "Nueva reserva",
@@ -274,7 +276,8 @@
   /* ---------- Week view ---------- */
   function renderWeekLabel() {
     const end = addDays(week, 6);
-    const range = t("weekRange", week.getDate(), L().months[week.getMonth()], end.getDate(), L().months[end.getMonth()], end.getFullYear());
+    const months = L().rangeMonths || L().months;
+    const range = t("weekRange", week.getDate(), months[week.getMonth()], end.getDate(), months[end.getMonth()], end.getFullYear());
     $("week-label").innerHTML = `${esc(t("week"))} ${isoWeek(week)}<small>${esc(range)}</small>`;
   }
 
