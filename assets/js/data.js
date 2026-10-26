@@ -35,7 +35,7 @@ window.MEDERINAV = {
   },
   slotMinutes: 30,       // Intervall mellan bokningsbara starttider
   bookingWeeksAhead: 8,  // Hur många veckor framåt man kan boka
-  minNoticeHours: 2,     // Minsta framförhållning för en bokning
+  minNoticeHours: 3,    // Minsta framförhållning för en bokning
 
   // Bokningssystemet (mappen booking-api/). När sidan öppnas lokalt (localhost)
   // används automatiskt testservern på http://localhost:8787 i stället.
